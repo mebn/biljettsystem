@@ -1,14 +1,13 @@
 /*
-This is just an example.
-
-https://localhost:<PORT>/api/WeatherForecast
+This is the example provided by
+the webapi template.
 */
 
 
 using Microsoft.AspNetCore.Mvc;
-using my_api.Models;
+using server.Models;
 
-namespace my_api.Controllers {
+namespace server.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase {

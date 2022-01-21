@@ -16,7 +16,7 @@ where date, temperatureC etc are named in the WeatherForecast class.
 */
 
 
-namespace my_api.Models {
+namespace server.Models {
     public class WeatherForecast {
         public DateTime Date { get; set; }
 
@@ -26,5 +26,4 @@ namespace my_api.Models {
 
         public string? Summary { get; set; }
     }
-
 }
