@@ -5,7 +5,7 @@ ReactJS SPA app.
 ### Install NodeJS
 Download NodeJS [here](https://nodejs.org/en/).
 ### Install packages and run
-1. Install necessary programs/packages: `npm i`
+1. Install necessary packages: `npm i`
 1. Start the client: `npm start`
 
 ## Resources

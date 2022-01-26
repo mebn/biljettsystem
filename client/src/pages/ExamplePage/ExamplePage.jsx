@@ -20,21 +20,21 @@ const ExamplePage = () => {
   }, []);
 
   return (
-      <div>
-          <h1>ExamplePage screen</h1>
-          <Link to="/">Home</Link>
+    <div>
+      <h1>ExamplePage screen</h1>
+      <Link to="/">Home</Link>
 
-          <p>You clicked {count} times</p>
-          <button onClick={() => setCount(count + 1)}>
-            Click me
-          </button>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
 
-          <ul>
-            {
-              posts.map(post => <li key={post.id}>{post.title}</li>)
-            }
-          </ul>
-      </div>
+      <ul>
+        {
+          posts.map(post => <li key={post.id}>{post.title}</li>)
+        }
+      </ul>
+    </div>
   );
 }
 

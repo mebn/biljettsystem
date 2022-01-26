@@ -12,11 +12,11 @@ import ExamplePage from './pages/ExamplePage/ExamplePage';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/examplePage" element={<ExamplePage />} />
-          <Route path="*" element={ <NotFound /> } />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/examplePage" element={<ExamplePage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
