@@ -14,3 +14,7 @@ Download NodeJS [here](https://nodejs.org/en/).
 
 ### Routing and SPA
 * https://reactrouter.com/docs/en/v6/getting-started/tutorial
+
+### API calls
+* [Hooks](https://reactjs.org/docs/hooks-intro.html), states without classes
+* https://youtu.be/bYFYF2GnMy8 (part 1-3)
