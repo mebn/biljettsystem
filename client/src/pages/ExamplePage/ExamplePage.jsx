@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import './ExamplePage.css';
+
+// custom components
+import ExampleButton from '../../components/ExampleButton/ExampleButton';
 
 const ExamplePage = () => {
   const [count, setCount] = useState(0);
   const [posts, setPosts] = useState([]);
 
-  // Similar to componentDidMount and componentDidUpdate:
+  // Similar to componentDidMount and componentDidUpdate
   useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/posts")
       .then(res => {
@@ -25,9 +27,9 @@ const ExamplePage = () => {
       <Link to="/">Home</Link>
 
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <ExampleButton onClick={() => setCount(count + 1)}>
+        Click me!
+      </ExampleButton>
 
       <ul>
         {
