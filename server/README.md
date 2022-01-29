@@ -4,14 +4,15 @@ ASP.NET Core webAPI for cross platform RESTful API Server.
 ## How to run
 ### Install necessary programs
 #### Alternative 1
-Download and install `.net core` from [here](https://dotnet.microsoft.com/en-us/download/dotnet).
+Download and install `.NET Core` from [here](https://dotnet.microsoft.com/en-us/download/dotnet). (Has to be `.NET Core core`, not `.NET x.x`)
 
 #### Alternative 2
 Install visual studio for [Windows](https://visualstudio.microsoft.com/vs/) or [macOS](https://visualstudio.microsoft.com/vs/mac/) where `dotnet` etc are build in.
 
 ### Start the server
-1. Run `dotnet run` (in a terminal) from the `server/` directory
-1. go to https://localhost:7050/swagger/index.html (or whatever port the console writes out).
+1. Move to `~/biljettsystem/server`
+1. Run `dotnet run`
+1. Your server is now running at port `5000`. I strongly recommend using [postman](https://www.postman.com/downloads/) for API testing. Try, for example `localhost:5000/api/people` as a GET request, or simply enter the link on the browser. Alternatively use [swagger](https://localhost:5000/swagger) for API testing in browser.
 
 ### Docker
 1. To build the docker image, run: `docker build -t pvk_server:1.0.0 .` where `1.0.0` can be replaced with another version.
@@ -35,4 +36,4 @@ Useful docker commands:
 * https://medium.com/@agavatar/webapi-with-net-core-and-postgres-in-visual-studio-code-8b3587d12823
 
 ### Docker
-https://docs.docker.com/samples/dotnetcore/
+* https://docs.docker.com/samples/dotnetcore/
