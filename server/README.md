@@ -26,11 +26,11 @@ Useful docker commands:
 * `docker rmi <image name>` - remove a image
 
 ## Resources
+### ASP.NET Core and WebApi
 * https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-6.0&tabs=visual-studio-code
-
 * https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-javascript?view=aspnetcore-6.0
-
 * https://youtu.be/sWJayOop4k8
+* https://www.youtube.com/watch?v=vN9NRqv7xmY
 
 ### Connect PostgreSQL
 * https://medium.com/@agavatar/webapi-with-net-core-and-postgres-in-visual-studio-code-8b3587d12823
