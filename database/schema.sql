@@ -6,11 +6,18 @@ DROP TABLE IF EXISTS Ticket CASCADE;
 CREATE TABLE Event (
     EventID SERIAL PRIMARY KEY,
     Name varchar(255) NOT NULL,
+    Description text,
     Price double precision NOT NULL,
     StartTime timestamp NOT NULL,
-    EndTime timestamp,
     Location varchar(255) NOT NULL,
-    NumTick int NOT NULL
+    NumTick int NOT NULL,
+    EventPictureLink varchar(255),
+    Category int
+);
+
+CREATE TABLE Category (
+    CategoryID SERIAL PRIMARY KEY,
+    Name varchar(255) NOT NULL
 );
 
 CREATE TABLE User (
@@ -22,8 +29,7 @@ CREATE TABLE Purchase (
     PurchaseID SERIAL PRIMARY KEY,
     EventID int REFERENCES Event(EventID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
     UserID int REFERENCES User(UserID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
-    PurchaseTime timestamp NOT NULL,
-    PaymentMethod varchar(255)
+    PurchaseTime timestamp NOT NULL
 );
 
 CREATE TABLE Ticket (
