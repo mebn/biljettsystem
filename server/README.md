@@ -22,12 +22,6 @@ You can use [postman](https://www.postman.com/downloads/) for API testing. Try, 
 1. Stop docker container from running: `docker stop pvk_server`.
 1. Server is now running at port `7050` and can be accessed on http://localhost:7050.
 
-Useful docker commands:
-* `docker ps -a` - list all containers
-* `docker images` - list all images
-* `docker rm <container id>` - remove a container
-* `docker rmi <image name>` - remove a image
-
 ## Resources
 ### ASP.NET Core and WebApi
 * https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-6.0&tabs=visual-studio-code
