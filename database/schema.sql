@@ -1,4 +1,6 @@
 DROP TABLE IF EXISTS Event CASCADE;
+DROP TABLE IF EXISTS Category CASCADE;
+DROP TABLE IF EXISTS EventCategories CASCADE;
 DROP TABLE IF EXISTS User CASCADE;
 DROP TABLE IF EXISTS Purchase CASCADE;
 DROP TABLE IF EXISTS Ticket CASCADE;
@@ -11,8 +13,7 @@ CREATE TABLE Event (
     StartTime timestamp NOT NULL,
     Location varchar(255) NOT NULL,
     NumTick int NOT NULL,
-    EventPictureLink varchar(255),
-    Category int
+    EventPictureLink varchar(255)
 );
 
 CREATE TABLE Category (
@@ -20,8 +21,14 @@ CREATE TABLE Category (
     Name varchar(255) NOT NULL
 );
 
+CREATE TABLE EventCategories (
+    EventID int REFERENCES Event(EventID) PRIMARY KEY ON UPDATE CASCADE ON DELETE CASCADE,
+    CategoryID int REFERENCES Category(CategoryID) PRIMARY KEY ON UPDATE CASCADE ON DELETE CASCADE,
+);
+
 CREATE TABLE User (
     UserID SERIAL PRIMARY KEY,
+    Name varchar(255),
     Mail varchar(255) NOT NULL
 );
 
@@ -34,6 +41,5 @@ CREATE TABLE Purchase (
 
 CREATE TABLE Ticket (
     TicketID SERIAL PRIMARY KEY,
-    PurchaseID int REFERENCES Purchase(PurchaseID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
-    UserID int REFERENCES User(UserID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
+    PurchaseID int REFERENCES Purchase(PurchaseID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
 );
