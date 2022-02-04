@@ -2,7 +2,7 @@
 ASP.NET Core webAPI for cross platform RESTful API Server.
 
 ## How to run
-The easiest way to run the server is with `docker-compose up` from the root directory. More info [here](/README.md).
+The easiest way to run the server is with `docker-compose up server` from the root directory. More info [here](/README.md).
 
 ### Install necessary programs
 #### Alternative 1

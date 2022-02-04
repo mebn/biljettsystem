@@ -2,7 +2,7 @@
 ReactJS SPA app.
 
 ## How to run
-The easiest way to run the server is with `docker-compose up` from the root directory. More info [here](/README.md).
+The easiest way to run the client is with `docker-compose up client` from the root directory. More info [here](/README.md). Keep in mind hot reloading does not work on windows. If you want that, keep reading.
 
 ### Install programs
 Install NodeJS [here](https://nodejs.org/en/).

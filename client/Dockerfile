@@ -2,14 +2,15 @@ FROM node:16
 
 WORKDIR /app
 
-COPY package*.json ./
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package*.json .
 
-RUN npm install
+RUN npm i
+
 # If you are building your code for production
 # RUN npm ci --only=production
 
 COPY . .
 
 EXPOSE 3000
-RUN npm run build
 CMD [ "npm", "start" ]
