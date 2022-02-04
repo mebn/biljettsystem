@@ -1,0 +1,17 @@
+version: "3"
+services:
+  client:
+    build: ./client
+    ports:
+      - 3000:3000
+    volumes:
+      - "./client:/app"
+      
+  server:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    ports:
+      - 7050:7050
+    working_dir: "/app"
+    volumes:
+      - "./server:/app"
+    command: ["dotnet", "watch", "run", "--urls=http://0.0.0.0:7050"]
