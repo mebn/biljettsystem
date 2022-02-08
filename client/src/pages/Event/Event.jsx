@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
-
-import { CalendarIcon, LocationMarkerIcon } from '@heroicons/react/solid'
+import EventInfo from "../../components/EventInfo/EventInfo";
 
 
 const eventInfo = {
@@ -26,24 +25,13 @@ const Event = () => {
                     <div className="text-2xl md:text-zinc-800 md:text-3xl">{eventInfo.longTitle}</div>
                     <div className="bg-zinc-600 block px-3 py-2 rounded-md">{eventInfo.price} kr</div>
                 </div>
-                <div className="flex flex-col text-xs gap-2.5 md:text-sm md:border-b border-zinc-300 md:pb-3 md:text-zinc-700">
-                    <div className="flex items-center gap-2">
-                        <CalendarIcon className="h-4"/>
-                        <div className="underline text-blue-500 md:text-blue-800 ">{eventInfo.address}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <LocationMarkerIcon className="h-4"/>
-                        <div className="md:text-zinc-800">{eventInfo.date}</div>
-                    </div>
-                </div>
+                <EventInfo address={eventInfo.address} date={eventInfo.date}/>
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis quidem voluptatem, molestiae vero repellendus sunt sequi aperiam fugiat odit, cupiditate distinctio amet deleniti. Numquam molestiae voluptatum nihil modi. Fuga, unde?Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius veniam saepe officiis aliquid, magnam maxime enim pariatur ad recusandae dolorum quasi. Incidunt quam aut at quidem ratione nihil asperiores iste.</div>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto">Tickets</button>
+                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button>
                 </div>
             </div>
         </div>
-
-
     )
 }
 
