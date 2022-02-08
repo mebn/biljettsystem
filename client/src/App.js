@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound/NotFound';
 import ExamplePage from './pages/ExamplePage/ExamplePage';
 import ApiTesting from './pages/ApiTesting/ApiTesting';
 import Event from './pages/Event/Event'
+import EventTransaction from './pages/EventTransaction/EventTransaction';
 
 const App = () => (
   <React.StrictMode>
@@ -17,6 +18,7 @@ const App = () => (
         <Route path="/apiTesting" element={<ApiTesting />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/event/:eventId" element={<Event />} />
+        <Route path="/event/:eventId/book" element={<EventTransaction />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
