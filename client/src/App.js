@@ -6,6 +6,7 @@ import Home from './pages/Home/Home';
 import NotFound from './pages/NotFound/NotFound';
 import ExamplePage from './pages/ExamplePage/ExamplePage';
 import ApiTesting from './pages/ApiTesting/ApiTesting';
+import Event from './pages/Event/Event'
 
 const App = () => (
   <React.StrictMode>
@@ -15,6 +16,7 @@ const App = () => (
         <Route path="/examplePage" element={<ExamplePage />} />
         <Route path="/apiTesting" element={<ApiTesting />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/event/:eventId" element={<Event />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
