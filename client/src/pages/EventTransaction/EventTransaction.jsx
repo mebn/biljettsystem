@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
+import { CalendarIcon, LocationMarkerIcon } from '@heroicons/react/solid'
 
 
 const eventInfo = {
@@ -12,23 +13,51 @@ const EventTransaction = () => {
     let params = useParams();
     return (
         <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
-            <div className={`bg-[url('/public/assets/images/eventBanner.jpeg')] h-72 bg-cover flex 
-                             flex-col justify-end p-6 rounded-bl-lg rounded-br-lg md:rounded-xl
-                             md:h-96`}>
-                <div className="flex flex-col md:gap-2">
-                    <div className="text-3xl md:text-5xl">{eventInfo.title}</div>
-                    <div className="text-l md:text-2xl">{eventInfo.location}</div>
+            
+            <div className=" bg-zinc-600 rounded-lg p-2.5 text-sm">
+
+                <div className="text-center text-2x1 md:text-3xl md:text-zinc-100 my-3">{eventInfo.longTitle}</div>
+                
+                
+                <div className="items-center flex flex-col text-xs gap-2.5 md:text-sm md:border-zinc-100 md:pb-3">
+                    <div className="flex items-center gap-2">
+                        <LocationMarkerIcon className="h-4" />
+                        <div className="underline text-blue-500">{eventInfo.address}</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-4" />
+                        <div className="md:text-zinc-100">{eventInfo.date}</div>
+                    </div>
                 </div>
+                
+        
             </div>
+            
+            
             <div className="flex flex-col mx-6 my-4 gap-3 md:mx-0">
-                <div className="flex justify-between items-center">
-                    <div className="text-2xl md:text-zinc-800 md:text-3xl">{eventInfo.longTitle}</div>
-                    <div className="bg-zinc-600 block px-3 py-2 rounded-md">{eventInfo.price} kr</div>
+            
+                <div className="text-2xl md:text-3xl md:text-zinc-800 my-3 text-center">Tickets</div>
+                <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
+                    <div className="flex justify-between items-center">
+                        <div className="text-2xl md:text-zinc-100 md:text-2xl ">Adult Ticket</div>
+                        <div className= "bg-zinc-500 px-3 py-2 rounded grid grid-cols-3 gap-1">
+                            <div className=" bg-teal-600 block px-2 py-2 rounded-md hover:bg-teal-800 text-center shadow-md md:text-3xl text-2xl">+</div>
+                            <div className="block px-2 py-3 rounded-md text-center md:text-2xl text-1x1">100</div>
+                            <div className="bg-teal-600 block px-2 py-2 rounded-md hover:bg-teal-800 text-center shadow-md md:text-4xl text-2xl">-</div>
+                        </div>
+                    </div>
                 </div>
-                <EventInfo address={eventInfo.address} date={eventInfo.date}/>
-                <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">TEST?!?!?! wow</div>
+
+                <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
+                    <div className="flex justify-between items-center">
+                        <div className="text-2xl md:text-zinc-100 md:text-2xl ">Total Cost:</div>
+                        <div className="bg-zinc-800 block px-3 py-2 rounded-md">{eventInfo.price} kr</div>
+                    </div>
+                </div>
+                
+                
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button>
+                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">Tickets</button>
                 </div>
             </div>
         </div>
