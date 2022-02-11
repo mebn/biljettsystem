@@ -16,9 +16,9 @@ docker-compose up
 
 Then navigate to http://localhost:3000/. Hot reload for the client does not work on windows (some problem with WSL2).
 
-To only start the client, run: `docker-compose up client`. Close with `docker-compose down client`.
+To only start one service, run `docker-compose up <service>`. For example, to only start the client, run `docker-compose up client`.
 
-To only start the server, run: `docker-compose up server`. Close with `docker-compose down server`.
+Shutdown with `docker-compose down <service>`.
 
 ### Close
 To exit out of the terminal, press `ctrl+c`, then run this command:
