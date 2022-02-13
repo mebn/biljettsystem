@@ -55,10 +55,13 @@ const EventTransaction = () => {
                     </div>
                 </div>
                 
-                
+                <div className="bg-zinc-500 py-5 rounded-lg p-2.5 text-sm">
+                    <div className="text-standard text-left"> E-mail . . . </div>
+                </div>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
                     <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">Tickets</button>
                 </div>
+                
             </div>
         </div>
     )
