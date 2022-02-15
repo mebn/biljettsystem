@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info: 
     title: "Events"
-    description: "API for events. Fetching all events, fetching unique event by id and searching for event by title. Updating picture and description for an event."
+    description: "API for events. Fetching all events and fetching unique event by id. Updating picture and description for an event."
     version: "1.0.0"
 schemes:
 - "http"
