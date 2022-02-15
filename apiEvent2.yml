@@ -110,7 +110,7 @@ paths:
                         eventPictureLink: pictureUrl1
             400:
               description: Invalid Response
-        post:
+        put:
           description: Updates a unique event with description or image
           operationId: updateUniqueEvent
           parameters:
