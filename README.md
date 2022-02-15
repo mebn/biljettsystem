@@ -1,6 +1,6 @@
 ## To see the API specification in swagger:
 - Go to https://editor.swagger.io/
-- Paste the code into the editor! The API specification will appear on the right hand side of the page.
+- Paste the ticketsAPI.yaml code into the editor! The API specification will appear on the right hand side of the page.
 
 
 # biljettsystem
