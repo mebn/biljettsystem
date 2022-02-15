@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
-import { CalendarIcon, LocationMarkerIcon } from '@heroicons/react/solid'
+import { CalendarIcon, LocationMarkerIcon, MinusIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/solid'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const eventInfo = {
     title: "Queen", longTitle: "Queen Tour 2022", location: "Gröna Lund",
@@ -8,7 +10,17 @@ const eventInfo = {
     imgUrl: "/public/assets/images/eventBanner.jpeg", date: "Thursday, 23 Feb 2022 | 20:00"
 }
 
+const TicketButton = props => {
+    return (
+      <button className="TicketButton-btn" onClick={props.onClick}>
+        {props.children}
+      </button>
+    );
+  }
+
 const EventTransaction = () => {
+    const [count, setCount] = useState(0);
+
     let params = useParams();
     return (
         <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
@@ -39,10 +51,10 @@ const EventTransaction = () => {
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
                     <div className="flex justify-between items-center">
                         <div className="text-2xl md:text-zinc-100 md:text-2xl ">Adult Ticket</div>
-                        <div className= "bg-zinc-500 px-3 py-2 rounded grid grid-cols-3 gap-1">
-                            <button className=" bg-teal-600 block px-2 py-2 rounded-md hover:bg-teal-800 text-center shadow-md md:text-3xl text-2xl">+</button>
-                            <div className="block px-2 py-3 rounded-md text-center md:text-2xl text-1x1">100</div>
-                            <button className="bg-teal-600 block px-2 py-2 rounded-md hover:bg-teal-800 text-center shadow-md md:text-4xl text-2xl">-</button>
+                        <div className= "bg-zinc-500 px-2 py-2 rounded grid grid-cols-3 gap-1 items-center">
+                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => setCount(count + 1)}><PlusIcon className="h-5"/></button>
+                            <div className="text-center text-2xl py-2">{count}</div>
+                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => setCount(count - 1)}><MinusIcon className="h-5"/></button>
                         </div>
                     </div>
                 </div>
@@ -50,7 +62,7 @@ const EventTransaction = () => {
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
                     <div className="flex justify-between items-center">
                         <div className="text-2xl md:text-zinc-100 md:text-2xl ">Total Cost:</div>
-                        <div className="bg-zinc-800 block px-3 py-2 rounded-md">{eventInfo.price} kr</div>
+                        <div className="bg-zinc-800 block px-3 py-2 rounded-md">{eventInfo.price * count} kr</div>
                     </div>
                 </div>               
             </div>
@@ -71,7 +83,7 @@ const EventTransaction = () => {
 
             <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">Buy Tickets</button>
+                    <Link to="/purchase-complete"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">Buy Tickets</button></Link>
                 </div>
             </div>
 
