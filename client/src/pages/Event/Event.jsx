@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
-
 
 const eventInfo = {
     title: "Queen", longTitle: "Queen Tour 2022", location: "Gröna Lund",
@@ -28,7 +27,7 @@ const Event = () => {
                 <EventInfo address={eventInfo.address} date={eventInfo.date}/>
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis quidem voluptatem, molestiae vero repellendus sunt sequi aperiam fugiat odit, cupiditate distinctio amet deleniti. Numquam molestiae voluptatum nihil modi. Fuga, unde?Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius veniam saepe officiis aliquid, magnam maxime enim pariatur ad recusandae dolorum quasi. Incidunt quam aut at quidem ratione nihil asperiores iste.</div>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-                    <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button>
+                    <Link to="book"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button></Link>
                 </div>
             </div>
         </div>

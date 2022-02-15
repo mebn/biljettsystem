@@ -8,6 +8,7 @@ import ExamplePage from './pages/ExamplePage/ExamplePage';
 import ApiTesting from './pages/ApiTesting/ApiTesting';
 import PurchaseComplete from './pages/PurchaseComplete/PurchaseComplete';
 import Event from './pages/Event/Event'
+import EventTransaction from './pages/EventTransaction/EventTransaction';
 
 const App = () => (
   <React.StrictMode>
@@ -18,6 +19,8 @@ const App = () => (
         <Route path="/api-testing" element={<ApiTesting />} />
         <Route path="/purchase-complete" element={<PurchaseComplete />} />
         <Route path="/event/:eventId" element={<Event />} />
+        <Route path="/event/:eventId/book" element={<EventTransaction />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
