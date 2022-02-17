@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
-import EventInfo from "../../components/EventInfo/EventInfo";
 import { CalendarIcon, LocationMarkerIcon, MinusIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/solid'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../../redux/ticketCounter";
 
 const eventInfo = {
     title: "Queen", longTitle: "Queen Tour 2022", location: "Gröna Lund",
@@ -10,16 +11,9 @@ const eventInfo = {
     imgUrl: "/public/assets/images/eventBanner.jpeg", date: "Thursday, 23 Feb 2022 | 20:00"
 }
 
-const TicketButton = props => {
-    return (
-      <button className="TicketButton-btn" onClick={props.onClick}>
-        {props.children}
-      </button>
-    );
-  }
-
 const EventTransaction = () => {
-    const [count, setCount] = useState(0);
+    const {ticketCount} = useSelector((state) => state.ticketCounter);
+    const dispatch = useDispatch();
 
     let params = useParams();
     return (
@@ -33,7 +27,7 @@ const EventTransaction = () => {
                 <div className="items-center flex flex-col text-xs gap-2.5 md:text-sm md:border-zinc-100 md:pb-3">
                     <div className="flex items-center gap-2">
                         <LocationMarkerIcon className="h-4" />
-                        <div className="underline text-blue-500">{eventInfo.address}</div>
+                        <div className="underline text-teal-500">{eventInfo.address}</div>
                     </div>
                     <div className="flex items-center gap-2">
                         <CalendarIcon className="h-4" />
@@ -52,9 +46,9 @@ const EventTransaction = () => {
                     <div className="flex justify-between items-center">
                         <div className="text-2xl md:text-zinc-100 md:text-2xl ">Adult Ticket</div>
                         <div className= "bg-zinc-500 px-2 py-2 rounded grid grid-cols-3 gap-1 items-center">
-                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => setCount(count + 1)}><PlusIcon className="h-5"/></button>
-                            <div className="text-center text-2xl py-2">{count}</div>
-                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => setCount(count - 1)}><MinusIcon className="h-5"/></button>
+                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => dispatch(increment())}><PlusIcon className="h-5"/></button>
+                            <div className="text-center text-2xl py-2">{ticketCount}</div>
+                            <button className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center" onClick={() => dispatch(decrement())}><MinusIcon className="h-5"/></button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +56,7 @@ const EventTransaction = () => {
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
                     <div className="flex justify-between items-center">
                         <div className="text-2xl md:text-zinc-100 md:text-2xl ">Total Cost:</div>
-                        <div className="bg-zinc-800 block px-3 py-2 rounded-md">{eventInfo.price * count} kr</div>
+                        <div className="bg-zinc-800 block px-3 py-2 rounded-md">{eventInfo.price * ticketCount} kr</div>
                     </div>
                 </div>               
             </div>

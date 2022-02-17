@@ -1,5 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit";
+import ticketCounterReducer from "./ticketCounter";
 
 export default configureStore({
-    reducer: {}
+    reducer: {
+        ticketCounter: ticketCounterReducer
+    }
 });

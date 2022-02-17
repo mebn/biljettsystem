@@ -10,6 +10,7 @@ import PurchaseComplete from './pages/PurchaseComplete/PurchaseComplete';
 import Event from './pages/Event/Event'
 import EventTransaction from './pages/EventTransaction/EventTransaction';
 
+
 const App = () => (
   <React.StrictMode>
     <BrowserRouter>
