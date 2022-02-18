@@ -6,34 +6,34 @@
 # biljettsystem
 PVK Project 2022
 
-# How to run
-In order for the whole application to work, you need to run both client side and the server side.
+## How to run
+In order for the whole application to work properly, you need to run both the client and the server at the same time.
 
-## Client side
-More information can be found [here](/client/README.md).
+### Pre requirements
+Make sure you have [docker](https://www.docker.com/products/docker-desktop) and [docker-compose](https://docs.docker.com/compose/install/) installed before running any commands.
 
-### Install NodeJS
-Download NodeJS [here](https://nodejs.org/en/).
+### Start
+To get up and running fast, run this command from the root directory:
 
-### Install packages and run
-1. Change directory to `~/biljettsystem/client`
-1. Install node modules: `npm i`
-1. Start the client: `npm start` (will automatically open `localhost:3000` on browser, which is our website)
+```
+docker-compose up
+```
 
-## Server side
-More information can be found [here](/server/README.md).
+Then navigate to http://localhost:3000/. Hot reload for the client does not work on windows (some problem with WSL2).
 
-### Install necessary programs
-#### Alternative 1
-Download and install `.net core` from [here](https://dotnet.microsoft.com/en-us/download/dotnet).
+To only start one service, run `docker-compose up <service>`. For example, to only start the client, run `docker-compose up client`.
 
-#### Alternative 2
-Install visual studio for [Windows](https://visualstudio.microsoft.com/vs/) or [macOS](https://visualstudio.microsoft.com/vs/mac/) where `dotnet` etc are build in.
+Shutdown with `docker-compose down <service>`.
 
-### Start the server
-1. Move to `~/biljettsystem/server`
-2. Run `dotnet run`
-3. Your server is now running at port 5000. I strongly recommend using POSTMAN for API testing. Try, for example `localhost:5000/api/people` as a GET request, or simply enter the link on the browser.
+### Close
+To exit out of the terminal, press `ctrl+c`, then run this command:
+
+```
+docker-compose down
+```
+
+### Other commands
+* `docker-compose up --build` - force a rebuild.
 
 ## When both frontend and backend is running in background...
 You can now make server side actions via the client side UI. Navigate to API Testing. 

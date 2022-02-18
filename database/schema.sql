@@ -1,39 +1,45 @@
-DROP TABLE IF EXISTS Event CASCADE;
-DROP TABLE IF EXISTS User CASCADE;
-DROP TABLE IF EXISTS Purchase CASCADE;
-DROP TABLE IF EXISTS Ticket CASCADE;
+DROP TABLE IF EXISTS Events CASCADE;
+DROP TABLE IF EXISTS Categories CASCADE;
+DROP TABLE IF EXISTS EventCategories CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Purchases CASCADE;
+DROP TABLE IF EXISTS Tickets CASCADE;
 
-CREATE TABLE Event (
+CREATE TABLE Events (
     EventID SERIAL PRIMARY KEY,
-    Name varchar(255) NOT NULL,
+    Title varchar(255) NOT NULL,
     Description text,
     Price double precision NOT NULL,
     StartTime timestamp NOT NULL,
     Location varchar(255) NOT NULL,
     NumTick int NOT NULL,
-    EventPictureLink varchar(255),
-    Category int
+    EventPictureLink varchar(255)
 );
 
-CREATE TABLE Category (
+CREATE TABLE Categories (
     CategoryID SERIAL PRIMARY KEY,
     Name varchar(255) NOT NULL
 );
 
-CREATE TABLE User (
-    UserID SERIAL PRIMARY KEY,
-    Mail varchar(255) NOT NULL
+CREATE TABLE EventCategories (
+    EventID int REFERENCES Events(EventID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CategoryID int REFERENCES Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Purchase (
+CREATE TABLE Users (
+    UserID SERIAL PRIMARY KEY,
+    Name varchar(255),
+    Email varchar(255) NOT NULL
+);
+
+CREATE TABLE Purchases (
     PurchaseID SERIAL PRIMARY KEY,
-    EventID int REFERENCES Event(EventID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
-    UserID int REFERENCES User(UserID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
+    UserID int NOT NULL REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE,
+    EventID int NOT NULL REFERENCES Events(EventID) ON UPDATE CASCADE ON DELETE CASCADE,
     PurchaseTime timestamp NOT NULL
 );
 
-CREATE TABLE Ticket (
+CREATE TABLE Tickets (
     TicketID SERIAL PRIMARY KEY,
-    PurchaseID int REFERENCES Purchase(PurchaseID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE,
-    UserID int REFERENCES User(UserID) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
+    PurchaseID int NOT NULL REFERENCES Purchases(PurchaseID) ON UPDATE CASCADE ON DELETE CASCADE
 );

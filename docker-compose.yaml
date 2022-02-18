@@ -1,0 +1,32 @@
+version: "3"
+services:
+  client:
+    build: ./client
+    ports:
+      - 3000:3000
+    volumes:
+      - "./client:/app"
+      - "/app/node_modules"
+      
+  server:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    ports:
+      - 7050:7050
+    working_dir: "/app"
+    volumes:
+      - "./server:/app"
+    command: ["dotnet", "watch", "run", "--urls=http://0.0.0.0:7050"]
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pvk_db_dummy
+    volumes:
+      - "./database/pgdata:/var/lib/postgresql/data"
+      - "./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql"
+      - "./database/dummydata.sql:/docker-entrypoint-initdb.d/02_dummydata.sql"
+    ports:
+      - "5432:5432"

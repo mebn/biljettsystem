@@ -14,7 +14,7 @@ const ApiTesting = () => {
 
     const getPeople = async () => {
         try {
-          const response = await fetch("https://localhost:5000/api/people");
+          const response = await fetch("http://localhost:7050/api/people");
           const data = await response.json();
     
           setPeople(data);
