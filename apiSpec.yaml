@@ -1,0 +1,287 @@
+openapi: 3.0.0
+info:
+  title: Biljettsystem (MVP)
+  description: >-
+    This is an API specification for the MVP.
+  version: 1.0.0
+tags:
+  - name: event
+    description: Api for accessing event information
+  - name: ticket
+    description: For interacting with tickets
+paths:
+  /tickets:
+    description: All Available Tickets
+    get:
+      description: Operation to Fetch All Tickets
+      tags: [ticket]
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticketID:
+                    type: integer
+                  price:
+                    type: integer
+                  eventID:
+                    type: integer
+                  purchased:
+                    type: boolean
+                example:
+                  - ticketID: 1
+                    price: 899
+                    eventID: 1
+                    purchased: false
+                  - ticketID: 2
+                    price: 899
+                    eventID: 1
+                    purchased: true
+                  - ticketID: 3
+                    price: 1099
+                    eventID: 2
+                    purchased: false
+  /tickets/{eventID}:
+    description: Single Event Ticket Resource
+    get:
+      description: Operation to Fetch All Tickets for Single Event
+      tags: [ticket]
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticketID:
+                    type: integer
+                  price:
+                    type: integer
+                  eventID:
+                    type: integer
+                example:
+                  - ticketID: 1
+                    price: 899
+                    eventID: 1
+                    purchased: false
+                  - ticketID: 2
+                    price: 899
+                    eventID: 1
+                    purchased: true
+    post:
+      description: Book a ticket
+      tags: [ticket]
+      parameters:
+        - in: path
+          name: eventID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventID:
+                  type: integer
+                email:
+                  type: string
+              example:
+                - eventID: 1
+                  email: abc@gmail.com
+      responses:
+        '201':
+          description: Ticket has been reserved!
+  /tickets/{ticketID}:
+    description: Single Ticket Resource
+    get:
+      description: Operation to Fetch Single Ticket from Single Event
+      tags: [ticket]
+      parameters:
+        - in: path
+          name: ticketID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticketID:
+                    type: integer
+                  price:
+                    type: integer
+                  eventID:
+                    type: integer
+                example:
+                  - ticketID: 2
+                    price: 899
+                    eventID: 1
+                    purchased: true
+  /Event:
+    description: All Tickets
+    get:
+      description: Operation to Fetch All Tickets
+      operationId: findAllEvents
+      tags: [event]
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventID:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: integer
+                  startTime:
+                    type: string
+                    format: date-time
+                  location:
+                    type: string
+                  numTick:
+                    type: integer
+                  eventPictureLink:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  - eventID: 1
+                    title: Queen Concert
+                    description: A concert by Queen.
+                    price: 500
+                    startTime: {}
+                    location: Friends Arena Stockholm
+                    numTick: 5
+                    eventPictureLink: pictureUrl1
+                  - eventID: 2
+                    title: Rolling Stones Concert
+                    description: A concert by Rolling Stones.
+                    price: 400
+                    startTime: {}
+                    location: Ullevi Göteborg
+                    numTick: 4
+                    eventPictureLink: pictureUrl2
+        '400':
+          description: Invalid Response
+  /Event/{eventID}:
+    description: Reach single event by ID
+    get:
+      description: Fetch single event by ID
+      tags: [event]
+      operationId: findUniqueEvent
+      parameters:
+        - in: path
+          name: eventID
+          description: ID of event that needs to be fetched
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventID:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: integer
+                  startTime:
+                    type: string
+                    format: date-time
+                  location:
+                    type: string
+                  numTick:
+                    type: integer
+                  eventPictureLink:
+                    type: array
+                    items:
+                      type: string
+              example:
+                - eventID: 1
+                  title: Queen Concert
+                  description: A concert by Queen.
+                  price: 500
+                  startTime: {}
+                  location: Friends Arena Stockholm
+                  numTick: 5
+                  eventPictureLink: pictureUrl1
+        '400':
+          description: Invalid Response
+    put:
+      description: Updates a unique event with description or image
+      tags: [event]
+      operationId: updateUniqueEvent
+      parameters:
+        - in: path
+          name: eventID
+          description: ID of event that needs to be fetched
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventID:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: integer
+                  startTime:
+                    type: string
+                    format: date-time
+                  location:
+                    type: string
+                  numTick:
+                    type: integer
+                  eventPictureLink:
+                    type: array
+                    items:
+                      type: string
+              example:
+                - eventID: 1
+                  title: Queen Concert
+                  description: A concert by Queen again.
+                  price: 500
+                  startTime: {}
+                  location: Friends Arena Stockholm
+                  numTick: 5
+                  eventPictureLink: pictureUrl3
+        '400':
+          description: Invalid Operation
