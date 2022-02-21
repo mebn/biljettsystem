@@ -1,3 +1,5 @@
+
+   
 openapi: 3.0.0
 info:
   title: Biljettsystem (MVP)
@@ -8,7 +10,7 @@ tags:
   - name: event
     description: Api for accessing event information
   - name: ticket
-    description: For interacting with tickets
+    description: Api for interacting with tickets
 paths:
   /tickets:
     description: All Available Tickets
@@ -35,16 +37,16 @@ paths:
                   - ticketID: 1
                     price: 899
                     eventID: 1
-                    purchased: false
+                    #purchased: false
                   - ticketID: 2
                     price: 899
                     eventID: 1
-                    purchased: true
+                    #purchased: true
                   - ticketID: 3
                     price: 1099
                     eventID: 2
-                    purchased: false
-  /tickets/{eventID}:
+                    #purchased: false
+  /tickets/getByEvent/{eventID}:
     description: Single Event Ticket Resource
     get:
       description: Operation to Fetch All Tickets for Single Event
@@ -69,17 +71,20 @@ paths:
                     type: integer
                   eventID:
                     type: integer
+                  #purchased:
+                    #type: boolean
                 example:
                   - ticketID: 1
                     price: 899
                     eventID: 1
-                    purchased: false
+                    #purchased: false
                   - ticketID: 2
                     price: 899
                     eventID: 1
-                    purchased: true
+                    #purchased: true
     post:
-      description: Book a ticket
+      deprecated: true
+      description: Buy ticket(s)
       tags: [ticket]
       parameters:
         - in: path
@@ -103,7 +108,7 @@ paths:
       responses:
         '201':
           description: Ticket has been reserved!
-  /tickets/{ticketID}:
+  /tickets/getByTicket/{ticketID}:
     description: Single Ticket Resource
     get:
       description: Operation to Fetch Single Ticket from Single Event
@@ -128,11 +133,38 @@ paths:
                     type: integer
                   eventID:
                     type: integer
+                  #purchased:
+                    #type: boolean
                 example:
                   - ticketID: 2
                     price: 899
                     eventID: 1
-                    purchased: true
+                    #purchased: true
+  /tickets/buyTicket:
+    description: Buy ticket(s)
+    post:
+      tags: [ticket]
+      description: Operation to buy one or several ticket(s)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventID:
+                  type: integer
+                boughtTickets:
+                  type: integer
+                email:
+                  type: string
+              example:
+                - eventID: 1
+                  boughtTickets: 4
+                  email: abc@gmail.com
+      responses:
+        '201':
+          description: Ticket has been successfully purchased!
   /Event:
     description: All Tickets
     get:
