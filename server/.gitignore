@@ -1,8 +1,2 @@
-# C# Server
-bin/
-obj/
-*.exe
-
-# Other
-.vscode/
+node_modules/
 .DS_Store

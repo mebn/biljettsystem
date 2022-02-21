@@ -1,14 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM node:16
+
 WORKDIR /app
 
-COPY *.csproj ./
-RUN dotnet restore
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package*.json .
 
-COPY . ./
-RUN dotnet publish -c Release -o out
+RUN npm i -g nodemon
+RUN npm i
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-WORKDIR /app
-EXPOSE 80
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "server.dll"]
+# If you are building your code for production
+# RUN npm ci --only=production
+
+COPY . .
+
+EXPOSE 7050
+CMD [ "npm", "start" ]
