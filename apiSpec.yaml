@@ -1,5 +1,3 @@
-
-   
 openapi: 3.0.0
 info:
   title: Biljettsystem (MVP)
@@ -23,29 +21,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ticketID:
-                    type: integer
-                  price:
-                    type: integer
-                  eventID:
-                    type: integer
-                  purchased:
-                    type: boolean
-                example:
-                  - ticketID: 1
-                    price: 899
-                    eventID: 1
-                    #purchased: false
-                  - ticketID: 2
-                    price: 899
-                    eventID: 1
-                    #purchased: true
-                  - ticketID: 3
-                    price: 1099
-                    eventID: 2
-                    #purchased: false
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
   /tickets/getByEvent/{eventID}:
     description: Single Event Ticket Resource
     get:
@@ -63,51 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ticketID:
-                    type: integer
-                  price:
-                    type: integer
-                  eventID:
-                    type: integer
-                  #purchased:
-                    #type: boolean
-                example:
-                  - ticketID: 1
-                    price: 899
-                    eventID: 1
-                    #purchased: false
-                  - ticketID: 2
-                    price: 899
-                    eventID: 1
-                    #purchased: true
-    post:
-      deprecated: true
-      description: Buy ticket(s)
-      tags: [ticket]
-      parameters:
-        - in: path
-          name: eventID
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                eventID:
-                  type: integer
-                email:
-                  type: string
-              example:
-                - eventID: 1
-                  email: abc@gmail.com
-      responses:
-        '201':
-          description: Ticket has been reserved!
+                $ref: '#/components/schemas/Ticket'
   /tickets/getByTicket/{ticketID}:
     description: Single Ticket Resource
     get:
@@ -125,21 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ticketID:
-                    type: integer
-                  price:
-                    type: integer
-                  eventID:
-                    type: integer
-                  #purchased:
-                    #type: boolean
-                example:
-                  - ticketID: 2
-                    price: 899
-                    eventID: 1
-                    #purchased: true
+                $ref: '#/components/schemas/Ticket'
   /tickets/buyTicket:
     description: Buy ticket(s)
     post:
@@ -165,10 +85,10 @@ paths:
       responses:
         '201':
           description: Ticket has been successfully purchased!
-  /Event:
-    description: All Tickets
+  /Event/GetAll:
+    description: Get
     get:
-      description: Operation to Fetch All Tickets
+      description: Fetch all events
       operationId: findAllEvents
       tags: [event]
       responses:
@@ -177,44 +97,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  eventID:
-                    type: integer
-                  title:
-                    type: string
-                  description:
-                    type: string
-                  price:
-                    type: integer
-                  startTime:
-                    type: string
-                    format: date-time
-                  location:
-                    type: string
-                  numTick:
-                    type: integer
-                  eventPictureLink:
-                    type: array
-                    items:
-                      type: string
-                example:
-                  - eventID: 1
-                    title: Queen Concert
-                    description: A concert by Queen.
-                    price: 500
-                    startTime: {}
-                    location: Friends Arena Stockholm
-                    numTick: 5
-                    eventPictureLink: pictureUrl1
-                  - eventID: 2
-                    title: Rolling Stones Concert
-                    description: A concert by Rolling Stones.
-                    price: 400
-                    startTime: {}
-                    location: Ullevi Göteborg
-                    numTick: 4
-                    eventPictureLink: pictureUrl2
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
         '400':
           description: Invalid Response
   /Event/{eventID}:
@@ -236,36 +121,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  eventID:
-                    type: integer
-                  title:
-                    type: string
-                  description:
-                    type: string
-                  price:
-                    type: integer
-                  startTime:
-                    type: string
-                    format: date-time
-                  location:
-                    type: string
-                  numTick:
-                    type: integer
-                  eventPictureLink:
-                    type: array
-                    items:
-                      type: string
-              example:
-                - eventID: 1
-                  title: Queen Concert
-                  description: A concert by Queen.
-                  price: 500
-                  startTime: {}
-                  location: Friends Arena Stockholm
-                  numTick: 5
-                  eventPictureLink: pictureUrl1
+                $ref: '#/components/schemas/Event'
         '400':
           description: Invalid Response
     put:
@@ -285,35 +141,41 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  eventID:
-                    type: integer
-                  title:
-                    type: string
-                  description:
-                    type: string
-                  price:
-                    type: integer
-                  startTime:
-                    type: string
-                    format: date-time
-                  location:
-                    type: string
-                  numTick:
-                    type: integer
-                  eventPictureLink:
-                    type: array
-                    items:
-                      type: string
-              example:
-                - eventID: 1
-                  title: Queen Concert
-                  description: A concert by Queen again.
-                  price: 500
-                  startTime: {}
-                  location: Friends Arena Stockholm
-                  numTick: 5
-                  eventPictureLink: pictureUrl3
+                $ref: '#/components/schemas/Event'
         '400':
           description: Invalid Operation
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        eventID:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        location:
+          type: string
+        availibleTickets:
+          type: integer
+        eventPictureLink:
+          type: array
+          items:
+            type: string
+    Ticket:
+      type: object
+      properties:
+        ticketID:
+          type: integer
+        price:
+          type: integer
+        eventID:
+          type: integer
+        purchased:
+          type: boolean
