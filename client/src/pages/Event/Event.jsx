@@ -8,7 +8,7 @@ const Event = () => {
     const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
     const [longTitle, setLongTitle] = useState("")
-    const [price, setPrice] = useState("")
+    const [price, setPrice] = useState(0)
     const [date, setDate] = useState("")
     const [description, setDescription] = useState("")
     const [address, setAddress] = useState("")
