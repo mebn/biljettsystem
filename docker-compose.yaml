@@ -7,15 +7,16 @@ services:
     volumes:
       - "./client:/app"
       - "/app/node_modules"
-      
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=localhost
   server:
-    image: mcr.microsoft.com/dotnet/sdk:6.0
+    build: ./server
     ports:
       - 7050:7050
-    working_dir: "/app"
     volumes:
       - "./server:/app"
-    command: ["dotnet", "watch", "run", "--urls=http://0.0.0.0:7050"]
+      - "/app/node_modules"
 
   db:
     image: postgres:14
