@@ -1,0 +1,29 @@
+tags:
+  - name: event
+    description: Api for accessing event information
+  - name: ticket
+    description: Api for interacting with tickets
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        eventid:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+        starttime:
+          type: string
+          format: date-time
+        location:
+          type: string
+        availabletickets:
+          type: integer
+        numtick:
+          type: integer
+        eventpicturelink:
+          type: string
