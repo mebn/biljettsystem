@@ -21,7 +21,7 @@ components:
           format: date-time
         location:
           type: string
-        availibletickets:
+        availabletickets:
           type: integer
         numtick:
           type: integer

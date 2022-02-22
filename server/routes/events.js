@@ -27,8 +27,8 @@ router.use(express.json());
 router.get("/events/GetAll", async (req, res) => {
     try {
         const getEvents = await pool.query(`
-        SELECT events.eventid, title, description, price, starttime, location, eventpicturelink, availibletickets, numtick FROM events 
-            INNER JOIN availibletickets a on events.eventid = a.eventid`);
+        SELECT events.eventid, title, description, price, starttime, location, eventpicturelink, availabletickets, numtick FROM events 
+            INNER JOIN availabletickets a on events.eventid = a.eventid`);
         res.status(200).json(getEvents.rows);
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
@@ -68,8 +68,8 @@ router.get("/events/:eventId", async (req, res) => {
 
     try {
         const getEvent = await pool.query(`SELECT
-            events.eventid, title, description, price, starttime, location, eventpicturelink, availibletickets, numtick 
-            FROM events INNER JOIN availibletickets a on events.eventid = a.eventid 
+            events.eventid, title, description, price, starttime, location, eventpicturelink, availabletickets, numtick 
+            FROM events INNER JOIN availabletickets a on events.eventid = a.eventid 
             WHERE events.eventid=$1`, [eventId]);
         res.status(200).json(getEvent.rows[0]);
     } catch (err) {
