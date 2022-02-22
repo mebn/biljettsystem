@@ -7,11 +7,14 @@ DROP TABLE IF EXISTS Tickets CASCADE;
 
 CREATE TABLE Events (
     EventID SERIAL PRIMARY KEY,
-    Title varchar(255) NOT NULL,
+    ShortTitle varchar(255) NOT NULL,
+    LongTitle varchar(255) NOT NULL,
     Description text,
     Price double precision NOT NULL,
     StartTime timestamp NOT NULL,
     Location varchar(255) NOT NULL,
+    Address varchar(255) NOT NULL,
+    Coordinates point, 
     NumTick int NOT NULL,
     EventPictureLink varchar(255)
 );

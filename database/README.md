@@ -3,7 +3,7 @@ PostgreSQL database.
 
 ## Database schemas
 
-**Event**(EventID *PK*: integer, Name: string, Description: text, Price: float, StartTime: timestamp, Location: string, NumTick: integer, EventPictureLink: string)
+**Event**(EventID *PK*: integer, ShortTitle: string, LongTitle: string, Description: text, Price: float, StartTime: timestamp, Location: string, Address: string, Coordinates: point, NumTick: integer, EventPictureLink: string)
 
 **Category**(CategoryID: integer, Name: string)
 
