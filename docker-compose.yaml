@@ -9,7 +9,7 @@ services:
       - "/app/node_modules"
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - DB_HOST=localhost
+
   server:
     build: ./server
     ports:
@@ -17,6 +17,8 @@ services:
     volumes:
       - "./server:/app"
       - "/app/node_modules"
+    environment:
+      - DB_HOST=db
 
   db:
     image: postgres:14
@@ -30,4 +32,4 @@ services:
       - "./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql"
       - "./database/dummydata.sql:/docker-entrypoint-initdb.d/02_dummydata.sql"
     ports:
-      - "5432:5432"
+      - 5432:5432
