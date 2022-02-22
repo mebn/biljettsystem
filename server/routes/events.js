@@ -19,7 +19,7 @@ router.get("/events/:eventId", async (req, res) => {
     if (!eventId) res.status(400).json({error: "Parameter is missing."});
 
     try {
-        const getEvent = await pool.query(`SELECT * FROM events WHERE eventid=${eventId}`);
+        const getEvent = await pool.query(`SELECT * FROM events WHERE eventid=$1`, [eventId]);
         res.status(200).json(getEvent.rows[0]);
     } catch (err) {
         res.status(503).json({error: "Database connection failed."});
@@ -46,7 +46,7 @@ router.put("/events/:eventId", async (req, res) => {
             WHERE eventid = $8`,
             [body.title, body.description, body.price, body.starttime, body.location, body.numtick, body.eventpicturelink, eventId]);
         
-        res.status(200).json(putEvents);
+        res.status(200).json({message: "Updated database"});
     } catch (err) {
         res.status(503).json({error: "Database connection failed."});
     }

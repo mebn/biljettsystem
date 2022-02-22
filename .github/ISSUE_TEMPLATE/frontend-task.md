@@ -1,8 +1,8 @@
 ---
-name: Frontend task
+name: Task
 about: Describe this issue template's purpose here.
-title: Frontend task
-labels: frontend
+title: Task
+labels: 
 assignees: ''
 
 ---
@@ -11,4 +11,4 @@ assignees: ''
 
 One or two sentances on what the task is about here.
 
-## Estimated time
+## Dependencies
