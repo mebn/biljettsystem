@@ -23,9 +23,19 @@ const Event = () => {
             const eventData = await res.json();
             return eventData;
         }
-        const result = getEvent();
-        console.log(result);
+        getEvent().then(data => {
+            setTitle(data.title);
+            setLocation(data.location);
+            setLongTitle(data.title);           //BEHÖVER LONGTITLE I DATABAS
+            setPrice(data.price);
+            setDate(data.starttime);            //Måste fixa formatet 
+            setDescription(data.description);
+            setAddress(data.location);          //BEHÖVER ADRESS I DATABAS
+            
+            //console.log(data);
+        });
     }, [eventIdParam]) 
+
 
     return (
         <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
