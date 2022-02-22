@@ -43,3 +43,10 @@ CREATE TABLE Tickets (
     TicketID SERIAL PRIMARY KEY,
     PurchaseID int NOT NULL REFERENCES Purchases(PurchaseID) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE VIEW AvailibleTickets AS (
+    SELECT e.eventid, (e.numtick - count(p.eventid)) as availibletickets FROM events e
+        INNER JOIN purchases p on e.eventid = p.eventid
+        INNER JOIN tickets t on p.purchaseid = t.purchaseid
+        GROUP BY e.eventid
+);
