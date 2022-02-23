@@ -27,8 +27,9 @@ router.use(express.json());
 router.get("/events/GetAll", async (req, res) => {
     try {
         const getEvents = await pool.query(`
-        SELECT events.eventid, title, description, price, starttime, location, eventpicturelink, availabletickets, numtick FROM events 
+            SELECT events.eventid, title, description, price, starttime, location, eventpicturelink, availabletickets, numtick FROM events 
             INNER JOIN availabletickets a on events.eventid = a.eventid`);
+        
         res.status(200).json(getEvents.rows);
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
@@ -71,6 +72,9 @@ router.get("/events/:eventId", async (req, res) => {
             events.eventid, title, description, price, starttime, location, eventpicturelink, availabletickets, numtick 
             FROM events INNER JOIN availabletickets a on events.eventid = a.eventid 
             WHERE events.eventid=$1`, [eventId]);
+        
+        if (getEvent.rowCount == 0) res.status(404).json({ error: "No results found." });
+
         res.status(200).json(getEvent.rows[0]);
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
@@ -125,6 +129,8 @@ router.put("/events/:eventId", async (req, res) => {
             eventpicturelink = $7
             WHERE eventid = $8`,
             [body.title, body.description, body.price, body.starttime, body.location, body.numtick, body.eventpicturelink, eventId]);
+
+        // if (putEvents.rowCount == 0) res.status(404).json({ error: "No results found." });
 
         res.status(200).json({ message: "Updated database" });
     } catch (err) {
