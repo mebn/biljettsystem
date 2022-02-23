@@ -1,3 +1,8 @@
+## To see the API specification in swagger:
+- Go to https://editor.swagger.io/
+- Paste the ticketsAPI.yaml code into the editor! The API specification will appear on the right hand side of the page.
+
+
 # biljettsystem
 PVK Project 2022
 

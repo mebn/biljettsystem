@@ -15,8 +15,16 @@ Reurnerar:
 Nå en specifik användare
 GET /api/User/{id}
 
+Returnerar:
+```json
+{
+    "name": "Sven Svensson",
+    ...
+}
+```
 
-Events
+
+## Events
 
 Skapa Event Model (typ en objekt)
 

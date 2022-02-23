@@ -53,7 +53,9 @@ router.use(express.json());
 router.get("/tickets/GetAllAvailable", async (req, res) => {
     try {
         const getTickets = await pool.query(`
-            SELECT eventid, availabletickets, price FROM availableTickets NATURAL JOIN events`);
+            SELECT eventid, availabletickets, price
+            FROM availableTickets
+            NATURAL JOIN events`);
         
         res.status(200).json(getTickets.rows);
     } catch (err) {
@@ -89,9 +91,13 @@ router.get("/tickets/GetByEvent/:eventId", async (req, res) => {
 
     try {
         const getTicket = await pool.query(`
-            SELECT eventid, availabletickets, price FROM availableTickets NATURAL JOIN events WHERE eventid=$1`, [eventId]);
+            SELECT eventid, availabletickets, price
+            FROM availableTickets
+            NATURAL JOIN events
+            WHERE eventid=$1`,
+            [eventId]);
         
-        if (getTicket.rowCount == 0) res.status(404).json({ error: "No results found." });
+        if (getTicket.rowCount == 0) res.status(404).json({ });
 
         res.status(200).json(getTicket.rows[0]);
     } catch (err) {
@@ -128,9 +134,12 @@ router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
 
     try {
         const getTicket = await pool.query(`
-            SELECT * FROM tickets NATURAL JOIN Purchases WHERE ticketid=$1`, [ticketId]);
+            SELECT * FROM tickets
+            NATURAL JOIN Purchases
+            WHERE ticketid=$1`,
+            [ticketId]);
         
-        if (getTicket.rowCount == 0) res.status(404).json({ error: "No results found." });
+        if (getTicket.rowCount == 0) res.status(404).json({ });
         
         res.status(200).json(getTicket.rows[0]);
     } catch (err) {
@@ -179,7 +188,9 @@ router.post("/tickets/buyTicket", async (req, res) => {
 
     try {
         const insertPurchase = await pool.query(`
-            INSERT INTO Purchases (UserID, EventID, PurchaseTime) VALUES ($1, $2, $3) RETURNING purchaseid`,
+            INSERT INTO purchases (UserID, EventID, PurchaseTime)
+            VALUES ($1, $2, $3)
+            RETURNING purchaseid`,
             [userId, eventId, purchaseTime]);
 
         const purchaseID = insertPurchase.rows[0].purchaseid;
@@ -190,7 +201,7 @@ router.post("/tickets/buyTicket", async (req, res) => {
                 [purchaseID]);
         }
         
-        res.status(200).json({ message: "Updated database" });
+        res.status(200).json({ message: "Database updated." });
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
     }
