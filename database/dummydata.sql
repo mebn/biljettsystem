@@ -1,6 +1,6 @@
 -- Events
 INSERT INTO Events (EventID, ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
-VALUES (1, 'Queen', 'Queen Tour 2022', 'Watch Queens last tour live, it will be great! This is the last chance to see your favprite rock band live!!',
+VALUES (1, 'Queen', 'Queen Tour 2022', 'Watch Queens last tour live, it will be great! This is the last chance to see your favourite rock band live!!',
  829, '2022-06-11 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
 
 INSERT INTO Events (EventID, ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
