@@ -6,9 +6,9 @@ router.use(express.json());
 
 /**
  * @swagger
- * /events/GetAll:
+ * /event/GetAll:
  *   get:
- *     description: Get all events
+ *     description: Get all event
  *     tags: [event]
  *     produces:
  *       - application/json
@@ -24,7 +24,7 @@ router.use(express.json());
  *       503:
  *         description: Error      
  */
-router.get("/events/GetAll", async (req, res) => {
+router.get("/event/GetAll", async (req, res) => {
     try {
         const getEvents = await pool.query(`
         SELECT events.eventid, shorttitle, longtitle, description, price, starttime, 
@@ -40,7 +40,7 @@ router.get("/events/GetAll", async (req, res) => {
 
 /**
  * @swagger
- * /events/{eventId}:
+ * /event/{eventId}:
  *   get:
  *     description: Fetch single event by ID
  *     tags: [event]
@@ -66,7 +66,7 @@ router.get("/events/GetAll", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.get("/events/:eventId", async (req, res) => {
+router.get("/event/:eventId", async (req, res) => {
     const { eventId } = req.params;
 
     if (!eventId) res.status(400).json({ error: "Parameter is missing." });
@@ -94,7 +94,7 @@ router.get("/events/:eventId", async (req, res) => {
 
 /**
  * @swagger
- * /events/{eventId}:
+ * /event/{eventId}:
  *   put:
  *     description: Updates a unique event with description or image
  *     tags: [event]
@@ -147,7 +147,7 @@ router.get("/events/:eventId", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.put("/events/:eventId", async (req, res) => {
+router.put("/event/:eventId", async (req, res) => {
     const { eventId } = req.params;
     const body = req.body;
 
