@@ -26,9 +26,10 @@ router.use(express.json());
  */
 router.get("/events/GetAll", async (req, res) => {
     try {
+
         const getEvents = await pool.query(`
-            SELECT events.eventid, shorttitle, longtitle, description, price, starttime, 
-            location, address, coordinates, eventpicturelink, availabletickets, numtick FROM events 
+            SELECT events.*, availabletickets
+            FROM events 
             INNER JOIN availabletickets a on events.eventid = a.eventid`);
         
         const formatted = getEvents.rows.map(row => (
@@ -85,6 +86,7 @@ router.get("/events/:eventId", async (req, res) => {
         if (getEvent.rows[0]) {
             const row = getEvent.rows[0];
             const formatted = { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
+            
             res.status(200).json(formatted);
         } else {
             res.status(404).json({ });
