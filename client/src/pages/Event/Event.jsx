@@ -29,12 +29,14 @@ const Event = () => {
             setLocation(data.location);
             setLongTitle(data.longtitle);
             setPrice(data.price);
-            setDate(data.starttime);            //Måste fixa formatet 
             setDescription(data.description);
             setAddress(data.address);
             setCoordinates(data.coordinates);
+
+            const d = new Date(data.starttime);
+            setDate(d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3));
             
-            console.log(data);
+            //console.log(data);
         });
     }, [eventIdParam]) 
 
