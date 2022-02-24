@@ -6,7 +6,7 @@ router.use(express.json());
 
 /**
  * @swagger
- * /events/GetAll:
+ * /event/GetAll:
  *   get:
  *     description: Get all events
  *     tags: [event]
@@ -40,7 +40,7 @@ router.get("/event/GetAll", async (req, res) => {
 
 /**
  * @swagger
- * /events/{eventId}:
+ * /event/{eventId}:
  *   get:
  *     description: Fetch single event by ID
  *     tags: [event]
@@ -94,7 +94,7 @@ router.get("/event/:eventId", async (req, res) => {
 
 /**
  * @swagger
- * /events/{eventId}:
+ * /event/{eventId}:
  *   put:
  *     description: Updates a unique event with description or image
  *     tags: [event]
@@ -147,7 +147,7 @@ router.get("/event/:eventId", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.put("/events/:eventId", async (req, res) => {
+router.put("/event/:eventId", async (req, res) => {
     const { eventId } = req.params;
     const body = req.body;
 
