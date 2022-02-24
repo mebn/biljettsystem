@@ -24,7 +24,7 @@ router.use(express.json());
  *       503:
  *         description: Error      
  */
-router.get("/events/GetAll", async (req, res) => {
+router.get("/event/GetAll", async (req, res) => {
     try {
         const getEvents = await pool.query(`
         SELECT events.eventid, shorttitle, longtitle, description, price, starttime, 
@@ -66,7 +66,7 @@ router.get("/events/GetAll", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.get("/events/:eventId", async (req, res) => {
+router.get("/event/:eventId", async (req, res) => {
     const { eventId } = req.params;
 
     if (!eventId) res.status(400).json({ error: "Parameter is missing." });

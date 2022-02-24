@@ -5,8 +5,9 @@ import EventInfo from "../../components/EventInfo/EventInfo";
 
 
 const Event = () => {
-    const [title, setTitle] = useState("")
+    const [shortTitle, setShortTitle] = useState("")
     const [location, setLocation] = useState("")
+    const [coordinates, setCoordinates] = useState("")
     const [longTitle, setLongTitle] = useState("")
     const [price, setPrice] = useState(0)
     const [date, setDate] = useState("")
@@ -19,20 +20,21 @@ const Event = () => {
 
     useEffect(() => {
         const getEvent = async () => {
-            const res = await fetch(`/events/${eventIdParam}`);
+            const res = await fetch(`/event/${eventIdParam}`);
             const eventData = await res.json();
             return eventData;
         }
         getEvent().then(data => {
-            setTitle(data.title);
+            setShortTitle(data.shorttitle);
             setLocation(data.location);
-            setLongTitle(data.title);           //BEHÖVER LONGTITLE I DATABAS
+            setLongTitle(data.longtitle);
             setPrice(data.price);
             setDate(data.starttime);            //Måste fixa formatet 
             setDescription(data.description);
-            setAddress(data.location);          //BEHÖVER ADRESS I DATABAS
+            setAddress(data.address);
+            setCoordinates(data.coordinates);
             
-            //console.log(data);
+            console.log(data);
         });
     }, [eventIdParam]) 
 
@@ -43,7 +45,7 @@ const Event = () => {
                              flex-col justify-end p-6 rounded-bl-lg rounded-br-lg md:rounded-xl
                              md:h-96`}>
                 <div className="flex flex-col md:gap-2">
-                    <div className="text-3xl md:text-5xl">{title}</div>
+                    <div className="text-3xl md:text-5xl">{shortTitle}</div>
                     <div className="text-l md:text-2xl">{location}</div>
                 </div>
             </div>
@@ -52,7 +54,7 @@ const Event = () => {
                     <div className="text-2xl md:text-zinc-800 md:text-3xl">{longTitle}</div>
                     <div className="bg-zinc-600 block px-3 py-2 rounded-md">{price} kr</div>
                 </div>
-                <EventInfo address={address} date={date}/>
+                <EventInfo address={address} date={date} coordinateslink={coordinates}/>
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">{description}</div>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
                     <Link to="book"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button></Link>
