@@ -41,19 +41,19 @@ const EventTransaction = () => {
   const { ticketCount } = useSelector((state) => state.ticketCounter);
   
   
-  let eventId = params.eventId
-  const uId = parseInt(userId)
-  const buyTicket = (e) => {
-    e.preventDefault();
-    const data = {uId , eventId, ticketCount}
+  // let eventId = params.eventId
+  // const uId = parseInt(userId)
+  // const buyTicket = (e) => {
+  //   e.preventDefault();
+  //   const data = {uId , eventId, ticketCount}
 
-    const requestOptions = {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    };
-    fetch('/tickets/buyTicket', requestOptions).then(() =>{console.log("cringe")})
-  }
+  //   const requestOptions = {
+  //     method: 'POST', 
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(data)
+  //   };
+  //   fetch('/tickets/buyTicket', requestOptions).then(() =>{console.log("cringe")})
+  // }
   return (
     <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
       <div className=" bg-zinc-600 rounded-lg p-2.5 text-sm">
@@ -133,8 +133,7 @@ const EventTransaction = () => {
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
         <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg"
-            onClick={buyTicket}>
+            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">
               Buy Tickets
             </button>          
         </div>
