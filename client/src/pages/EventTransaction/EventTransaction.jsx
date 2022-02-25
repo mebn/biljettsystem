@@ -23,11 +23,12 @@ const exampleEventInfo = {
 const EventTransaction = () => {
   let params = useParams();
   const dispatch = useDispatch();
+  const [userId, setUserId] = useState("");
 
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
   useEffect(() => {
-    fetch(`/events/${params.eventId}`)
+    fetch(`/event/${params.eventId}`)
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.starttime);
@@ -38,7 +39,21 @@ const EventTransaction = () => {
   });
 
   const { ticketCount } = useSelector((state) => state.ticketCounter);
+  
+  
+  let eventId = params.eventId
+  const uId = parseInt(userId)
+  const buyTicket = (e) => {
+    e.preventDefault();
+    const data = {uId , eventId, ticketCount}
 
+    const requestOptions = {
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+    fetch('/tickets/buyTicket', requestOptions).then(() =>{console.log("cringe")})
+  }
   return (
     <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
       <div className=" bg-zinc-600 rounded-lg p-2.5 text-sm">
@@ -99,31 +114,29 @@ const EventTransaction = () => {
 
       <div className="bg-zinc-700 md:bg-zinc-200 py-0.5 rounded-md p-2.5 my-12 mx-6 md:mx-0"></div>
 
-      <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
-        <div className="text-zinc-200 md:text-zinc-800 py-0 px-1">
-          Email address:{" "}
-        </div>
 
-        <div className="bg-zinc-500 md:bg-zinc-400 py-5 rounded-lg p-2.5 text-sm">
-          <div className="text-standard text-left md:text-zinc-200 text-zinc-300 px-2">
-            {" "}
-            . . .{" "}
-          </div>
-        </div>
+    <form className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
+
+        <label className="text-zinc-200 md:text-zinc-800 py-0 px-1" for="email">
+            Email address:
+        </label>
+        <input className="shadow border rounded leading-tight py-2 px-3 w-full md:bg-zinc-400 bg-zinc-500 md:text-zinc-100" id="email" type="text" placeholder="..." 
+        onChange={data => setUserId(data.target.value)}></input>
+        
         <div className="text-zinc-500 md:text-zinc-400 text-center py-3">
           The tickets will be sent to this address
         </div>
-      </div>
+    </form>
+      
 
       <div className="bg-zinc-700 md:bg-zinc-200 py-0.5 rounded-md p-2.5 my-6 mx-6 md:mx-0"></div>
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
         <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-          <Link to="/purchase-complete">
-            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">
+            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg"
+            onClick={buyTicket}>
               Buy Tickets
-            </button>
-          </Link>
+            </button>          
         </div>
       </div>
     </div>
