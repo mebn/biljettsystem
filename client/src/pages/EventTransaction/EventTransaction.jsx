@@ -3,11 +3,10 @@ import {
   CalendarIcon,
   LocationMarkerIcon,
   MinusIcon,
-  PlusCircleIcon,
   PlusIcon,
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, setMax } from "../../redux/ticketCounter";
 
@@ -30,6 +29,8 @@ const EventTransaction = () => {
   const [ticketErrorString, setTicketErrorString] = useState("");
   const [userErrorString, setUserErrorString] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetch(`/event/${params.eventId}`)
       .then((res) => res.json())
@@ -42,7 +43,7 @@ const EventTransaction = () => {
   });
 
   const { ticketCount } = useSelector((state) => state.ticketCounter);
-  
+
   const buyTicket = () =>{
     if(!ticketCount) setTicketErrorString("Forgor 💀");
     else setTicketErrorString("");
@@ -61,15 +62,19 @@ const EventTransaction = () => {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
-    .then(res => 
+    .then(res => {
       res.json().then(d => {
         console.log(d);
-        if (d.error == "userId is missing.") setUserErrorString("Invalid input or something, maybe");
+        if (d.error === "userId is missing.") setUserErrorString("Invalid input or something, maybe");
         else setUserErrorString("");
-      }));
+      })
+      if(res.status === 200){
+        navigate('/purchase-complete');
+      }
+    });
     
   }
-  
+
   return (
     <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
       <div className=" bg-zinc-600 rounded-lg p-2.5 text-sm">
@@ -135,7 +140,7 @@ const EventTransaction = () => {
 
     <form className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
 
-        <label className="text-zinc-200 md:text-zinc-800 py-0 px-1" for="email">
+        <label className="text-zinc-200 md:text-zinc-800 py-0 px-1">
             Email address:
         </label>
         <input className="shadow border rounded leading-tight py-2 px-3 w-full md:bg-zinc-400 bg-zinc-500 md:text-zinc-100" id="email" type="text" placeholder="..." 
@@ -153,9 +158,9 @@ const EventTransaction = () => {
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
         <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg" onClick={buyTicket}>
+          <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg" onClick={buyTicket}>          
               Buy Tickets
-            </button>          
+          </button>
         </div>
       </div>
     </div>
