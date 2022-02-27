@@ -27,6 +27,9 @@ const EventTransaction = () => {
 
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
+  const [ticketErrorString, setTicketErrorString] = useState("");
+  const [userErrorString, setUserErrorString] = useState("");
+
   useEffect(() => {
     fetch(`/event/${params.eventId}`)
       .then((res) => res.json())
@@ -40,20 +43,33 @@ const EventTransaction = () => {
 
   const { ticketCount } = useSelector((state) => state.ticketCounter);
   
-  
-  // let eventId = params.eventId
-  // const uId = parseInt(userId)
-  // const buyTicket = (e) => {
-  //   e.preventDefault();
-  //   const data = {uId , eventId, ticketCount}
+  const buyTicket = () =>{
+    if(!ticketCount) setTicketErrorString("Forgor 💀");
+    else setTicketErrorString("");
+    sendPost(parseInt(userId), params.eventId, ticketCount);
+  }
 
-  //   const requestOptions = {
-  //     method: 'POST', 
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(data)
-  //   };
-  //   fetch('/tickets/buyTicket', requestOptions).then(() =>{console.log("cringe")})
-  // }
+  const sendPost = (userId, eventId, tickets) =>{
+    fetch('/tickets/buyTicket',{
+      method: 'POST',
+      body: JSON.stringify({
+          userId: userId,
+          eventId: eventId,
+          boughtTickets: tickets
+      }),
+      headers:{
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(res => 
+      res.json().then(d => {
+        console.log(d);
+        if (d.error == "userId is missing.") setUserErrorString("Invalid input or something, maybe");
+        else setUserErrorString("");
+      }));
+    
+  }
+  
   return (
     <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
       <div className=" bg-zinc-600 rounded-lg p-2.5 text-sm">
@@ -100,6 +116,8 @@ const EventTransaction = () => {
           </div>
         </div>
 
+        <div className="text-red-500 text-center">{ticketErrorString}</div>
+
         <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">
           <div className="flex justify-between items-center">
             <div className="text-2xl md:text-zinc-100 md:text-2xl ">
@@ -123,6 +141,8 @@ const EventTransaction = () => {
         <input className="shadow border rounded leading-tight py-2 px-3 w-full md:bg-zinc-400 bg-zinc-500 md:text-zinc-100" id="email" type="text" placeholder="..." 
         onChange={data => setUserId(data.target.value)}></input>
         
+        <div className="text-red-500 text-center">{userErrorString}</div>
+
         <div className="text-zinc-500 md:text-zinc-400 text-center py-3">
           The tickets will be sent to this address
         </div>
@@ -133,7 +153,7 @@ const EventTransaction = () => {
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
         <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg">
+            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg" onClick={buyTicket}>
               Buy Tickets
             </button>          
         </div>
