@@ -26,12 +26,16 @@ router.use(express.json());
  */
 router.get("/event/GetAll", async (req, res) => {
     try {
+
         const getEvents = await pool.query(`
-        SELECT events.eventid, shorttitle, longtitle, description, price, starttime, 
-            location, address, coordinates, eventpicturelink, availabletickets, numtick FROM events 
+            SELECT events.*, availabletickets
+            FROM events 
             INNER JOIN availabletickets a on events.eventid = a.eventid`);
-        const formatted = getEvents.rows.map(row => 
-            ({ ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}));
+        
+        const formatted = getEvents.rows.map(row => (
+            { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}
+        ));
+        
         res.status(200).json(formatted);
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
@@ -72,18 +76,20 @@ router.get("/event/:eventId", async (req, res) => {
     if (!eventId) res.status(400).json({ error: "Parameter is missing." });
 
     try {
-        const getEvent = await pool.query(`SELECT
-            events.eventid, shorttitle, longtitle, description, price, starttime, 
-            location, address, coordinates, eventpicturelink, availabletickets, numtick
-            FROM events INNER JOIN availabletickets a on events.eventid = a.eventid 
-            WHERE events.eventid=$1`, [eventId]);
+        const getEvent = await pool.query(`
+            SELECT events.*, availabletickets
+            FROM events
+            INNER JOIN availabletickets a on events.eventid = a.eventid 
+            WHERE events.eventid=$1`,
+            [eventId]);
 
         if (getEvent.rows[0]) {
             const row = getEvent.rows[0];
             const formatted = { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
+            
             res.status(200).json(formatted);
         } else {
-            res.status(404).json({ error: "Event does not exist" });
+            res.status(404).json({ });
         }
 
     } catch (err) {
@@ -172,7 +178,7 @@ router.put("/event/:eventId", async (req, res) => {
              body.eventpicturelink, body.starttime, body.address, body.price, 
              `${body.coordinates.x},${body.coordinates.y}`, eventId]);
 
-        res.status(200).json({ message: "Updated database" });
+        res.status(200).json({ message: "Database updated." });
     } catch (err) {
         res.status(503).json({ error: "Database connection failed." });
     }
