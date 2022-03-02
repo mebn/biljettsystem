@@ -1,6 +1,6 @@
 import { BadgeCheckIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CompletedEvent from "../../components/CompletedEvent/CompletedEvent";
 
 const PurchaseComplete = () => {
@@ -10,7 +10,7 @@ const PurchaseComplete = () => {
     const [date, setDate] = useState("")
     const [address, setAddress] = useState("")
     
-
+    let params = useParams();
     let eventIdParam = params.eventId;
 
     useEffect(() => {
@@ -27,8 +27,6 @@ const PurchaseComplete = () => {
 
             const d = new Date(data.starttime);
             setDate(d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3));
-
-            //console.log(data);
         });
     }, [eventIdParam]) 
 
