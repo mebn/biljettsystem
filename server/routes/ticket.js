@@ -178,9 +178,14 @@ router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
 router.post("/tickets/buyTicket", async (req, res) => {
     const { userId, eventId, boughtTickets } = req.body;
     
-    if (!userId) res.status(400).json({ error: "userId is missing." });
-    if (!eventId) res.status(400).json({ error: "eventId is missing." });
-    if (!boughtTickets) res.status(400).json({ error: "boughtTickets is missing." });
+    if (!userId)
+    return res.status(400).json({ error: "userId is missing." });
+
+    if (!eventId)
+    return res.status(400).json({ error: "eventId is missing." });
+    
+    if (!boughtTickets)
+    return res.status(400).json({ error: "boughtTickets is missing." });
 
     // format: 2022-02-27 21:00:00
     let purchaseTime = new Date();
