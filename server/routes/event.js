@@ -8,7 +8,7 @@ router.use(express.json());
  * @swagger
  * /event/GetAll:
  *   get:
- *     description: Get all events
+ *     description: Get all event
  *     tags: [event]
  *     produces:
  *       - application/json

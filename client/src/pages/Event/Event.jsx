@@ -59,7 +59,7 @@ const Event = () => {
                 <EventInfo address={address} date={date} coordinateslink={coordinates}/>
                 <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">{description}</div>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-                    <Link to="book"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800">Tickets</button></Link>
+                    <Link to="book"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 py-2 px-4">Tickets</button></Link>
                 </div>
             </div>
         </div>
