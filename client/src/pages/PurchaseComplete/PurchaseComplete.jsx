@@ -1,6 +1,6 @@
 import { BadgeCheckIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CompletedEvent from "../../components/CompletedEvent/CompletedEvent";
 
 const PurchaseComplete = () => {
@@ -43,7 +43,9 @@ const PurchaseComplete = () => {
             </div>
             <div className="p-3 ml-8 mr-8 text-center text-zinc-400 leading-6 text-xs md:text-base md:text-zinc-500">Your tickets will be sent to the email address which was speicfied during the transaction.</div>
             <div className="fixed text-center bottom-6 right-0 left-0 mx-6 hover:pointer md:static md:mx-0 md:self-end">
-                <button className="bg-teal-600 hover:bg-teal-700 ease-in-out rounded-md h-14 w-full bottom-0 md:w-auto">Return to home page</button>
+                <Link to="/">
+                    <button className="bg-teal-600 hover:bg-teal-700 ease-in-out rounded-md h-14 w-full bottom-0 md:w-auto py-2 px-4">Return to home page</button>
+                </Link>
             </div> 
         </div>
     )

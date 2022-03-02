@@ -88,7 +88,7 @@ const EventTransaction = () => {
     })
     .then(res => {
       if(res.status === 200)
-        navigate('/purchase-complete');
+        navigate(`/purchase-complete/${eventId}`);
 
       return res.json();
     })
@@ -130,14 +130,14 @@ const EventTransaction = () => {
             </div>
             <div className="bg-zinc-500 px-2 py-2 rounded grid grid-cols-3 gap-1 items-center">
               <button
-                className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center"
+                className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center py-2 px-4"
                 onClick={() => dispatch(increment())}
               >
                 <PlusIcon className="h-5" />
               </button>
               <div className="text-center text-2xl py-2">{ticketCount}</div>
               <button
-                className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center"
+                className="w-max rounded-md bg-teal-600  hover:bg-teal-800  shadow-md items-center py-2 px-4"
                 onClick={() => dispatch(decrement())}
               >
                 <MinusIcon className="h-5" />
@@ -183,8 +183,8 @@ const EventTransaction = () => {
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
         <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-          <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg" onClick={buyTicket}>          
-              Buy Tickets
+          <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg py-2 px-4" onClick={buyTicket}>          
+            Buy Tickets
           </button>
         </div>
       </div>

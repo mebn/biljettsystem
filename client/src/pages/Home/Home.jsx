@@ -1,18 +1,24 @@
 import { Link } from 'react-router-dom';
-import './Home.css';
+
+const MyBtn = props => {
+  return (
+    <div>
+      <Link to={props.to}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-1 rounded">
+          {props.text}
+        </button>
+      </Link>
+      <br />
+    </div>
+  );
+}
 
 const Home = () => {
   return (
     <div>
-      <h1 className="home-title">Home screen</h1>
-      <div className="page-content">
-        <Link to="/example-page"><button className="btn-1">example page</button></Link>
-        <Link to="/api-testing"><button className='btn-2'>API Testing</button></Link>
-        
-        <Link to="/event/1"><button className=''>Event page</button></Link>
-        <Link to="/event/1/book"><button className=''>Transaction page</button></Link>
-        <Link to="/purchase-complete"><button className=''>Purchase complete page</button></Link>
-      </div>
+      <MyBtn to="/event/1" text="Event page" />
+      <MyBtn to="/event/1/book" text="Transaction page" />
+      <MyBtn to="/purchase-complete" text="Purchase complete page" />
     </div>
   );
 }
