@@ -22,7 +22,7 @@ const exampleEventInfo = {
 const EventTransaction = () => {
   let params = useParams();
   const dispatch = useDispatch();
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
 
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
@@ -44,13 +44,37 @@ const EventTransaction = () => {
 
   const { ticketCount } = useSelector((state) => state.ticketCounter);
 
-  const buyTicket = () =>{
-    if(!ticketCount) setTicketErrorString("Forgor 💀");
-    else setTicketErrorString("");
-    sendPost(parseInt(userId), params.eventId, ticketCount);
+  const buyTicket = async () => {
+    if(!ticketCount)
+      setTicketErrorString("Forgor 💀");
+    else
+      setTicketErrorString("");
+
+    const userid = await createUser(email);
+    console.log(userid);
+    
+    if (userid != null)
+      sendPost(userid, params.eventId, ticketCount);
   }
 
-  const sendPost = (userId, eventId, tickets) =>{
+  const createUser = async email => {
+    return await fetch("/user/addUser", {
+      method: "POST",
+      body: JSON.stringify({
+        name: "",
+        email
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      return data.ok ? data.userid : null;
+    });
+  }
+
+  const sendPost = (userId, eventId, tickets) => {
     fetch('/tickets/buyTicket',{
       method: 'POST',
       body: JSON.stringify({
@@ -63,16 +87,17 @@ const EventTransaction = () => {
       }
     })
     .then(res => {
-      res.json().then(d => {
-        console.log(d);
-        if (d.error === "userId is missing.") setUserErrorString("Invalid input or something, maybe");
-        else setUserErrorString("");
-      })
-      if(res.status === 200){
+      if(res.status === 200)
         navigate('/purchase-complete');
-      }
+
+      return res.json();
+    })
+    .then(data => {
+      if (data.error === "userId is missing.")
+        setUserErrorString("Invalid input or something, maybe");
+      else
+        setUserErrorString("");
     });
-    
   }
 
   return (
@@ -144,7 +169,7 @@ const EventTransaction = () => {
             Email address:
         </label>
         <input className="shadow border rounded leading-tight py-2 px-3 w-full md:bg-zinc-400 bg-zinc-500 md:text-zinc-100" id="email" type="text" placeholder="..." 
-        onChange={data => setUserId(data.target.value)}></input>
+        onChange={data => setEmail(data.target.value)}></input>
         
         <div className="text-red-500 text-center">{userErrorString}</div>
 
