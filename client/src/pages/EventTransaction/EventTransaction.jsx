@@ -11,12 +11,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, setMax } from "../../redux/ticketCounter";
 
 const exampleEventInfo = {
-  longtitle: "Queen Tour 2022",
-  location: "Gröna Lund",
-  address: "Lilla Allmänna Gränd 9, 115 21 Stockholm",
+  longtitle: "Loading...",
+  location: "Loading...",
+  address: "Loading...",
   coordinates: "https://maps.google.com/",
-  price: 829,
-  date: "Thursday, 23 Feb 2022 | 20:00",
+  price: 0,
+  date: "Loading...",
 };
 
 const EventTransaction = () => {
@@ -40,7 +40,7 @@ const EventTransaction = () => {
         setEventInfo(formatted);
         dispatch(setMax(data.availabletickets))
       });
-  });
+  }, []);
 
   const { ticketCount } = useSelector((state) => state.ticketCounter);
 
