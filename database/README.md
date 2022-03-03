@@ -18,13 +18,19 @@ PostgreSQL database.
 ## How to run
 The easiest way to run the database is with `docker-compose up db` from the root directory.
 
-### Access the database
-Once the database is up and running, you can access it in another terminal window via these commands:
-1. Find the right container id: `docker ps -a` and look for the one with postgres:14, eg. `9e0fdb8a39d0`.
-1. Enter interactive shell: `docker exec -it 9e0fdb8a39d0 bash`. Replace `9e0fdb8a39d0` with your container id.
-1. Start psql: `psql -U postgres`.
-1. Switch to the correct database: `\c pvk_db_dummy`.
-
 When you are done, exit out of the terminal with `ctrl+c` and run `docker-compose down db`.
 
 To start over with fresh data, delete the `pgdata/` folder and run `docker-compose up db --build`.
+
+### Access the database
+You have two options to access the db. If the first method doesn't work, try the second method.
+
+#### Via script
+1. Start the db (eg `docker-compose up db`).
+1. In another terminal and from the root directory, run: `./database/openDB.sh`.
+
+#### Manually
+1. Start the db (eg `docker-compose up db`).
+1. Find the right container id: `docker ps -a` and look for the one with postgres:14, eg. `9e0fdb8a39d0`.
+1. Enter interactive shell: `docker exec -it 9e0fdb8a39d0 bash`. Replace `9e0fdb8a39d0` with your container id.
+1. Start psql and go to the correct database: `psql -U postgres -d pvk_db_dummy`.
