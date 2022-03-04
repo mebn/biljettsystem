@@ -4,7 +4,7 @@ VALUES ('Queen', 'Queen Tour 2022', 'Watch Queens last tour live, it will be gre
  829, '2022-06-11 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
 
 INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
-VALUES ('Veronica Maggio', 'Veronica - Live on Gröna Lund', 'Veronica Maggio is back at Gröna Lund! See her new album live, on a perfect June night in Swedens capital',
+VALUES ('Veronica Maggio', 'Veronica - Live on Gröna Lund', E'Veronica Maggio is back at Gröna Lund! See her new album live, on a perfect June night in Swedens capital.\n- Some tours I want to reinvent everything, both visually and musically. This year is such a year! I long for a lot of everything. I want to feel that the gig is a world of its own and that there is a clear before and after when we play, says Veronica Maggio.',
  429, '2022-06-21 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
 
 INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)

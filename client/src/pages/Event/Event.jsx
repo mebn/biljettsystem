@@ -3,6 +3,12 @@ import { useParams, Link } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
 
 
+const Description = (props) => {
+    const text = props.text;
+    const newText = text.split('\n').map(str => <p>{str}</p>)
+    return <div className={props.className}>{newText}</div>;
+}
+
 
 const Event = () => {
     const [shortTitle, setShortTitle] = useState("")
@@ -54,10 +60,10 @@ const Event = () => {
             <div className="flex flex-col mx-6 my-4 gap-3 md:mx-0">
                 <div className="flex justify-between items-center">
                     <div className="text-2xl md:text-zinc-800 md:text-3xl">{longTitle}</div>
-                    <div className="bg-zinc-600 block px-3 py-2 rounded-md">{price} kr</div>
+                    <div className="bg-zinc-600 px-3 py-2 rounded-md whitespace-nowrap">{`${price} kr`}</div>
                 </div>
                 <EventInfo address={address} date={date} coordinateslink={coordinates}/>
-                <div className="bg-zinc-600 rounded-lg p-2.5 text-sm">{description}</div>
+                <Description className="bg-zinc-600 rounded-lg p-2.5 text-sm whitespace-pre-lin flex flex-col gap-2" text={description}></Description>
                 <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
                     <Link to="book"><button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 py-2 px-4">Tickets</button></Link>
                 </div>
