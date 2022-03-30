@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar/Navbar';
 
 const MyBtn = props => {
   return (
@@ -15,7 +16,7 @@ const MyBtn = props => {
 
 const Home = () => {
   return (
-    <div>
+    <div className='my-[200px]'>
       <MyBtn to="/event/1" text="Event page" />
       <MyBtn to="/event/1/book" text="Transaction page" />
       <MyBtn to="/purchase-complete" text="Purchase complete page" />
