@@ -32,9 +32,9 @@ const PurchaseSummary = (props) => {
                     {purchaseSummary.map((row, index) => {
                         return(
                             <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
-                                <td className='w-[60%] md:w-[80%]'>{row.type}</td>
-                                <td className='w-[20%] md:w-[10%] text-right'>{row.number}</td>
-                                <td className='w-[20%] md:w-[10%] text-right'>{row.total}</td>
+                                <td className='w-[60%] md:w-[60%]'>{row.type}</td>
+                                <td className='w-[20%] md:w-[20%] text-right'>{row.number}</td>
+                                <td className='w-[20%] md:w-[20%] text-right'>{row.total}</td>
                             </tr>
                         )}
                     )}
@@ -118,34 +118,39 @@ const PurchaseComplete = () => {
     return (
         <div className="min-h-screen pb-20 md:max-w-3xl md:m-auto md:py-8">
             <div className="text-100 flex flex-col md:gap-2">
-                <div className="text-3xl font-bold md:text-5xl text-center mt-32 mb-4">Tack för ditt köp!</div>
+                <div className="text-3xl font-bold md:text-5xl text-center mt-32 mb-4 md:mt-10">Tack för ditt köp!</div>
                 {/* <BadgeCheckIcon className=" h-28 md:text-teal-600" /> */}
                 <div className=' flex justify-center'>
                     <div className={`bg-[url('/public/assets/images/FolkeLogo.png')] bg-cover object-fit h-[150px] w-[200px]`}></div>
                 </div>
             </div>
-            <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0">
-                <div style={{boxShadow: "6px 6px #A9E3C0"}}
-                className='text-center bg-[#f5f5f5] px-5 py-3 mt-3 text-[14px] rounded-lg'>
-                    <div className='font-semibold'>Ditt ordernummer är:</div>
-                    <div className='mt-1 font-bold text-[#99D3B4] text-[28px]'>74395891</div>
-                    <div className='mt-3 font-semibold'>Biljetterna har skickats till:</div>
-                    <div className='text-[20px] mt-1'>kth@kth.se</div>
+            <div className='md:flex'>
+                <div className='md:w-3/5 md:mr-8'>
+                    <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0">
+                        <div style={{boxShadow: "6px 6px #A9E3C0"}}
+                        className='text-center bg-[#f5f5f5] px-5 py-3 mt-3 text-[14px] rounded-lg'>
+                            <div className='font-semibold'>Ditt ordernummer är:</div>
+                            <div className='mt-1 font-bold text-[#99D3B4] text-[28px]'>74395891</div>
+                            <div className='mt-3 font-semibold'>Biljetterna har skickats till:</div>
+                            <div className='text-[20px] mt-1'>kth@kth.se</div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0 ">
+                        <PurchaseSummary />
+                        {/* <CompletedEvent longTitle={longTitle} address={address} date={date} /> */}
+                    </div>
+                </div>
+                <div className="md:w-2/5 flex flex-col mx-6 my-3 gap-3 md:mx-0">
+                    <EventComplete title={shortTitle} date={date} address={address} />                
+                    {/* <CompletedEvent longTitle={longTitle} address={address} date={date} /> */}
                 </div>
             </div>
-            <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0">
-                <PurchaseSummary />
-                {/* <CompletedEvent longTitle={longTitle} address={address} date={date} /> */}
-            </div>
-            <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0">
-                <EventComplete title={shortTitle} date={date} address={address} />                
-                {/* <CompletedEvent longTitle={longTitle} address={address} date={date} /> */}
-            </div>
-            <div className='h-[40px]'></div> {/* För att säkerställa att inget hamnar under nedre knappen */}
-            <div className="h-[100px] rounded-t-lg bg-[#fff] fixed text-center bottom-0 right-0 left-0 hover:pointer md:static md:mx-0 md:self-end">
+            <div className='h-[40px] md:h-10'></div> {/* För att säkerställa att inget hamnar under nedre knappen */}
+            <div className="h-[100px]  rounded-t-lg bg-[#fff] fixed text-center bottom-0 right-0 left-0 hover:pointer md:static md:mx-0 md:self-end">
                 <div className='mx-6'>
                     <Link to="/">
-                        <button className="bg-[#A9E3C0] hover:bg-teal-700 ease-in-out rounded-lg mt-5 h-14 w-full bottom-0 md:w-[300px] md:mt-8 py-2 px-4">Tillbaka till startsidan</button>
+                        <button className="bg-[#A9E3C0] hover:bg-teal-700 ease-in-out rounded-lg mt-5 md:mt-0 h-14 w-full bottom-0 md:w-[300px] md:mt-8 py-2 px-4">Tillbaka till startsidan</button>
                     </Link>
                 </div>
             </div> 
