@@ -32,7 +32,7 @@ CREATE TABLE EventCategories (
 CREATE TABLE Users (
     UserID SERIAL PRIMARY KEY,
     Name varchar(255),
-    Email varchar(255) NOT NULL
+    Email varchar(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE Purchases (
