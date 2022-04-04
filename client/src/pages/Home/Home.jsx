@@ -22,7 +22,7 @@ const Home = () => {
       </div>
       <div className="flex">
         <MyBtn to="/event/1/book" text="Transaction page (MVP)" />  
-        <MyBtn to="/event/1/book" text="Transaction page (Alpha)" />
+        <MyBtn to="/event/1/purchase" text="Transaction page (Alpha)" />
       </div>
       <div className="flex">
         <MyBtn to="/purchase-complete/1" text="Purchase complete page (MVP)" />
