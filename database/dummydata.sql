@@ -1,11 +1,22 @@
 -- Events
-INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
-VALUES ('Queen', 'Queen Tour 2022', 'Watch Queens last tour live, it will be great! This is the last chance to see your favourite rock band live!!',
- 829, '2022-06-11 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
 
 INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
-VALUES ('Veronica Maggio', 'Veronica - Live on Gröna Lund', 'Veronica Maggio is back at Gröna Lund! See her new album live, on a perfect June night in Swedens capital',
- 429, '2022-06-21 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
+ VALUES ('Veronica Maggio', 'Veronica - Live on Gröna Lund', 
+ E'
+### **Veronica Maggio är tillbaka på Gröna Lund!**
+
+Se hennes nya album live, en perfekt junikväll i Sveriges huvudstad.
+
+"Vissa turnéer vill jag återuppfinna allt, både visuellt och musikaliskt. I år är ett sådant år! Jag längtar efter mycket av allting. Jag vill känna att spelningen är en egen värld och att det finns ett tydligt före- och efter när vi spelar" -- **Veronica Maggio**.
+### Om Veronica Maggio
+
+Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och nått otroliga kommersiella framgångar med sina sex kritikerrosade album, samtliga platina. Hon har slagit rekord på Spotify med över 1 miljard streams och är därmed den första artisten någonsin vars låtkatalog på svenska når den magiska milstolpen.
+', 429, '2022-06-21 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
+
+INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
+VALUES ('Queen', 'Queen Tour 2022',
+ E'**Lorem ipsum dolor sit amet**, consectetur adipiscing elit. Vivamus sodales, justo et sodales tempus, nibh ligula ultrices ipsum, vel viverra tellus nisl vestibulum tortor. Duis rhoncus elit quis neque iaculis, in scelerisque lectus varius. Nulla suscipit egestas tortor, sit amet dapibus turpis efficitur et. Morbi non leo ex. \nSuspendisse venenatis ultrices porta. Nunc id fringilla libero. Nulla a aliquam risus, non aliquet tellus. Donec in erat vitae tellus sodales egestas non vel dui. ',
+ 829, '2022-06-11 22:00:00', 'Gröna Lund', 'Lilla Allmänna Gränd 9, 115 21 Stockholm', '59.3240585,18.097304', 3000, 'link');
 
 INSERT INTO Events (ShortTitle, LongTitle, Description, Price, StartTime, Location, Address, Coordinates, NumTick, EventPictureLink)
 VALUES ('Fröken Julie', ' Strindbergs Fröken Julie - Parkteater', 'Se den klassiska pjäsen av August Strindberg framförd live i amfiteatern i Vitabergsparken',
