@@ -1,6 +1,8 @@
 const express = require("express");
+const { PrismaClient } = require("@prisma/client");
+
 const router = express.Router();
-const pool = require("../db");
+const prisma = new PrismaClient();
 
 router.use(express.json());
 
@@ -22,24 +24,37 @@ router.use(express.json());
  *               items:
  *                 $ref: '#/components/schemas/Event'
  *       503:
- *         description: Error      
+ *         description: Error
  */
 router.get("/event/GetAll", async (req, res) => {
-    try {
+  const events = await prisma.event.findMany({
+    select: {
+      id: true,
+      shortTitle: true,
+      longTitle: true,
+      description: true,
+      price: true,
+      startTime: true,
+      location: {
+        select: {
+          id: false,
+          title: true,
+          address: true,
+          x: true,
+          y: true,
+        },
+      },
+    },
+  });
 
-        const getEvents = await pool.query(`
-            SELECT events.*, availabletickets
-            FROM events 
-            INNER JOIN availabletickets a on events.eventid = a.eventid`);
-        
-        const formatted = getEvents.rows.map(row => (
-            { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}
-        ));
-        
-        res.status(200).json(formatted);
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
+  const formatted = events.map((event) => ({
+    ...event,
+    location: event.location.title,
+    address: event.location.address,
+    locationUrl: `https://www.google.com/maps/search/?api=1&query=${event.location.x}%2C${event.location.y}`,
+  }));
+
+  res.status(200).json(formatted);
 });
 
 /**
@@ -71,32 +86,28 @@ router.get("/event/GetAll", async (req, res) => {
  *         description: Error
  */
 router.get("/event/:eventId", async (req, res) => {
-    const { eventId } = req.params;
+  const { eventId } = req.params;
 
-    if (!eventId) res.status(400).json({ error: "Parameter is missing." });
+  if (!eventId) res.status(400).json({ error: "Parameter is missing." });
 
-    try {
-        const getEvent = await pool.query(`
-            SELECT events.*, availabletickets
-            FROM events
-            INNER JOIN availabletickets a on events.eventid = a.eventid 
-            WHERE events.eventid=$1`,
-            [eventId]);
+  try {
+    const parsed = parseInt(eventId);
+    const event = await prisma.event.findFirst({ where: { id: parsed } });
 
-        if (getEvent.rows[0]) {
-            const row = getEvent.rows[0];
-            const formatted = { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
-            
-            res.status(200).json(formatted);
-        } else {
-            res.status(404).json({ });
-        }
+    if (event) {
+      const formatted = {
+        ...event,
+        coordinates: `https://www.google.com/maps/search/?api=1&query=${event.coordinates.x}%2C${event.coordinates.y}`,
+      };
 
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
+      res.status(200).json(formatted);
+    } else {
+      res.status(404).json({});
     }
+  } catch (err) {
+    res.status(503).json({ error: "Database connection failed." });
+  }
 });
-
 
 /**
  * @swagger
@@ -154,14 +165,17 @@ router.get("/event/:eventId", async (req, res) => {
  *         description: Error
  */
 router.put("/event/:eventId", async (req, res) => {
-    const { eventId } = req.params;
-    const body = req.body;
+  const { eventId } = req.params;
+  const body = req.body;
 
-    if (!eventId) res.status(400).json({ error: "Parameter is missing." });
-    if (!body) res.status(400).json({ error: "Body is missing." });
+  if (!eventId) res.status(400).json({ error: "Parameter is missing." });
+  if (!body) res.status(400).json({ error: "Body is missing." });
 
-    try {
-        const putEvents = await pool.query(`
+  try {
+    const parsed = parseInt(eventId);
+
+    const putEvents = await pool.query(
+      `
             UPDATE events SET
             shorttitle = $1,
             longtitle = $2,
@@ -174,14 +188,25 @@ router.put("/event/:eventId", async (req, res) => {
             price = $9,
             coordinates = $10
             WHERE eventid = $11`,
-            [body.shorttitle, body.longtitle, body.description, body.location, body.numtick, 
-             body.eventpicturelink, body.starttime, body.address, body.price, 
-             `${body.coordinates.x},${body.coordinates.y}`, eventId]);
+      [
+        body.shorttitle,
+        body.longtitle,
+        body.description,
+        body.location,
+        body.numtick,
+        body.eventpicturelink,
+        body.starttime,
+        body.address,
+        body.price,
+        `${body.coordinates.x},${body.coordinates.y}`,
+        eventId,
+      ]
+    );
 
-        res.status(200).json({ message: "Database updated." });
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
+    res.status(200).json({ message: "Database updated." });
+  } catch (err) {
+    res.status(503).json({ error: "Database connection failed." });
+  }
 });
 
 module.exports = router;

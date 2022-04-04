@@ -1,0 +1,55 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model event {
+  id               Int           @id @default(autoincrement())
+  shortTitle       String        @db.VarChar(255)
+  longTitle        String        @db.VarChar(255)
+  description      String?
+  price            Float
+  startTime        DateTime      @db.Timestamp(6)
+  numTick          Int
+  eventPictureLink String?       @db.VarChar(255)
+  purchases        purchase[]
+  location         eventLocation @relation(fields: [locationId], references: [id])
+  locationId       Int           @unique
+}
+
+model eventLocation {
+  id      Int    @id @default(autoincrement())
+  x       Float
+  y       Float
+  title   String @db.VarChar(255)
+  address String @db.VarChar(255)
+  event   event?
+}
+
+model purchase {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  eventId      Int
+  purchaseTime DateTime @db.Timestamp(6)
+  event        event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tickets      ticket[]
+}
+
+model ticket {
+  id         Int      @id @default(autoincrement())
+  purchaseId Int
+  purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+}
+
+model user {
+  id        Int        @id @default(autoincrement())
+  name      String?    @db.VarChar(255)
+  email     String     @db.VarChar(255)
+  purchases purchase[]
+}
