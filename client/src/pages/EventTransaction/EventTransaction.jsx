@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, setMax } from "../../redux/ticketCounter";
 
 const exampleEventInfo = {
-  longtitle: "Loading...",
+  longTitle: "Loading...",
   location: "Loading...",
   address: "Loading...",
   coordinates: "https://maps.google.com/",
@@ -35,7 +35,7 @@ const EventTransaction = () => {
     fetch(`/event/${params.eventId}`)
       .then((res) => res.json())
       .then((data) => {
-        const d = new Date(data.starttime);
+        const d = new Date(data.startTime);
         const formatted = {...data, date: d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3)}
         setEventInfo(formatted);
         dispatch(setMax(data.availabletickets))
@@ -110,7 +110,7 @@ const EventTransaction = () => {
         <div className="items-center flex flex-col text-xs gap-2.5 md:text-sm md:border-zinc-100 md:pb-3">
           <div className="flex items-center gap-2">
             <LocationMarkerIcon className="h-4" />
-            <a href={eventInfo.coordinates} className="underline text-teal-500">{eventInfo.address}</a>
+            <a href={eventInfo.locationUrl} className="underline text-teal-500">{eventInfo.location.address}</a>
           </div>
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-4" />

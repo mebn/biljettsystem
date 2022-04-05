@@ -1,6 +1,8 @@
 const express = require("express");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 const router = express.Router();
-const pool = require("../db");
 
 router.use(express.json());
 
@@ -10,143 +12,28 @@ router.use(express.json());
  *   schemas:
  *     EventTicketInfo:
  *       type: object
- *       properties: 
+ *       properties:
  *          eventid:
  *            type: integer
  *          availabletickets:
  *             type: integer
- *          price: 
+ *          price:
  *             type: integer
  *     Ticket:
  *       type: object
- *       properties: 
+ *       properties:
  *          purchaseid:
  *            type: integer
  *          ticketid:
  *             type: integer
- *          userid: 
+ *          userid:
  *             type: integer
- *          eventid: 
+ *          eventid:
  *             type: integer
- *          purchasetime: 
+ *          purchasetime:
  *             type: string
  *             format: date-time
  */
-
-
-/**
- * @swagger
- * /tickets/GetAllAvailable:
- *     get:
- *       description: Operation to Fetch All Tickets
- *       tags: [ticket]
- *       responses:
- *         '200':
- *           description: Success Response
- *           content:
- *             application/json:
- *               schema:
- *                 type: array
- *                 items:
- *                   $ref: '#/components/schemas/EventTicketInfo'
- */
-router.get("/tickets/GetAllAvailable", async (req, res) => {
-    try {
-        const getTickets = await pool.query(`
-            SELECT eventid, availabletickets, price
-            FROM availableTickets
-            NATURAL JOIN events`);
-        
-        res.status(200).json(getTickets.rows);
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
-});
-
-
-/**
- * @swagger
- * /tickets/getByEvent/{eventID}:
- *   get:
- *     description: Operation to Fetch All Tickets for Single Event
- *     tags: [ticket]
- *     parameters:
- *       - in: path
- *         name: eventID
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       '200':
- *         description: Success Response
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/EventTicketInfo'
- */
-router.get("/tickets/GetByEvent/:eventId", async (req, res) => {
-    const { eventId } = req.params;
-    
-    if (!eventId) res.status(400).json({ error: "Parameter is missing." });
-
-    try {
-        const getTicket = await pool.query(`
-            SELECT eventid, availabletickets, price
-            FROM availableTickets
-            NATURAL JOIN events
-            WHERE eventid=$1`,
-            [eventId]);
-        
-        if (getTicket.rowCount == 0) res.status(404).json({ });
-
-        res.status(200).json(getTicket.rows[0]);
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
-});
-
-
-
-/**
- * @swagger
- * /tickets/getByTicket/{ticketID}:
- *   get:
- *     description: Operation to Fetch Single Ticket from Single Event
- *     tags: [ticket]
- *     parameters:
- *       - in: path
- *         name: ticketID
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       '200':
- *         description: Success Response
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Ticket'
- */
-router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
-    const { ticketId } = req.params;
-    
-    if (!ticketId) res.status(400).json({ error: "Parameter is missing." });
-
-    try {
-        const getTicket = await pool.query(`
-            SELECT * FROM tickets
-            NATURAL JOIN Purchases
-            WHERE ticketid=$1`,
-            [ticketId]);
-        
-        if (getTicket.rowCount == 0) res.status(404).json({ });
-        
-        res.status(200).json(getTicket.rows[0]);
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
-});
-
 
 /**
  * @swagger
@@ -161,7 +48,7 @@ router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               userId: 
+ *               userId:
  *                 type: integer
  *               eventId:
  *                 type: integer
@@ -176,41 +63,41 @@ router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
  *         description: Ticket has been successfully purchased!
  */
 router.post("/tickets/buyTicket", async (req, res) => {
-    const { userId, eventId, boughtTickets } = req.body;
-    
-    if (!userId)
-    return res.status(400).json({ error: "userId is missing." });
+  const { userId, eventId, boughtTickets } = req.body;
 
-    if (!eventId)
-    return res.status(400).json({ error: "eventId is missing." });
-    
-    if (!boughtTickets)
+  if (!userId) return res.status(400).json({ error: "userId is missing." });
+
+  if (!eventId) return res.status(400).json({ error: "eventId is missing." });
+
+  if (!boughtTickets)
     return res.status(400).json({ error: "boughtTickets is missing." });
 
-    // format: 2022-02-27 21:00:00
-    let purchaseTime = new Date();
-    purchaseTime = purchaseTime.toLocaleString('sv-SE', {timeZone: "Europe/Stockholm"});
+  // format: 2022-02-27 21:00:00
+  let purchaseTime = new Date();
 
-    try {
-        const insertPurchase = await pool.query(`
-            INSERT INTO purchases (UserID, EventID, PurchaseTime)
-            VALUES ($1, $2, $3)
-            RETURNING purchaseid`,
-            [userId, eventId, purchaseTime]);
+  const availibleTickets = await prisma.event.findMany({
+    include: {
+      purchases: true,
+    },
+  });
 
-        const purchaseID = insertPurchase.rows[0].purchaseid;
-        
-        for (let i = 0; i < boughtTickets; i++) {
-            const insertTicket = await pool.query(`
-                INSERT INTO Tickets (PurchaseID) VALUES ($1)`,
-                [purchaseID]);
-        }
-        
-        res.status(200).json({ message: "Database updated." });
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
+  if (boughtTickets > availibleTickets) res.status(402);
+
+  await prisma.$transaction(async () => {
+    purchase = await prisma.purchase.create({
+      data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
+    });
+    let tickets = [];
+    for (let i = 0; i < boughtTickets; i++) {
+      tickets.push({ purchaseId: purchase.id });
     }
-});
+    ticket = await prisma.ticket.createMany({
+      data: tickets,
+    });
+    return ticket;
+  });
 
+  res.status(200).json({ message: "Database updated." });
+});
 
 module.exports = router;

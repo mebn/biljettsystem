@@ -5,15 +5,26 @@ tags:
     description: Api for interacting with tickets
 components:
   schemas:
+    EventLocation:
+      type: object
+      properties:
+        title:
+          type: string
+        address:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
     Event:
       type: object
       properties:
-        eventid:
+        eventId:
           type: integer
-        shorttitle:
+        shortTitle:
           type: string
           example: Queen
-        longtitle:
+        longTitle:
           type: string
           example: Queen World Tour 2022
         description:
@@ -22,19 +33,14 @@ components:
         price:
           type: integer
           example: 819
-        starttime:
+        startTime:
           type: string
           format: date-time
-        location:
-          type: string
-        address:
-          type: string
-        locationurl:
+        locationUrl:
           type: string
           example: https://www.google.com/maps/search/?api=1&query=59.324059%2C18.097304
-        availabletickets:
-          type: integer
-        numtick:
-          type: integer
-        eventpicturelink:
+        eventPictureLink:
           type: string
+        location:
+          type: object
+          $ref: '#/components/schemas/EventLocation'
