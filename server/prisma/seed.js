@@ -3,32 +3,32 @@ const prisma = new PrismaClient();
 
 const locations = [
   {
-    x: 59.3240585,
-    y: 18.097304,
+    lat: 59.3240585,
+    lng: 18.097304,
     title: "Gröna Lund",
     address: "Lilla Allmänna Gränd 9, 115 21 Stockholm",
   },
   {
-    x: 59.3240585,
-    y: 18.097304,
+    lat: 59.3240585,
+    lng: 18.097304,
     title: "Gröna Lund",
     address: "Lilla Allmänna Gränd 9, 115 21 Stockholm",
   },
   {
-    x: 59.310747,
-    y: 18.091541,
+    lat: 59.310747,
+    lng: 18.091541,
     title: "Vitabergsparken",
     address: "Skånegatan, 116 38 Stockholm",
   },
   {
-    x: 59.3301464,
-    y: 18.0688807,
+    lat: 59.3301464,
+    lng: 18.0688807,
     title: "Café Opera",
     address: "Kungliga Operan, Karl XII:s torg",
   },
   {
-    x: 43.5507813,
-    y: 7.0157735,
+    lat: 43.5507813,
+    lng: 7.0157735,
     title: "Cannes",
     address: "Palais des Festivals, Cannes, France",
   },

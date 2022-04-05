@@ -37,43 +37,6 @@ router.use(express.json());
 
 /**
  * @swagger
- * /tickets/getByTicket/{ticketID}:
- *   get:
- *     description: Operation to Fetch Single Ticket from Single Event
- *     tags: [ticket]
- *     parameters:
- *       - in: path
- *         name: ticketID
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       '200':
- *         description: Success Response
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Ticket'
- */
-router.get("/tickets/GetByTicket/:ticketId", async (req, res) => {
-  const { ticketId } = req.params;
-
-  if (!ticketId) res.status(400).json({ error: "Parameter is missing." });
-
-  try {
-    const parsed = parseInt(ticketId);
-    const ticket = prisma.ticket.findFirst({ where: { id: ticketId } });
-
-    if (!ticket) res.status(404).json({});
-
-    res.status(200).json(ticket);
-  } catch (err) {
-    res.status(503).json({ error: "Database connection failed." });
-  }
-});
-
-/**
- * @swagger
  * /tickets/buyTicket:
  *   post:
  *     tags: [ticket]
@@ -114,21 +77,26 @@ router.post("/tickets/buyTicket", async (req, res) => {
 
   const availibleTickets = await prisma.event.findMany({
     include: {
-      purchases: true
+      purchases: true,
     },
   });
 
-  if (boughtTickets > availibleTickets) res.status(402)
+  if (boughtTickets > availibleTickets) res.status(402);
 
-  const newPurchase = await prisma.$transaction(async () => {
+  await prisma.$transaction(async () => {
     purchase = await prisma.purchase.create({
       data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
     });
+    let tickets = [];
+    for (let i = 0; i < boughtTickets; i++) {
+      tickets.push({ purchaseId: purchase.id });
+    }
     ticket = await prisma.ticket.createMany({
-      data: { purchaseId: purchase.id },
+      data: tickets,
     });
     return ticket;
   });
+
   res.status(200).json({ message: "Database updated." });
 });
 

@@ -24,8 +24,8 @@ model event {
 
 model eventLocation {
   id      Int    @id @default(autoincrement())
-  x       Float
-  y       Float
+  lat     Float
+  lng     Float
   title   String @db.VarChar(255)
   address String @db.VarChar(255)
   event   event?
