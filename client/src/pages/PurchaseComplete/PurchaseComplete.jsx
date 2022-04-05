@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import CompletedEvent from "../../components/CompletedEvent/CompletedEvent";
 
+const exampleEventInfo = {
+    location: {},
+};
+
 const PurchaseComplete = () => {
-    const [location, setLocation] = useState("")
-    const [coordinates, setCoordinates] = useState("")
-    const [longTitle, setLongTitle] = useState("")
-    const [date, setDate] = useState("")
-    const [address, setAddress] = useState("")
+    const [eventInfo, setEventInfo] = useState(exampleEventInfo);
+
     
     let params = useParams();
     let eventIdParam = params.eventId;
@@ -20,13 +21,9 @@ const PurchaseComplete = () => {
             return eventData;
         }
         getEvent().then(data => {
-            setLocation(data.location);
-            setLongTitle(data.longtitle);
-            setAddress(data.address);
-            setCoordinates(data.coordinates);
-
-            const d = new Date(data.starttime);
-            setDate(d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3));
+            const d = new Date(data.startTime);
+            const formatted = {...data, date: d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3)}
+            setEventInfo(formatted);
         });
     }, [eventIdParam]) 
 
@@ -39,7 +36,7 @@ const PurchaseComplete = () => {
             </div>
             <div className=" rounded-lg md:text-zinc-900 md:text-lg text-center p-3 ml-4 leading-6 text-sm">You have successfully purchased tickets to the following event:</div>
             <div className="flex flex-col mx-6 my-3 gap-3 md:mx-0">
-                <CompletedEvent longTitle={longTitle} address={address} date={date} />
+                <CompletedEvent longTitle={eventInfo.longTitle} address={eventInfo.location.address} date={eventInfo.date} />
             </div>
             <div className="p-3 ml-8 mr-8 text-center text-zinc-400 leading-6 text-xs md:text-base md:text-zinc-500">Your tickets will be sent to the email address which was speicfied during the transaction.</div>
             <div className="fixed text-center bottom-6 right-0 left-0 mx-6 hover:pointer md:static md:mx-0 md:self-end">

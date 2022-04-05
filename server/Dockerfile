@@ -13,5 +13,7 @@ RUN npm i
 
 COPY . .
 
+RUN npx prisma generate
+
 EXPOSE 7050
 CMD [ "npm", "start" ]

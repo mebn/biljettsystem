@@ -10,14 +10,15 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 const exampleEventInfo = {
-  longtitle: "Loading...",
+  longTitle: "Loading...",
   location: "Loading...",
   address: "Loading...",
-  locationurl: "https://maps.google.com/",
+  locationUrl: "https://maps.google.com/",
   price: 0,
   date: "Loading...",
   description: "Loading...",
   address: "Loading...",
+  location: {}
 };
 
 let DefaultIcon = L.icon({
@@ -39,14 +40,10 @@ const Event = () => {
     fetch(`/event/${eventIdParam}`)
       .then((res) => res.json())
       .then((data) => {
-        const d = new Date(data.starttime);
+        const d = new Date(data.startTime);
         const formatted = {
           ...data,
           date: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
-          coordinates: {
-            lat: data.coordinates.x,
-            lng: data.coordinates.y,
-          },
         };
         setEventInfo(formatted);
       });
@@ -55,14 +52,14 @@ const Event = () => {
   return (
     <div className="md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto">
       <div className="md:border-r-2 px-0 md:px-6">
-        <img src="/public/images/eventBanner.jpeg" />
+        <img className="md:rounded-xl md:mt-8" src="/public/images/eventBanner.jpeg" />
         <div className="flex flex-col px-7 py-6 mb-20 md:px-0 ">
           <div className="md:hidden">
-            <h1 className="text-2xl font-medium pb-2">{eventInfo.longtitle}</h1>
+            <h1 className="text-2xl font-medium pb-2">{eventInfo.longTitle}</h1>
             <div className="border-b-2 border-t-2 py-2">
               <EventInfo
-                coordinateslink={eventInfo.locationurl}
-                address={eventInfo.address}
+                coordinateslink={eventInfo.locationUrl}
+                address={eventInfo.location.address}
                 date={eventInfo.date}
               />
             </div>
@@ -72,26 +69,26 @@ const Event = () => {
             className="py-4 prose max-w-none prose-sm md:prose-lg"
           />
           <div className="w-full h-72 md:hidden">
-            {eventInfo.coordinates ? <Map eventInfo={eventInfo} /> : null}
+            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
           </div>
         </div>
       </div>
       <div
         className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[2000]
                     md:sticky md:h-full md:top-0 md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
-                    md:justify-start md:py-10 md:border-t-0"
+                    md:justify-start md:py-8 md:border-t-0"
       >
         <div className="hidden md:block">
-          <h1 className="text-2xl font-medium pb-4">{eventInfo.longtitle}</h1>
+          <h1 className="text-2xl font-medium pb-4">{eventInfo.longTitle}</h1>
           <div className="border-b-2 border-t-2 py-4 mb-4">
             <EventInfo
-              coordinateslink={eventInfo.locationurl}
-              address={eventInfo.address}
+              coordinateslink={eventInfo.locationUrl}
+              address={eventInfo.location.address}
               date={eventInfo.date}
             />
           </div>
           <div className="h-60 pb-4">
-            {eventInfo.coordinates ? <Map eventInfo={eventInfo} /> : null}  
+            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}  
           </div>
         </div>
         <div className="flex flex-row justify-between md:flex-col md:gap-2">
