@@ -33,7 +33,7 @@ router.get("/event/GetAll", async (req, res) => {
             INNER JOIN availabletickets a on events.eventid = a.eventid`);
         
         const formatted = getEvents.rows.map(row => (
-            { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}
+            { ...row, coordinatesUrl: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}
         ));
         
         res.status(200).json(formatted);
@@ -85,7 +85,7 @@ router.get("/event/:eventId", async (req, res) => {
 
         if (getEvent.rows[0]) {
             const row = getEvent.rows[0];
-            const formatted = { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
+            const formatted = { ...row, locationurl: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
             
             res.status(200).json(formatted);
         } else {

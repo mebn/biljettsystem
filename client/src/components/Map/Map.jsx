@@ -1,14 +1,21 @@
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-const GoogleMap = (props) => {
-    return (
-        <Map
-            google={this.props.google}
-            zoom={8}
-            style={mapStyles}
-            initialCenter={{}}
-        />
-    )
-}
+const Map = (props) => {
+  return (
+    <MapContainer
+      center={props.eventInfo.coordinates}
+      zoom={13}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={props.eventInfo.coordinates}>
+        <Popup>{props.eventInfo.address}</Popup>
+      </Marker>{" "}
+    </MapContainer>
+  );
+};
 
-export default GoogleMap;
+export default Map;
