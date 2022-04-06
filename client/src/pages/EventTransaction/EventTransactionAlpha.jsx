@@ -209,7 +209,7 @@ const EventTransaction = () => {
       <div className="bg-zinc-700 md:bg-zinc-200 py-0.5 rounded-md p-2.5 my-6 mx-6 md:mx-0"></div>
 
       <div className="flex flex-col mx-6 my-4 gap-3 md:mx-14">
-        <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
+        <div className="bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
           <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 shadow-md hover:shadow-lg py-2 px-4" onClick={buyTicket}>          
             Buy Tickets
           </button>
