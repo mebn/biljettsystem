@@ -39,9 +39,9 @@ const PurchaseSummary = (props) => {
                     {purchaseSummary.map((row, index) => {
                         return (
                             <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
-                                <td className='w-[60%] md:w-[60%]'>{row.type}</td>
-                                <td className='w-[20%] md:w-[20%] text-right'>{row.number}</td>
-                                <td className='w-[20%] md:w-[20%] text-right'>{row.total}</td>
+                                <td className='w-[60%] md:w-[20%]'>{row.type}</td>
+                                <td className='w-[20%] md:w-[50%] text-right'>{row.number}</td>
+                                <td className='w-[20%] md:w-[30%] text-right'>{row.total}</td>
                             </tr>
                         );
                     }
@@ -62,12 +62,12 @@ const PurchasePopup = props => {
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity">
 
                 <div className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto bg-[#f5f5f5] text-2xl md:rounded-lg">
-                    <button className='absolute top-0 right-0 h-16 w-16' onClick={props.handleClose}>x</button>
+                    
 
                     <div className="grid md:grid-cols-2 p-0">
                         
                         {/*Left side*/}
-                        <div className="p-5 md:p-20 md:absolute md:left-0 md:w-[62%]">
+                        <div className="p-5 md:p-20 md:w-[62%] md:absolute">
                             <div className='text-left font-bold text-4xl py-1 my-5'>{props.longtitle}</div>
 
                             <div className='text-[14px] mt-2 px-5 flex items-center'>
@@ -137,7 +137,7 @@ const PurchasePopup = props => {
                             </div>
                         </div>
                     </div>
-
+                    <button className='absolute top-0 right-0 h-16 w-16' onClick={props.handleClose}>x</button>
 
                 </div>
             </div>
