@@ -27,6 +27,43 @@ const purchaseSummary = [
         "number": "x1",
         "total": "1099 kr",
         "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
+    },
+    {
+        "type": "Vuxen",
+        "number": "x3",
+        "total": "1797 kr",
+        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas"
+    },
+    {
+        "type": "Ungdom",
+        "number": "x1",
+        "total": "399 kr",
+        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas"
+    },
+    {
+        "type": "VIP",
+        "number": "x1",
+        "total": "1099 kr",
+        "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
+    },
+
+    {
+        "type": "Vuxen",
+        "number": "x3",
+        "total": "1797 kr",
+        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas"
+    },
+    {
+        "type": "Ungdom",
+        "number": "x1",
+        "total": "399 kr",
+        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas"
+    },
+    {
+        "type": "VIP",
+        "number": "x1",
+        "total": "1099 kr",
+        "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
     }
 ]
 
@@ -52,73 +89,72 @@ const PurchaseSummary = (props) => {
     )
 }
 
-
-const PurchasePopup = props => {
+const TicketButton = () => {
     const dispatch = useDispatch();
     const { ticketCount } = useSelector((state) => state.ticketCounter);
+    return (
+        <div className="grid grid-cols-3 items-center justify-center w-32">
+            <button
+                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
+                onClick={() => dispatch(decrement())}
+            >
+                <MinusIcon className="text-[#f5f5f5] h-7" />
+            </button>
+            <div className="text-center text-2xl text-gray-700 hover:text-gray-900 font-medium flex justify-center items-center">{ticketCount}</div>
 
+            <button
+                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
+                onClick={() => dispatch(increment())}
+            >
+                <PlusIcon className="text-[#f5f5f5] h-7" />
+            </button>
+        </div>
+    )
+}
+
+const PurchasePopup = props => {
     return (
         <div className='popup-box'>
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity">
 
                 <div className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto bg-[#f5f5f5] text-2xl md:rounded-lg">
-                    
+
 
                     <div className="grid md:grid-cols-2 p-0">
-                        
+
                         {/*Left side*/}
                         <div className="p-5 md:p-20 md:w-[62%] md:absolute">
-                            <div className='text-left font-bold text-4xl py-1 my-5'>{props.longtitle}</div>
+                            <div className="border-t">
+                                <div className='text-left font-bold text-4xl py-1 my-5'>{props.longtitle}</div>
 
-                            <div className='text-[14px] mt-2 px-5 flex items-center'>
-                                <LocationMarkerIcon className='h-4 mr-2' />
-                                <a href={props.coordinates} className='underline text-[#268763]'>{props.address}</a>
-                            </div>
-                            <div className='mt-1 flex px-5 items-center'>
-                                <CalendarIcon className='h-4 mr-2' />
-                                <div className='text-[14px]'>{props.date}</div>
+                                <div className='text-[14px] mt-2 px-5 flex items-center'>
+                                    <LocationMarkerIcon className='h-4 mr-2' />
+                                    <a href={props.coordinates} className='underline text-[#268763]'>{props.address}</a>
+                                </div>
+                                <div className='mt-1 flex px-5 items-center'>
+                                    <CalendarIcon className='h-4 mr-2' />
+                                    <div className='text-[14px]'>{props.date}</div>
+                                </div>
+                                <div className='text-left font-bold text-[16px] py-1 my-5 border-b'>Välj biljetter</div>
                             </div>
 
                             <div className="bg-[#f5f5f5] rounded-lg p-2">
-                                <div className='text-left font-bold text-[16px] py-1 my-5 border-b'>Välj biljetter</div>
-                                <table className="table-fixed w-[100%] text-[16px]">
+
+                                <table className="flex flex-col items-center justify-between overflow-y-scroll w-full text-[16px] md:h-[28rem] h-[18rem]">
                                     <tbody>
                                         {purchaseSummary.map((row, index) => {
                                             return (
                                                 <>
-
-                                                    <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
-                                                        <td className='w-[60%] md:w-[60%] font-bold'>{row.type}
-                                                            <div className="text-[14px] font-light leading-6 text-gray-700 pt-2 pb-5 pr-5">{row.description}</div>
-                                                        </td>
-                                                        <td className='w-[40%] md:w-[20%] text-right font-bold'>
-                                                            <div className="grid grid-rows-2 pb-5">
-                                                                <div className="">{row.total}</div>
-                                                                <div className="right-0 w-32">
-                                                                    <div className="grid grid-cols-3 items-center justify-center">
-                                                                        <button
-                                                                            className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
-                                                                            onClick={() => dispatch(decrement())}
-                                                                        >
-                                                                            <MinusIcon className="text-[#f5f5f5] h-7" />
-                                                                        </button>
-                                                                        <div className="text-center text-2xl text-gray-700 hover:text-gray-900 font-medium">{ticketCount}</div>
-
-                                                                        <button
-                                                                            className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
-                                                                            onClick={() => dispatch(increment())}
-                                                                        >
-                                                                            <PlusIcon className="text-[#f5f5f5] h-7" />
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-
-
-                                                            </div>
-                                                        </td>
+                                                    <tr className={`${index === 0 || 'border-t'}`} key={index}>
+                                                        <td className='font-bold'>{row.type}</td>
+                                                        <td className='font-bold text-right'>{row.total}</td>
                                                     </tr>
-
-                                                </>
+                                                    <tr>
+                                                        <td className='text-[14px] font-light leading-6 text-gray-700 pb-10 md:pr-10 pr-5'>{row.description}</td>
+                                                        <td className=''>
+                                                            <TicketButton />
+                                                        </td>
+                                                    </tr></>
                                             )
                                         }
                                         )}
@@ -131,13 +167,13 @@ const PurchasePopup = props => {
 
                         {/*Right side*/}
                         <div className="bg-[#edeeef] p-5 md:p-10 md:py-20 md:w-[38%] md:h-[100%] md:absolute md:right-0">
-                            <PurchaseSummary />
+                            <PurchaseSummary/>
                             <div className="flex justify-center">
-                                <button className="text-gray-50 font-medium bg-[#93d1ac] hover:bg-teal-700 ease-in-out rounded-lg mt-5 h-16 w-full md:absolute md:bottom-10 bottom-0 md:w-[300px] md:mt-8 py-2 px-4 text-[24px]">Köp</button>
+                                <button className="text-gray-50 font-medium bg-[#93d1ac] hover:bg-teal-700 ease-in-out rounded-lg mt-5 h-16 w-full md:absolute md:bottom-10 md:w-[300px] md:mt-8 py-2 px-4 text-[24px] shadow-lg bottom-0">Köp</button>
                             </div>
                         </div>
                     </div>
-                    <button className='absolute top-0 right-0 h-16 w-16' onClick={props.handleClose}>x</button>
+                    <button className='absolute top-0 right-0 h-20 w-20 text-4xl' onClick={props.handleClose}>x</button>
 
                 </div>
             </div>
