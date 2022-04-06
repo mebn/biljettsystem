@@ -8,18 +8,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model event {
-  id               Int           @id @default(autoincrement())
-  shortTitle       String        @db.VarChar(255)
-  longTitle        String        @db.VarChar(255)
-  description      String?
-  price            Float
-  startTime        DateTime      @db.Timestamp(6)
-  numTick          Int
-  eventPictureLink String?       @db.VarChar(255)
-  purchases        purchase[]
-  location         eventLocation @relation(fields: [locationId], references: [id])
-  locationId       Int           @unique
+  id                   Int           @id @default(autoincrement())
+  shortTitle           String        @db.VarChar(255)
+  longTitle            String        @db.VarChar(255)
+  description          String?
+  startTime            DateTime      @db.Timestamp(6)
+  eventPictureLink     String?       @db.VarChar(255)
+  locationId           Int           @unique
+  location             eventLocation @relation(fields: [locationId], references: [id])
+  orders               order[]
+  ticketTypes          ticketType[]
 }
 
 model eventLocation {
@@ -31,7 +34,7 @@ model eventLocation {
   event   event?
 }
 
-model purchase {
+model order {
   id           Int      @id @default(autoincrement())
   userId       Int
   eventId      Int
@@ -41,15 +44,29 @@ model purchase {
   tickets      ticket[]
 }
 
+model ticketType {
+  id          Int      @id @default(autoincrement())
+  title       String
+  eventId     Int
+  price       Float
+  description String?
+  numTickets  Int
+  standard    Boolean  @default(false)
+  tickets     ticket[]
+  event       event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
 model ticket {
-  id         Int      @id @default(autoincrement())
-  purchaseId Int
-  purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  id           Int        @id @default(autoincrement())
+  orderId      Int
+  ticketTypeId Int
+  ticketType   ticketType @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
+  order        order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model user {
-  id        Int        @id @default(autoincrement())
-  name      String?    @db.VarChar(255)
-  email     String     @db.VarChar(255)
-  purchases purchase[]
+  id     Int     @id @default(autoincrement())
+  name   String? @db.VarChar(255)
+  email  String  @db.VarChar(255)
+  orders order[]
 }
