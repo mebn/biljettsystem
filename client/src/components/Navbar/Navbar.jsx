@@ -37,23 +37,23 @@ const Navbar = () => {
                 <ul className="flex md:space-x-2 md:mt-0 md:text-sm md:font-medium">
                     <li>
                         {/* <NavBtn name='Biljetter' iconTag='TicketIcon' */}
-                        <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-2.5 md:px-4 py-1.5 md:py-2.5 ml-2 rounded-xl text-[14px] md:text-[16px]'>
-                            <TicketIcon className='mr-1 h-5 w-5'/>
-                            Biljetter
+                        <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'>
+                            <TicketIcon className='h-6 w-6 md:h-5 md:w-5'/>
+                            <span className='ml-1 hidden md:block'>Biljetter</span>
                         </button>
                     </li>
                     <li>
                         {loggedIn ? (
-                            <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-2.5 md:px-4 py-1.5 md:py-2.5 ml-2 rounded-xl text-[14px] md:text-[16px]'>
-                                <UserCircleIcon className='mt-[1px] sm:mt-[-1px] mr-1 h-5 w-5'/>
-                                Profil
+                            <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'>
+                                <UserCircleIcon className='h-6 w-6 md:h-5 md:w-5'/>
+                                <span className='ml-1 hidden md:block'>Profil</span>
                             </button>
                         ) : (
                             <button 
-                                className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-2.5 md:px-4 py-1.5 md:py-2.5 ml-2 rounded-xl text-[14px] md:text-[16px]'
+                                className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
                                 onClick={e => onLogin(e)}>
-                                <LoginIcon className='mt-[1px] sm:mt-[-1px] mr-1 h-5 w-5'/>
-                                Logga in
+                                <LoginIcon className='h-6 w-6 md:h-5 md:w-5'/>
+                                <span className='ml-1 hidden md:block'>Logga in</span>
                             </button>
                         )}
                         
