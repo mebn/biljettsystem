@@ -37,7 +37,7 @@ router.use(express.json());
 
 /**
  * @swagger
- * /tickets/buyTicket:
+ * /tickets/buyTickets:
  *   post:
  *     tags: [ticket]
  *     description: Operation to buy one or several ticket(s)
@@ -48,56 +48,65 @@ router.use(express.json());
  *           schema:
  *             type: object
  *             properties:
- *               userId:
- *                 type: integer
  *               eventId:
  *                 type: integer
- *               boughtTickets:
- *                 type: integer
- *             example:
- *               userId: 1
- *               eventId: 1
- *               boughtTickets: 10
+ *               tickets:
+ *                 type: array
+ *                 items:
+ *                   properties:
+ *                     ticketTypeId:
+ *                       type: integer
+ *                     number:
+ *                       type: integer
  *     responses:
  *       '201':
  *         description: Ticket has been successfully purchased!
  */
-router.post("/tickets/buyTicket", async (req, res) => {
-  const { userId, eventId, boughtTickets } = req.body;
+router.post("/tickets/buyTickets", async (req, res) => {
+  const { eventId, tickets } = req.body;
 
-  if (!userId) return res.status(400).json({ error: "userId is missing." });
+  // TODO: Replace with session user
+  const userId = 1;
 
-  if (!eventId) return res.status(400).json({ error: "eventId is missing." });
-
-  if (!boughtTickets)
-    return res.status(400).json({ error: "boughtTickets is missing." });
-
-  // format: 2022-02-27 21:00:00
   let purchaseTime = new Date();
 
-  const availibleTickets = await prisma.event.findMany({
-    include: {
-      purchases: true,
-    },
-  });
+  try {
+    await prisma.$transaction(async (prisma) => {
+      let order = await prisma.order.create({
+        data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
+      });
 
-  if (boughtTickets > availibleTickets) res.status(402);
+      for (const ticket of tickets) {
+        const ticketType = await prisma.ticketType.findFirst({
+          where: { id: ticket.ticketTypeId },
+        });
 
-  await prisma.$transaction(async () => {
-    purchase = await prisma.purchase.create({
-      data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
+        if (ticketType.eventId !== eventId) {
+          throw new Error(`Tickets must be for the same event`);
+        }
+
+        const bought = await prisma.ticket.count({
+          where: { ticketTypeId: ticketType.id },
+        });
+
+        const available = ticketType.numTickets - bought;
+
+        if (ticket.number > available) {
+          throw new Error(`Not enough tickets`);
+        }
+
+        for (let i = 0; i < ticket.number; i++) {
+          await prisma.ticket.create({
+            data: { orderId: order.id, ticketTypeId: ticketType.id },
+          });
+        }
+      }
     });
-    let tickets = [];
-    for (let i = 0; i < boughtTickets; i++) {
-      tickets.push({ purchaseId: purchase.id });
-    }
-    ticket = await prisma.ticket.createMany({
-      data: tickets,
-    });
-    return ticket;
-  });
 
-  res.status(200).json({ message: "Database updated." });
+    res.status(200).json({ message: "Database updated." });
+  } catch (err) {
+    res.status(503).json({ message: err.message });
+  }
 });
 
 module.exports = router;

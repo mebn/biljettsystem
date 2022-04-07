@@ -32,7 +32,6 @@ const Event = () => {
       return eventData;
     };
     getEvent().then((data) => {
-      console.log(data);
       const d = new Date(data.startTime);
       const formatted = {
         ...data,

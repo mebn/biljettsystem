@@ -44,3 +44,16 @@ components:
         location:
           type: object
           $ref: '#/components/schemas/EventLocation'
+    TicketType:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        numberAvailable:
+          type: number
