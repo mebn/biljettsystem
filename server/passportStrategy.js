@@ -2,6 +2,10 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const pool = require("./db");
 
+// prisma stuff
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
 const GOOGLE_CLIENT_ID = "989957502183-ln715pltqb2jud684vurmgpu12nmdb1g.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
 
@@ -13,17 +17,22 @@ passport.use(new GoogleStrategy({
 },
     async function (request, accessToken, refreshToken, profile, done) {
         const { displayName, email } = profile;
-        // console.log(profile);
 
-        // add to db
         try {
-            const stmt = await pool.query(`
-            INSERT INTO users (name, email)
-            VALUES ($1, $2)
-            ON CONFLICT DO NOTHING`,
-                [displayName, email]);
-
-            // console.log(stmt);
+            // add or update user in db
+            await prisma.users.upsert({
+                where: {
+                    email,
+                },
+                update: {
+                    email,
+                    name: displayName,
+                },
+                create: {
+                    email,
+                    name: displayName,
+                },
+            });
         } catch (err) {
             // db down
             return done(null, null);

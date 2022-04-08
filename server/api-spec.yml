@@ -3,6 +3,8 @@ tags:
     description: Api for accessing event information
   - name: ticket
     description: Api for interacting with tickets
+  - name: auth
+    description: Api for handling login and logout
 components:
   schemas:
     EventLocation:

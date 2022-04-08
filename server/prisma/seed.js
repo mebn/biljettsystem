@@ -114,7 +114,7 @@ async function main() {
   )
 
   const createdUsers = await prisma.$transaction(
-    users.map((user) => prisma.user.create({data: user}))
+    users.map((user) => prisma.users.create({data: user}))
   )
 
   const purchases = [

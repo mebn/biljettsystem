@@ -37,7 +37,7 @@ model purchase {
   eventId      Int
   purchaseTime DateTime @db.Timestamp(6)
   event        event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   tickets      ticket[]
 }
 
@@ -47,9 +47,9 @@ model ticket {
   purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 }
 
-model user {
+model users {
   id        Int        @id @default(autoincrement())
   name      String?    @db.VarChar(255)
-  email     String     @db.VarChar(255)
+  email     String     @unique @db.VarChar(255)
   purchases purchase[]
 }
