@@ -1,8 +1,28 @@
 const express = require("express");
+const { PrismaClient } = require("@prisma/client");
+
 const router = express.Router();
-const pool = require("../db");
+const prisma = new PrismaClient();
 
 router.use(express.json());
+
+const selectData = {
+  id: true,
+  shortTitle: true,
+  longTitle: true,
+  description: true,
+  price: true,
+  startTime: true,
+  location: {
+    select: {
+      id: false,
+      title: true,
+      address: true,
+      lat: true,
+      lng: true,
+    },
+  },
+};
 
 /**
  * @swagger
@@ -22,24 +42,19 @@ router.use(express.json());
  *               items:
  *                 $ref: '#/components/schemas/Event'
  *       503:
- *         description: Error      
+ *         description: Error
  */
 router.get("/event/GetAll", async (req, res) => {
-    try {
+  const events = await prisma.event.findMany({
+    select: selectData,
+  });
 
-        const getEvents = await pool.query(`
-            SELECT events.*, availabletickets
-            FROM events 
-            INNER JOIN availabletickets a on events.eventid = a.eventid`);
-        
-        const formatted = getEvents.rows.map(row => (
-            { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}`}
-        ));
-        
-        res.status(200).json(formatted);
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
+  const formatted = events.map((event) => ({
+    ...event,
+    locationUrl: `https://www.google.com/maps/search/?api=1&query=${event.location.lat}%2C${event.location.lng}`,
+  }));
+
+  res.status(200).json(formatted);
 });
 
 /**
@@ -71,117 +86,30 @@ router.get("/event/GetAll", async (req, res) => {
  *         description: Error
  */
 router.get("/event/:eventId", async (req, res) => {
-    const { eventId } = req.params;
+  const { eventId } = req.params;
 
-    if (!eventId) res.status(400).json({ error: "Parameter is missing." });
+  if (!eventId) res.status(400).json({ error: "Parameter is missing." });
 
-    try {
-        const getEvent = await pool.query(`
-            SELECT events.*, availabletickets
-            FROM events
-            INNER JOIN availabletickets a on events.eventid = a.eventid 
-            WHERE events.eventid=$1`,
-            [eventId]);
+  try {
+    const parsed = parseInt(eventId);
+    const event = await prisma.event.findFirst({
+      where: { id: parsed },
+      select: selectData,
+    });
 
-        if (getEvent.rows[0]) {
-            const row = getEvent.rows[0];
-            const formatted = { ...row, coordinates: `https://www.google.com/maps/search/?api=1&query=${row.coordinates.x}%2C${row.coordinates.y}` };
-            
-            res.status(200).json(formatted);
-        } else {
-            res.status(404).json({ });
-        }
+    if (event) {
+      const formatted = {
+        ...event,
+        locationUrl: `https://www.google.com/maps/search/?api=1&query=${event.location.lat}%2C${event.location.lng}`,
+      };
 
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
+      res.status(200).json(formatted);
+    } else {
+      res.status(404).json({});
     }
-});
-
-
-/**
- * @swagger
- * /event/{eventId}:
- *   put:
- *     description: Updates a unique event with description or image
- *     tags: [event]
- *     produces:
- *       - application/json
- *     parameters:
- *      - in: path
- *        name: eventId
- *        description: ID of event that needs to be fetched
- *        required: true
- *        schema:
- *          type: integer
- *     requestBody:
- *       description: Event to update
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               shorttitle:
- *                 type: string
- *               longtitle:
- *                 type: string
- *               description:
- *                 type: string
- *               location:
- *                 type: string
- *               numtick:
- *                 type: integer
- *               eventpicturelink:
- *                 type: string
- *               starttime:
- *                 type: string
- *                 format: date-time
- *               address:
- *                 type: string
- *               price:
- *                 type: integer
- *               coordinates:
- *                 type: object
- *                 properties:
- *                   x:
- *                     type: integer
- *                   y:
- *                     type: integer
- *     responses:
- *       200:
- *         description: Database updated
- *       503:
- *         description: Error
- */
-router.put("/event/:eventId", async (req, res) => {
-    const { eventId } = req.params;
-    const body = req.body;
-
-    if (!eventId) res.status(400).json({ error: "Parameter is missing." });
-    if (!body) res.status(400).json({ error: "Body is missing." });
-
-    try {
-        const putEvents = await pool.query(`
-            UPDATE events SET
-            shorttitle = $1,
-            longtitle = $2,
-            description = $3,
-            location = $4,
-            numtick = $5,
-            eventpicturelink = $6,
-            starttime = $7,
-            address = $8,
-            price = $9,
-            coordinates = $10
-            WHERE eventid = $11`,
-            [body.shorttitle, body.longtitle, body.description, body.location, body.numtick, 
-             body.eventpicturelink, body.starttime, body.address, body.price, 
-             `${body.coordinates.x},${body.coordinates.y}`, eventId]);
-
-        res.status(200).json({ message: "Database updated." });
-    } catch (err) {
-        res.status(503).json({ error: "Database connection failed." });
-    }
+  } catch (err) {
+    res.status(503).json({ error: "Database connection failed." });
+  }
 });
 
 module.exports = router;
