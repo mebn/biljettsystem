@@ -102,7 +102,7 @@ const Event = () => {
             </div>
           </div>
           <div className="flex justify-center flex-col">
-            <button className="shrink bg-btnBG hover:bg-teal-700 rounded-btn text-black font-medium py-3 px-8" onClick={togglePopup} >Biljetter</button>
+            <button className="shrink bg-btnBG hover:bg-teal-700 rounded-btn text-black font-medium py-3 px-8  transition ease-in-out duration-200" onClick={togglePopup} >Biljetter</button>
             {isOpen && <PurchasePopup {...eventInfo} handleClose={togglePopup} />}
           </div>
         </div>

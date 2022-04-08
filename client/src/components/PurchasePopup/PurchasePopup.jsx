@@ -62,15 +62,15 @@ const TicketButton = () => {
     return (
         <div className="grid grid-cols-3 items-center justify-center w-32">
             <button
-                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
+                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out"
                 onClick={decrement}>
                 <MinusIcon className="text-[#f5f5f5] h-7" />
             </button>
 
-            <div className="text-center text-2xl text-gray-700 hover:text-gray-900 font-medium flex justify-center items-center">{counter}</div>
+            <div className="text-center text-2xl text-gray-700 hover:text-black font-medium flex justify-center items-center">{counter}</div>
 
             <button
-                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
+                className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out"
                 onClick={increment}>
                 <PlusIcon className="text-[#f5f5f5] h-7" />
             </button>
@@ -81,7 +81,7 @@ const TicketButton = () => {
 const PurchasePopup = props => {
     return (
         <div className='popup-box'>
-            <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity">
+            <div className="fixed inset-0 bg-black bg-opacity-50">
                 <div style={{boxShadow: "8px 8px #A9E3C0"}} 
                 className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto  text-2xl md:rounded-xl bg-[#edeeef] shadow shadow-[#A9E3C0]">
 
@@ -136,11 +136,11 @@ const PurchasePopup = props => {
                             <div className="flex justify-center">
                                 <button className="text-gray-900 font-medium bg-[#93d1ac] hover:bg-teal-700 
                                 ease-in-out rounded-lg mt-5 h-16 w-full md:absolute md:bottom-10 md:w-[300px] 
-                                md:mt-8 py-2 px-4 text-[24px] shadow-sm bottom-0">Köp</button>
+                                md:mt-8 py-2 px-4 text-[24px] shadow-sm bottom-0 transition duration-200">Köp</button>
                             </div>
                         </div>
                     </div>
-                    <button className='absolute top-0 right-0 h-20 w-20 text-4xl' onClick={props.handleClose}>x</button>
+                    <button className="absolute top-0 right-0 h-20 w-20 text-4xl transition duration-300 ease-in-out hover:text-black text-gray-400 hover:font-medium" onClick={props.handleClose}>x</button>
 
                 </div>
             </div>
