@@ -82,15 +82,15 @@ const PurchasePopup = props => {
     return (
         <div className='popup-box'>
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity">
-
-                <div className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto  text-2xl md:rounded-lg bg-[#edeeef] ">
+                <div style={{boxShadow: "8px 8px #A9E3C0"}} 
+                className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto  text-2xl md:rounded-xl bg-[#edeeef] shadow shadow-[#A9E3C0]">
 
 
                     <div className="grid md:grid-cols-2 p-0">
 
                         {/*Left side*/}
-                        <div className="p-5 md:p-20 md:w-[62%] md:absolute bg-[#f5f5f5] md:h-[100%]">
-                            <div className="border-t">
+                        <div className="p-5 md:p-0 md:w-[62%] md:absolute bg-[#f5f5f5] md:h-[100%]">
+                            <div className="border-t md:px-20 md:pt-16">
                                 <div className='text-left font-bold text-4xl py-1 my-5'>{props.longTitle}</div>
 
                                 <div className='text-[14px] mt-2 px-5 flex items-center'>
@@ -104,7 +104,7 @@ const PurchasePopup = props => {
                                 <div className='text-left font-bold text-[16px] py-1 my-5 border-b'>Välj biljetter</div>
                             </div>
 
-                            <div className="bg-[#f5f5f5] rounded-lg p-1 md:h-fit">
+                            <div className="bg-[#f5f5f5] rounded-lg p-1 md:h-fit md:px-20">
 
                                 <table className="flex flex-col items-center justify-between overflow-y-scroll w-full text-[16px] md:h-[25rem] h-[18rem]">
                                     <tbody>
