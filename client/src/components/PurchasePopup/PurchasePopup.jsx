@@ -1,69 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     CalendarIcon,
     LocationMarkerIcon,
     MinusIcon,
     PlusIcon,
 } from "@heroicons/react/solid";
-import { increment, decrement } from "../../redux/ticketCounter";
-import { useSelector, useDispatch } from "react-redux";
 
 
-const purchaseSummary = [
+var ExampleTickets = [
     {
         "type": "Vuxen",
         "number": "x3",
         "total": "1797 kr",
-        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas"
-    },
-    {
-        "type": "Ungdom",
-        "number": "x1",
-        "total": "399 kr",
-        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas"
+        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas",
     },
     {
         "type": "VIP",
         "number": "x1",
-        "total": "1099 kr",
-        "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
-    },
-    {
-        "type": "Vuxen",
-        "number": "x3",
-        "total": "1797 kr",
-        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas"
+        "total": "399 kr",
+        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas",
     },
     {
         "type": "Ungdom",
         "number": "x1",
-        "total": "399 kr",
-        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas"
-    },
-    {
-        "type": "VIP",
-        "number": "x1",
         "total": "1099 kr",
-        "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
-    },
-
-    {
-        "type": "Vuxen",
-        "number": "x3",
-        "total": "1797 kr",
-        "description": "Detta är för personer mellan 18-65, leg. måste uppvisas"
-    },
-    {
-        "type": "Ungdom",
-        "number": "x1",
-        "total": "399 kr",
-        "description": "Detta är för personer mellan 18-65. Bättre sikt och mer benutrymme. Leg. måste uppvisas"
-    },
-    {
-        "type": "VIP",
-        "number": "x1",
-        "total": "1099 kr",
-        "description": "Detta är för personer mellan 15-18, leg måste uppvisas"
+        "description": "Detta är för personer mellan 15-18, leg måste uppvisas",
     }
 ]
 
@@ -73,7 +34,7 @@ const PurchaseSummary = (props) => {
             <div className="font-bold text-[18px] mb-3">Sammanfattning av order</div>
             <table className="table-fixed w-[100%] text-[14px]">
                 <tbody>
-                    {purchaseSummary.map((row, index) => {
+                    {ExampleTickets.map((row, index) => {
                         return (
                             <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
                                 <td className='w-[60%] md:w-[20%]'>{row.type}</td>
@@ -90,22 +51,27 @@ const PurchaseSummary = (props) => {
 }
 
 const TicketButton = () => {
-    const dispatch = useDispatch();
-    const { ticketCount } = useSelector((state) => state.ticketCounter);
+    const [counter, setCounter] = useState(0);
+    const decrement = () => {
+        setCounter(counter - 1);
+    }
+    const increment = () => {
+        setCounter(counter + 1);
+    }
+
     return (
         <div className="grid grid-cols-3 items-center justify-center w-32">
             <button
                 className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
-                onClick={() => dispatch(decrement())}
-            >
+                onClick={decrement}>
                 <MinusIcon className="text-[#f5f5f5] h-7" />
             </button>
-            <div className="text-center text-2xl text-gray-700 hover:text-gray-900 font-medium flex justify-center items-center">{ticketCount}</div>
+
+            <div className="text-center text-2xl text-gray-700 hover:text-gray-900 font-medium flex justify-center items-center">{counter}</div>
 
             <button
                 className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-10 h-10 rounded-3xl flex justify-center items-center"
-                onClick={() => dispatch(increment())}
-            >
+                onClick={increment}>
                 <PlusIcon className="text-[#f5f5f5] h-7" />
             </button>
         </div>
@@ -117,19 +83,19 @@ const PurchasePopup = props => {
         <div className='popup-box'>
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity">
 
-                <div className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto bg-[#f5f5f5] text-2xl md:rounded-lg">
+                <div className="fixed inset-0 md:inset-y-[10%] md:inset-x-[15%] z-50 overflow-auto  text-2xl md:rounded-lg bg-[#edeeef] ">
 
 
                     <div className="grid md:grid-cols-2 p-0">
 
                         {/*Left side*/}
-                        <div className="p-5 md:p-20 md:w-[62%] md:absolute">
+                        <div className="p-5 md:p-20 md:w-[62%] md:absolute bg-[#f5f5f5] md:h-[100%]">
                             <div className="border-t">
-                                <div className='text-left font-bold text-4xl py-1 my-5'>{props.longtitle}</div>
+                                <div className='text-left font-bold text-4xl py-1 my-5'>{props.longTitle}</div>
 
                                 <div className='text-[14px] mt-2 px-5 flex items-center'>
                                     <LocationMarkerIcon className='h-4 mr-2' />
-                                    <a href={props.coordinates} className='underline text-[#268763]'>{props.address}</a>
+                                    <a href={props.locationUrl} className='underline text-[#268763]'>{props.location.address}</a>
                                 </div>
                                 <div className='mt-1 flex px-5 items-center'>
                                     <CalendarIcon className='h-4 mr-2' />
@@ -138,11 +104,11 @@ const PurchasePopup = props => {
                                 <div className='text-left font-bold text-[16px] py-1 my-5 border-b'>Välj biljetter</div>
                             </div>
 
-                            <div className="bg-[#f5f5f5] rounded-lg p-2">
+                            <div className="bg-[#f5f5f5] rounded-lg p-1 md:h-fit">
 
-                                <table className="flex flex-col items-center justify-between overflow-y-scroll w-full text-[16px] md:h-[28rem] h-[18rem]">
+                                <table className="flex flex-col items-center justify-between overflow-y-scroll w-full text-[16px] md:h-[25rem] h-[18rem]">
                                     <tbody>
-                                        {purchaseSummary.map((row, index) => {
+                                        {ExampleTickets.map((row, index) => {
                                             return (
                                                 <>
                                                     <tr className={`${index === 0 || 'border-t'}`} key={index}>
@@ -152,7 +118,7 @@ const PurchasePopup = props => {
                                                     <tr>
                                                         <td className='text-[14px] font-light leading-6 text-gray-700 pb-10 md:pr-10 pr-5'>{row.description}</td>
                                                         <td className=''>
-                                                            <TicketButton />
+                                                            <TicketButton/>
                                                         </td>
                                                     </tr></>
                                             )
@@ -161,7 +127,6 @@ const PurchasePopup = props => {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
 
 
@@ -169,7 +134,9 @@ const PurchasePopup = props => {
                         <div className="bg-[#edeeef] p-5 md:p-10 md:py-20 md:w-[38%] md:h-[100%] md:absolute md:right-0">
                             <PurchaseSummary/>
                             <div className="flex justify-center">
-                                <button className="text-gray-50 font-medium bg-[#93d1ac] hover:bg-teal-700 ease-in-out rounded-lg mt-5 h-16 w-full md:absolute md:bottom-10 md:w-[300px] md:mt-8 py-2 px-4 text-[24px] shadow-lg bottom-0">Köp</button>
+                                <button className="text-gray-900 font-medium bg-[#93d1ac] hover:bg-teal-700 
+                                ease-in-out rounded-lg mt-5 h-16 w-full md:absolute md:bottom-10 md:w-[300px] 
+                                md:mt-8 py-2 px-4 text-[24px] shadow-sm bottom-0">Köp</button>
                             </div>
                         </div>
                     </div>

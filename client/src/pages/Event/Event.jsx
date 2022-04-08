@@ -1,23 +1,21 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
-import Button from "../../components/Button/Button";
 import Map from "../../components/Map/Map";
 import ReactMarkdown from "react-markdown";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
 
 const exampleEventInfo = {
   longTitle: "Loading...",
-  location: "Loading...",
   address: "Loading...",
   locationUrl: "https://maps.google.com/",
   price: 0,
   date: "Loading...",
   description: "Loading...",
-  address: "Loading...",
   location: {}
 };
 
@@ -35,6 +33,11 @@ const Event = () => {
   let eventIdParam = params.eventId;
 
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
 
   useEffect(() => {
     fetch(`/event/${eventIdParam}`)
@@ -88,7 +91,7 @@ const Event = () => {
             />
           </div>
           <div className="h-60 pb-4">
-            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}  
+            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
           </div>
         </div>
         <div className="flex flex-row justify-between md:flex-col md:gap-2">
@@ -98,7 +101,10 @@ const Event = () => {
               {eventInfo.price} kr
             </div>
           </div>
-          <Button text="Biljetter" to={`/event/${params.eventId}/book`} />
+          <div className="flex justify-center flex-col">
+            <button className="shrink bg-btnBG hover:bg-teal-700 rounded-btn text-black font-medium py-3 px-8" onClick={togglePopup} >Biljetter</button>
+            {isOpen && <PurchasePopup {...eventInfo} handleClose={togglePopup} />}
+          </div>
         </div>
       </div>
     </div>
