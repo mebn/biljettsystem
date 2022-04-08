@@ -1,24 +1,44 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const { PrismaClient } = require("@prisma/client");
 
+const prisma = new PrismaClient();
 router.use(express.json());
 
+/**
+ * @swagger
+ * /user/addUser:
+ *   post:
+ *     tags: [user]
+ *     description: Add a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: A user was added!
+ */
 router.post("/user/addUser", async (req, res) => {
     const body = req.body;
 
     if (!body) res.status(400).json({ ok: false, error: "Body is missing." });
 
     try {
-        const stmt = await pool.query(`
-            INSERT INTO users (name, email)
-            VALUES ($1, $2) RETURNING userid`,
-            [body.name, body.email]);
+
+        const addedUser = await prisma.user.create({data: {name: body.name, email: body.email}})
 
         res.status(200).json({
             ok: true,
             message: "Database updated.",
-            userid: stmt.rows[0].userid
+            userId: addedUser.id
         });
     } catch (err) {
         res.status(503).json({ ok: false, error: "Database connection failed." });

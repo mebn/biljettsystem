@@ -19,6 +19,7 @@ services:
       - "/app/node_modules"
     environment:
       - DB_HOST=db
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/pvk_db_dummy?schema=public
 
   db:
     image: postgres:14
@@ -29,7 +30,5 @@ services:
       - POSTGRES_DB=pvk_db_dummy
     volumes:
       - "./database/pgdata:/var/lib/postgresql/data"
-      - "./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql"
-      - "./database/dummydata.sql:/docker-entrypoint-initdb.d/02_dummydata.sql"
     ports:
       - 5432:5432
