@@ -7,11 +7,13 @@ import NotFound from './pages/NotFound/NotFound';
 import PurchaseComplete from './pages/PurchaseComplete/PurchaseComplete';
 import Event from './pages/Event/Event'
 import EventTransaction from './pages/EventTransaction/EventTransaction';
+import Navbar from './components/Navbar/Navbar';
 
 
 const App = () => (
   <React.StrictMode>
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/event/:eventId" element={<Event />} />
