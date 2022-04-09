@@ -91,7 +91,7 @@ const Event = () => {
             />
           </div>
           <div className="h-60 pb-4">
-            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
+            {!isOpen && eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
           </div>
         </div>
         <div className="flex flex-row justify-between md:flex-col md:gap-2">
