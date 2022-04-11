@@ -8,39 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model event {
-  id                   Int           @id @default(autoincrement())
-  shortTitle           String        @db.VarChar(255)
-  longTitle            String        @db.VarChar(255)
-  description          String?
-  startTime            DateTime      @db.Timestamp(6)
-  eventPictureLink     String?       @db.VarChar(255)
-  locationId           Int           @unique
-  location             eventLocation @relation(fields: [locationId], references: [id])
-  orders               order[]
-  ticketTypes          ticketType[]
+model Event {
+  id               Int           @id @default(autoincrement())
+  shortTitle       String        @db.VarChar(255)
+  longTitle        String        @db.VarChar(255)
+  description      String?
+  startTime        DateTime      @db.Timestamp(6)
+  eventPictureLink String?       @db.VarChar(255)
+  locationId       Int           @unique
+  location         EventLocation @relation(fields: [locationId], references: [id])
+  orders           Order[]
+  ticketTypes      TicketType[]
 }
 
-model eventLocation {
+model EventLocation {
   id      Int    @id @default(autoincrement())
   lat     Float
   lng     Float
   title   String @db.VarChar(255)
   address String @db.VarChar(255)
-  event   event?
+  event   Event?
 }
 
-model order {
+model Order {
   id           Int      @id @default(autoincrement())
   userId       Int
   eventId      Int
   purchaseTime DateTime @db.Timestamp(6)
-  event        event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tickets      ticket[]
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tickets      Ticket[]
 }
 
-model ticketType {
+model TicketType {
   id          Int      @id @default(autoincrement())
   title       String
   eventId     Int
@@ -48,21 +48,21 @@ model ticketType {
   description String?
   numTickets  Int
   standard    Boolean  @default(false)
-  tickets     ticket[]
-  event       event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tickets     Ticket[]
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
-model ticket {
+model Ticket {
   id           Int        @id @default(autoincrement())
   orderId      Int
   ticketTypeId Int
-  ticketType   ticketType @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
-  order        order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
+  order        Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
-model user {
+model User {
   id     Int     @id @default(autoincrement())
   name   String? @db.VarChar(255)
   email  String  @db.VarChar(255)
-  orders order[]
+  orders Order[]
 }
