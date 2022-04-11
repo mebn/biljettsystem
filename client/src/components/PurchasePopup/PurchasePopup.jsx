@@ -107,8 +107,8 @@ const TicketButton = () => {
 const PurchasePopup = (props) => {
   return (
     <div className="popup-box">
-      <div className="fixed inset-0 bg-black bg-opacity-30"/>
-      <div className="fixed inset-0 md:inset-x-10 md:inset-y-32 lg:inset-20 md:shadow-lg lg:max-w-5xl lg:left-0 lg:right-0 lg:mr-auto lg:ml-auto">
+      <div className="fixed inset-0 bg-black bg-opacity-30 z-[1050]"/>
+      <div className="fixed inset-0 z-[1100] md:inset-x-10 md:inset-y-32 lg:inset-20 md:shadow-lg lg:max-w-5xl lg:left-0 lg:right-0 lg:mr-auto lg:ml-auto">
         <div className="h-full z-50 overflow-auto md:rounded-xl bg-white ">
           <div className="flex flex-col justify-between h-full md:flex-row">
             {/*Left side*/}
