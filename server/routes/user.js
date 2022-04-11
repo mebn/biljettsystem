@@ -33,7 +33,7 @@ router.post("/user/addUser", async (req, res) => {
 
     try {
 
-        const addedUser = await prisma.users.create({data: {name: body.name, email: body.email}})
+        const addedUser = await prisma.user.create({data: {name: body.name, email: body.email}})
 
         res.status(200).json({
             ok: true,

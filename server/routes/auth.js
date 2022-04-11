@@ -62,6 +62,9 @@ router.get('/auth/google/callback',
  *   get:
  *     description: A protected route only for logged in users.
  *     tags: [auth]
+ *     security:
+ *       - oAuth:
+ *          - logged_in
  *     responses:
  *       '200':
  *         description: Successful Response

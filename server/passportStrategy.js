@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy({
 
         try {
             // add or update user in db
-            await prisma.users.upsert({
+            await prisma.user.upsert({
                 where: {
                     email,
                 },
