@@ -186,7 +186,7 @@ const PurchasePopup = (props) => {
             </div>
           </div>
           <div
-            className="fixed cursor-pointer hover:bg-[#ddd] ease-in-out md:absolute top-5 bg-[#f5f5f5] rounded-full p-2 shadow-xl right-5 z-[100]"
+            className="fixed cursor-pointer hover:bg-[#ddd] ease-in-out md:absolute top-5 bg-gray-50  rounded-full p-2 shadow-md right-5 z-[100]"
             onClick={props.handleClose}
           >
             <XIcon className="h-7 w-7" />
