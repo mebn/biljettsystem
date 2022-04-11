@@ -3,8 +3,9 @@
 
   - You are about to drop the `event` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `eventLocation` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `purchase` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `order` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `ticket` table. If the table is not empty, all the data it contains will be lost.
+  - You are about to drop the `ticketType` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `user` table. If the table is not empty, all the data it contains will be lost.
 
 */
@@ -12,13 +13,19 @@
 ALTER TABLE "event" DROP CONSTRAINT "event_locationId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "purchase" DROP CONSTRAINT "purchase_eventId_fkey";
+ALTER TABLE "order" DROP CONSTRAINT "order_eventId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "purchase" DROP CONSTRAINT "purchase_userId_fkey";
+ALTER TABLE "order" DROP CONSTRAINT "order_userId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "ticket" DROP CONSTRAINT "ticket_purchaseId_fkey";
+ALTER TABLE "ticket" DROP CONSTRAINT "ticket_orderId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "ticket" DROP CONSTRAINT "ticket_ticketTypeId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "ticketType" DROP CONSTRAINT "ticketType_eventId_fkey";
 
 -- DropTable
 DROP TABLE "event";
@@ -27,10 +34,13 @@ DROP TABLE "event";
 DROP TABLE "eventLocation";
 
 -- DropTable
-DROP TABLE "purchase";
+DROP TABLE "order";
 
 -- DropTable
 DROP TABLE "ticket";
+
+-- DropTable
+DROP TABLE "ticketType";
 
 -- DropTable
 DROP TABLE "user";
@@ -41,9 +51,7 @@ CREATE TABLE "Event" (
     "shortTitle" VARCHAR(255) NOT NULL,
     "longTitle" VARCHAR(255) NOT NULL,
     "description" TEXT,
-    "price" DOUBLE PRECISION NOT NULL,
     "startTime" TIMESTAMP(6) NOT NULL,
-    "numTick" INTEGER NOT NULL,
     "eventPictureLink" VARCHAR(255),
     "locationId" INTEGER NOT NULL,
 
@@ -62,19 +70,33 @@ CREATE TABLE "EventLocation" (
 );
 
 -- CreateTable
-CREATE TABLE "Purchase" (
+CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "eventId" INTEGER NOT NULL,
     "purchaseTime" TIMESTAMP(6) NOT NULL,
 
-    CONSTRAINT "Purchase_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TicketType" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "eventId" INTEGER NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "description" TEXT,
+    "numTickets" INTEGER NOT NULL,
+    "standard" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "TicketType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Ticket" (
     "id" SERIAL NOT NULL,
-    "purchaseId" INTEGER NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "ticketTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
@@ -91,17 +113,20 @@ CREATE TABLE "User" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Event_locationId_key" ON "Event"("locationId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
 -- AddForeignKey
 ALTER TABLE "Event" ADD CONSTRAINT "Event_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "EventLocation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Order" ADD CONSTRAINT "Order_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_purchaseId_fkey" FOREIGN KEY ("purchaseId") REFERENCES "Purchase"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "TicketType" ADD CONSTRAINT "TicketType_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_ticketTypeId_fkey" FOREIGN KEY ("ticketTypeId") REFERENCES "TicketType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
