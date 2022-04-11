@@ -7,6 +7,7 @@ const eventRouter = require("./routes/event");
 const ticketRouter = require("./routes/ticket");
 const userRouter = require("./routes/user");
 const swaggerRouter = require("./routes/swagger");
+const { authRouter, isLoggedIn } = require("./routes/auth");
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,8 @@ const PORT = 7050;
 app.use(eventRouter);
 app.use(ticketRouter);
 app.use(userRouter);
+app.use(authRouter);
+
 app.use("/api-docs", swaggerRouter);
 app.use('/public', express.static('public'));
 
