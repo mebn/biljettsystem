@@ -1,24 +1,22 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
-import Button from "../../components/Button/Button";
 import Map from "../../components/Map/Map";
 import ReactMarkdown from "react-markdown";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
 
 const exampleEventInfo = {
   longTitle: "Loading...",
-  location: "Loading...",
   address: "Loading...",
   locationUrl: "https://maps.google.com/",
   price: 0,
   date: "Loading...",
   description: "Loading...",
-  address: "Loading...",
-  location: {}
+  location: {},
 };
 
 let DefaultIcon = L.icon({
@@ -36,6 +34,11 @@ const Event = () => {
 
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
     fetch(`/event/${eventIdParam}`)
       .then((res) => res.json())
@@ -50,57 +53,81 @@ const Event = () => {
   }, [eventIdParam]);
 
   return (
-    <div className="md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto">
-      <div className="md:border-r-2 px-0 md:px-6">
-        <img className="md:rounded-xl md:mt-8" src="/public/images/eventBanner.jpeg" />
-        <div className="flex flex-col px-7 py-6 mb-20 md:px-0 ">
-          <div className="md:hidden">
-            <h1 className="text-2xl font-medium pb-2">{eventInfo.longTitle}</h1>
-            <div className="border-b-2 border-t-2 py-2">
+    <div>
+      <div
+        className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${
+          isOpen ? "fixed right-0 left-0" : ""
+        }`}
+      >
+        <div className="md:border-r-2 px-0 md:px-6">
+          <img
+            className="md:rounded-xl md:mt-8"
+            src="/public/images/eventBanner.jpeg"
+          />
+          <div className="flex flex-col px-7 py-6 mb-20 md:px-0 ">
+            <div className="md:hidden">
+              <h1 className="text-2xl font-medium pb-2">
+                {eventInfo.longTitle}
+              </h1>
+              <div className="border-b-2 border-t-2 py-2">
+                <EventInfo
+                  coordinateslink={eventInfo.locationUrl}
+                  address={eventInfo.location.address}
+                  date={eventInfo.date}
+                />
+              </div>
+            </div>
+            <ReactMarkdown
+              children={eventInfo.description}
+              className="py-4 prose max-w-none prose-sm md:prose-lg"
+            />
+            <div className="w-full h-72 md:hidden">
+              {eventInfo.location.lat ? (
+                <Map location={eventInfo.location} />
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div
+          className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[1000]
+                    md:sticky md:h-full md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
+                    md:justify-start md:py-8 md:border-t-0 md:top-[64px]"
+        >
+          <div className="hidden md:block">
+            <h1 className="text-2xl font-medium pb-4">{eventInfo.longTitle}</h1>
+            <div className="border-b-2 border-t-2 py-4 mb-4">
               <EventInfo
                 coordinateslink={eventInfo.locationUrl}
                 address={eventInfo.location.address}
                 date={eventInfo.date}
               />
             </div>
-          </div>
-          <ReactMarkdown
-            children={eventInfo.description}
-            className="py-4 prose max-w-none prose-sm md:prose-lg"
-          />
-          <div className="w-full h-72 md:hidden">
-            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
-          </div>
-        </div>
-      </div>
-      <div
-        className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[2000]
-                    md:sticky md:h-full md:top-[64px] md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
-                    md:justify-start md:py-8 md:border-t-0 md:-z-10"
-      >
-        <div className="hidden md:block">
-          <h1 className="text-2xl font-medium pb-4">{eventInfo.longTitle}</h1>
-          <div className="border-b-2 border-t-2 py-4 mb-4">
-            <EventInfo
-              coordinateslink={eventInfo.locationUrl}
-              address={eventInfo.location.address}
-              date={eventInfo.date}
-            />
-          </div>
-          <div className="h-60 pb-4">
-            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}  
-          </div>
-        </div>
-        <div className="flex flex-row justify-between md:flex-col md:gap-2">
-          <div className="flex flex-col justify-center md:flex-row md:justify-start md:align-middle md:gap-1">
-            <div className="">Priser från:</div>
-            <div className="font-bold text-lg md:text-base">
-              {eventInfo.price} kr
+            <div className="h-60 pb-4">
+              {eventInfo.location.lat ? (
+                <Map location={eventInfo.location} />
+              ) : null}
             </div>
           </div>
-          <Button text="Biljetter" to={`/event/${params.eventId}/book`} />
+          <div className="flex flex-row justify-between md:flex-col md:gap-2">
+            <div className="flex flex-col justify-center md:flex-row md:justify-start md:align-middle md:gap-1">
+              <div className="">Priser från:</div>
+              <div className="font-bold text-lg md:text-base">
+                {eventInfo.price} kr
+              </div>
+            </div>
+            <div className="flex justify-center flex-col">
+              <button
+                className="shrink bg-btnBG hover:bg-teal-700 rounded-btn text-black font-medium py-3 px-8 transition ease-in-out duration-200"
+                onClick={togglePopup}
+              >
+                Biljetter
+              </button>
+
+            </div>
+          </div>
         </div>
       </div>
+      {isOpen && <PurchasePopup {...eventInfo} handleClose={togglePopup} />}
     </div>
   );
 };
