@@ -13,13 +13,12 @@ model Event {
   shortTitle       String        @db.VarChar(255)
   longTitle        String        @db.VarChar(255)
   description      String?
-  price            Float
   startTime        DateTime      @db.Timestamp(6)
-  numTick          Int
   eventPictureLink String?       @db.VarChar(255)
-  purchases        Purchase[]
-  location         EventLocation @relation(fields: [locationId], references: [id])
   locationId       Int           @unique
+  location         EventLocation @relation(fields: [locationId], references: [id])
+  orders           Order[]
+  ticketTypes      TicketType[]
 }
 
 model EventLocation {
@@ -31,25 +30,39 @@ model EventLocation {
   event   Event?
 }
 
-model Purchase {
+model Order {
   id           Int      @id @default(autoincrement())
   userId       Int
   eventId      Int
   purchaseTime DateTime @db.Timestamp(6)
   event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   tickets      Ticket[]
 }
 
+model TicketType {
+  id          Int      @id @default(autoincrement())
+  title       String
+  eventId     Int
+  price       Float
+  description String?
+  numTickets  Int
+  standard    Boolean  @default(false)
+  tickets     Ticket[]
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
 model Ticket {
-  id         Int      @id @default(autoincrement())
-  purchaseId Int
-  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  id           Int        @id @default(autoincrement())
+  orderId      Int
+  ticketTypeId Int
+  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
+  order        Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String?    @db.VarChar(255)
-  email     String     @unique @db.VarChar(255)
-  purchases Purchase[]
+  id     Int     @id @default(autoincrement())
+  name   String? @db.VarChar(255)
+  email  String  @db.VarChar(255)
+  orders Order[]
 }

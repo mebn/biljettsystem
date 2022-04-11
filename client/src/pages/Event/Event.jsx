@@ -75,7 +75,7 @@ const Event = () => {
       </div>
       <div
         className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[2000]
-                    md:sticky md:h-full md:top-0 md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
+                    md:sticky md:h-full md:top-[64px] md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
                     md:justify-start md:py-8 md:border-t-0 md:-z-10"
       >
         <div className="hidden md:block">
