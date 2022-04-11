@@ -27,6 +27,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 flex h-[64px] bg-[#FAFAFA] drop-shadow-lg w-full z-[1050]">
+
         <div className="flex px-4 py-2 md:px-8 flex-wrap justify-between items-center w-full md:max-w-6xl md:mx-auto">
             <Link to="/">
                 <div className={`bg-[url('/public/assets/images/biljetta.png')]

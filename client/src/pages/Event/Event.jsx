@@ -122,6 +122,7 @@ const Event = () => {
               >
                 Biljetter
               </button>
+
             </div>
           </div>
         </div>
