@@ -34,8 +34,16 @@ const events = [
   {
     shortTitle: "Veronica Maggio",
     longTitle: "Veronica - Live on Gröna Lund",
-    description:
-      "Veronica Maggio is back at Gröna Lund! See her new album live, on a perfect June night in Swedens capital",
+    description: `### **Veronica Maggio är tillbaka på Gröna Lund!**
+
+Se hennes nya album live, en perfekt junikväll i Sveriges huvudstad.
+    
+"Vissa turnéer vill jag återuppfinna allt, både visuellt och musikaliskt. I år är ett sådant år! Jag längtar efter mycket av allting. Jag vill känna att spelningen är en egen värld och att det finns ett tydligt före- och efter när vi spelar" -- **Veronica Maggio**.
+
+### Om Veronica Maggio
+    
+Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och nått otroliga kommersiella framgångar med sina sex kritikerrosade album, samtliga platina. Hon har slagit rekord på Spotify med över 1 miljard streams och är därmed den första artisten någonsin vars låtkatalog på svenska når den magiska milstolpen.`,
+    price: 429,
     startTime: new Date("2022-06-21 22:00:00"),
     eventPictureLink: "link",
     location: {

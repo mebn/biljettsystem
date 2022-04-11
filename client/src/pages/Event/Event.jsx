@@ -1,81 +1,104 @@
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
-
-const Description = (props) => {
-  const text = props.text;
-  const newText = text.split("\n").map((str) => <p>{str}</p>);
-  return <div className={props.className}>{newText}</div>;
-};
+import Button from "../../components/Button/Button";
+import Map from "../../components/Map/Map";
+import ReactMarkdown from "react-markdown";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 const exampleEventInfo = {
-  shortTitle: "Loading...",
   longTitle: "Loading...",
   location: "Loading...",
   address: "Loading...",
-  coordinates: "https://maps.google.com/",
+  locationUrl: "https://maps.google.com/",
   price: 0,
   date: "Loading...",
-  description: "Loading.."
+  description: "Loading...",
+  address: "Loading...",
+  location: {}
 };
 
-const Event = () => {
-  const [eventInfo, setEventInfo] = useState(exampleEventInfo);
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
+L.Marker.prototype.options.icon = DefaultIcon;
+
+const Event = () => {
   let params = useParams();
   let eventIdParam = params.eventId;
 
-  useEffect(() => {
-    const getEvent = async () => {
-      const res = await fetch(`/event/${eventIdParam}`);
-      const eventData = await res.json();
-      return eventData;
-    };
-    getEvent().then((data) => {
-      const d = new Date(data.startTime);
-      const formatted = {
-        ...data,
-        date: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
-      };
-      setEventInfo(formatted);
+  const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
-    });
+  useEffect(() => {
+    fetch(`/event/${eventIdParam}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const d = new Date(data.startTime);
+        const formatted = {
+          ...data,
+          date: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
+        };
+        setEventInfo(formatted);
+      });
   }, [eventIdParam]);
 
   return (
-    <div className="min-h-screen pb-20 bg-zinc-800 text-zinc-100 md:max-w-3xl md:bg-white md:m-auto md:py-8">
-      <div
-        className={`bg-[url('/public/assets/images/eventBanner.jpeg')] h-72 bg-cover flex 
-                             flex-col justify-end p-6 rounded-bl-lg rounded-br-lg md:rounded-xl
-                             md:h-96`}
-      >
-        <div className="flex flex-col md:gap-2">
-          <div className="text-3xl md:text-5xl">{eventInfo.shortTitle}</div>
-          <div className="text-l md:text-2xl">{eventInfo.location.title}</div>
+    <div className="md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto">
+      <div className="md:border-r-2 px-0 md:px-6">
+        <img className="md:rounded-xl md:mt-8" src="/public/images/eventBanner.jpeg" />
+        <div className="flex flex-col px-7 py-6 mb-20 md:px-0 ">
+          <div className="md:hidden">
+            <h1 className="text-2xl font-medium pb-2">{eventInfo.longTitle}</h1>
+            <div className="border-b-2 border-t-2 py-2">
+              <EventInfo
+                coordinateslink={eventInfo.locationUrl}
+                address={eventInfo.location.address}
+                date={eventInfo.date}
+              />
+            </div>
+          </div>
+          <ReactMarkdown
+            children={eventInfo.description}
+            className="py-4 prose max-w-none prose-sm md:prose-lg"
+          />
+          <div className="w-full h-72 md:hidden">
+            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}
+          </div>
         </div>
       </div>
-      <div className="flex flex-col mx-6 my-4 gap-3 md:mx-0">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl md:text-zinc-800 md:text-3xl">
-            {eventInfo.longTitle}
+      <div
+        className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[2000]
+                    md:sticky md:h-full md:top-0 md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
+                    md:justify-start md:py-8 md:border-t-0"
+      >
+        <div className="hidden md:block">
+          <h1 className="text-2xl font-medium pb-4">{eventInfo.longTitle}</h1>
+          <div className="border-b-2 border-t-2 py-4 mb-4">
+            <EventInfo
+              coordinateslink={eventInfo.locationUrl}
+              address={eventInfo.location.address}
+              date={eventInfo.date}
+            />
           </div>
-          <div className="bg-zinc-600 px-3 py-2 rounded-md whitespace-nowrap">{`${eventInfo.price} kr`}</div>
+          <div className="h-60 pb-4">
+            {eventInfo.location.lat ? <Map location={eventInfo.location} /> : null}  
+          </div>
         </div>
-        <EventInfo
-          address={eventInfo.location.address}
-          date={eventInfo.date}
-          coordinateslink={eventInfo.locationUrl}
-        />
-        <Description
-          className="bg-zinc-600 rounded-lg p-2.5 text-sm whitespace-pre-lin flex flex-col gap-2"
-          text={eventInfo.description}
-        ></Description>
-        <div className="fixed bottom-6 right-0 left-0 mx-6 md:static md:mx-0 md:self-end">
-          <Link to="book">
-            <button className="bg-teal-600 rounded-md h-14 w-full bottom-0 md:w-auto hover:bg-teal-800 py-2 px-4">
-              Tickets
-            </button>
-          </Link>
+        <div className="flex flex-row justify-between md:flex-col md:gap-2">
+          <div className="flex flex-col justify-center md:flex-row md:justify-start md:align-middle md:gap-1">
+            <div className="">Priser från:</div>
+            <div className="font-bold text-lg md:text-base">
+              {eventInfo.price} kr
+            </div>
+          </div>
+          <Button text="Biljetter" to={`/event/${params.eventId}/book`} />
         </div>
       </div>
     </div>
