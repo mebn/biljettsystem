@@ -2,6 +2,8 @@ import { CalendarIcon, LocationMarkerIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import CompletedEvent from "../../components/CompletedEvent/CompletedEvent";
+import PurchaseCompletePopup from "../../components/PurchaseCompletePopup/PurchaseCompletePopup"
+
 
 const purchaseSummary = [
 {
@@ -21,8 +23,47 @@ const purchaseSummary = [
 }
 ]
 
+const exampleEventInfo = {
+    longtitle: "Loading...",
+    location: "Loading...",
+    address: "Loading...",
+    coordinates: "https://maps.google.com/",
+    price: 0,
+    date: "Loading...",
+  };
+
+const examplePurchaseInfo = {
+    email: "example@kth.se",
+    orderNo: 12873613,
+    purchaseSummary: [
+        {
+            "type": "Vuxen",
+            "number": "x3",
+            "total": "1797 kr"
+        },
+        {
+            "type": "Ungdom",
+            "number": "x1",
+            "total": "399 kr"
+        },
+        {
+            "type": "VIP",
+            "number": "x1",
+            "total": "1099 kr"
+        }
+        ]
+  };
+
 
 const PurchaseSummary = (props) => {
+
+    const [eventInfo, setEventInfo] = useState(exampleEventInfo);
+    const [isOpen, setIsOpen] = useState(false);    
+    
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+    }
+
     return(
         <div style={{boxShadow: "6px 6px #A9E3C0"}}
         className='mt-3 bg-[#f5f5f5] px-5 py-4 text-[14px] rounded-lg shadow shadow-[#A9E3C0]'>

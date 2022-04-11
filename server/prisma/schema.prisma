@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model event {
+model Event {
   id               Int           @id @default(autoincrement())
   shortTitle       String        @db.VarChar(255)
   longTitle        String        @db.VarChar(255)
@@ -17,39 +17,39 @@ model event {
   startTime        DateTime      @db.Timestamp(6)
   numTick          Int
   eventPictureLink String?       @db.VarChar(255)
-  purchases        purchase[]
-  location         eventLocation @relation(fields: [locationId], references: [id])
+  purchases        Purchase[]
+  location         EventLocation @relation(fields: [locationId], references: [id])
   locationId       Int           @unique
 }
 
-model eventLocation {
+model EventLocation {
   id      Int    @id @default(autoincrement())
   lat     Float
   lng     Float
   title   String @db.VarChar(255)
   address String @db.VarChar(255)
-  event   event?
+  event   Event?
 }
 
-model purchase {
+model Purchase {
   id           Int      @id @default(autoincrement())
   userId       Int
   eventId      Int
   purchaseTime DateTime @db.Timestamp(6)
-  event        event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tickets      ticket[]
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tickets      Ticket[]
 }
 
-model ticket {
+model Ticket {
   id         Int      @id @default(autoincrement())
   purchaseId Int
-  purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 }
 
-model user {
+model User {
   id        Int        @id @default(autoincrement())
   name      String?    @db.VarChar(255)
-  email     String     @db.VarChar(255)
-  purchases purchase[]
+  email     String     @unique @db.VarChar(255)
+  purchases Purchase[]
 }
