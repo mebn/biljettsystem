@@ -12,7 +12,6 @@ import Navbar from './components/Navbar/Navbar';
 
 
 const App = () => (
-  <React.StrictMode>
     <BrowserRouter>
       <Navbar />
       <Routes>
@@ -21,11 +20,9 @@ const App = () => (
         <Route path="/event/:eventId/book" element={<EventTransaction />} />
         <Route path="/event/:eventId/purchase" element={<EventTransactionAlpha/>} />
         <Route path="/purchase-complete/:eventId" element={<PurchaseComplete />} />
-        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
 );
 
 export default App;

@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
+import Popup from "../../components/Popup/Popup";
 
 const exampleEventInfo = {
   longTitle: "Loading...",
@@ -26,18 +27,49 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
+const examplePurchaseInfo = {
+  email: "example@kth.se",
+  orderNo: 12873613,
+  purchaseSummary: [
+    {
+      type: "Vuxen",
+      number: "x3",
+      total: "1797 kr",
+    },
+    {
+      type: "Ungdom",
+      number: "x1",
+      total: "399 kr",
+    },
+    {
+      type: "VIP",
+      number: "x1",
+      total: "1099 kr",
+    },
+  ],
+};
+
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Event = () => {
   let params = useParams();
   let eventIdParam = params.eventId;
 
+  const [purchaseCompletePopup, setPurchaseCompletePopup] = useState(false)
+
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
   const [isOpen, setIsOpen] = useState(false);
   const togglePopup = () => {
     setIsOpen(!isOpen);
+    if(purchaseCompletePopup){
+      setPurchaseCompletePopup(!purchaseCompletePopup)
+    }
   };
+
+  const togglePurchaseStep = () => {
+    setPurchaseCompletePopup(!purchaseCompletePopup)
+  }
 
   useEffect(() => {
     fetch(`/event/${eventIdParam}`)
@@ -127,7 +159,9 @@ const Event = () => {
           </div>
         </div>
       </div>
-      {isOpen && <PurchasePopup {...eventInfo} handleClose={togglePopup} />}
+      {isOpen && <Popup handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
+                        eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo}/>
+      }
     </div>
   );
 };
