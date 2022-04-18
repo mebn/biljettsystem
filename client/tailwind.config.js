@@ -14,6 +14,7 @@ module.exports = {
         cardBG: "white",
         greyOverlay: "#F5F6F8",
         btnBG: "#A9E3C0",
+        btnBGHover: "#85c29d",
         btnText1: "#0A1F44",
         btnText2: "#0A1F44",
       },

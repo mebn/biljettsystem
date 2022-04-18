@@ -59,21 +59,21 @@ const TicketButton = (props) => {
     return (
       <div className="grid grid-cols-3 items-center justify-center w-32">
         <button
-          className={`bg-[#93d1ac] ${counter <= 0 ? "cursor-not-allowed" : "hover:bg-teal-700"} shadow-sm w-9 h-9 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out`}
+          className={`bg-btnBG ${counter <= 0 ? "cursor-not-allowed" : "hover:bg-btnBGHover"} shadow-sm w-9 h-9 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out`}
           onClick={decrement}
         >
-          <MinusIcon className="text-[#f5f5f5] h-5" />
+          <MinusIcon className="text-btnText1 h-5" />
         </button>
   
-        <div className="text-center text-2xl text-gray-700 hover:text-black font-medium flex justify-center items-center">
+        <div className="text-center text-2xl text-text1 hover:text-black font-medium flex justify-center items-center">
           {counter}
         </div>
   
         <button
-          className="bg-[#93d1ac] hover:bg-teal-700 shadow-sm w-9 h-9 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out"
+          className="bg-btnBG hover:bg-btnBGHover shadow-sm w-9 h-9 rounded-3xl flex justify-center items-center transition duration-200 ease-in-out"
           onClick={increment}
         >
-          <PlusIcon className="text-[#f5f5f5] h-7" />
+          <PlusIcon className="text-btnText1 h-5" />
         </button>
       </div>
     );
@@ -168,7 +168,7 @@ const PurchaseSummary = (props) => {
             </tbody>
             </table>
                 <div className='text-left mt-4 text-[16px]'>Totalpris: 
-                    <span className='text-[#268763] text-xl ml-1 font-bold'>
+                    <span className='text-text1 text-xl ml-1.5 font-bold'>
                         {props.total} kr
                     </span>
                 </div>
@@ -226,7 +226,7 @@ const Popup = (props) => {
                         <PurchaseSummary purchaseCompletePopup={props.purchaseCompletePopup} orderNo={props.examplePurchaseInfo.orderNo} counters={counters} total={total} />
                         {props.purchaseCompletePopup ||
                             <button
-                                className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-teal-700"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
+                                className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
                                 onClick={total === 0 || (() => props.handleStep())}
                             >
                                 Köp
@@ -234,7 +234,7 @@ const Popup = (props) => {
                         }
                     </div>
                     
-                    <div className='fixed cursor-pointer hover:bg-[#ddd] ease-in-out md:absolute top-20 md:top-5 bg-[#f5f5f5] md:bg-transparent rounded-full p-2 shadow-md md:shadow-none right-5 z-[100]' onClick={props.handleClose}>
+                    <div className='fixed cursor-pointer hover:bg-[#ddd] transition ease-in-out duration-200 md:absolute top-20 md:top-5 bg-[#f5f5f5] md:bg-transparent rounded-full p-2 shadow-md md:shadow-none right-5 z-[100]' onClick={props.handleClose}>
                     <XIcon className="h-7 w-7"/>
                 </div>    
                 </div>
