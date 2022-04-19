@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
-import PurchaseCompletePopup from "../../components/PurchaseCompletePopup/PurchaseCompletePopup";
+import Popup from "../../components/Popup/Popup";
 
 const purchaseSummary = [
   {
@@ -30,33 +29,13 @@ const exampleEventInfo = {
   date: "Loading...",
 };
 
-const examplePurchaseInfo = {
-  email: "example@kth.se",
-  orderNo: 12873613,
-  purchaseSummary: [
-    {
-      type: "Vuxen",
-      number: "x3",
-      total: "1797 kr",
-    },
-    {
-      type: "Ungdom",
-      number: "x1",
-      total: "399 kr",
-    },
-    {
-      type: "VIP",
-      number: "x1",
-      total: "1099 kr",
-    },
-  ],
-};
+
 
 const MyBtn = (props) => {
   return (
     <div>
       <Link to={props.to}>
-        <button className="bg-[#A9E3C0] text-[#0A1F44] text-[16px] px-10 py-3 hover:bg-blue-700 text-white font-bold py-2 px-4 m-1 rounded-lg">
+        <button className="bg-[#A9E3C0] text-[black] text-[14px] px-10 py-3 hover:bg-blue-700 text-white font-bold py-2 px-4 m-1 rounded-lg">
           {props.text}
         </button>
       </Link>
@@ -85,23 +64,7 @@ const Home = () => {
       </div>
       <div className="flex">
         <MyBtn to="/purchase-complete/1" text="Purchase complete page (MVP)" />
-        <div>
-          {/*IMPLEMENT ON EVENT PAGE (NOT EVENT TRANSACTION)*/}
-          <button
-            className="bg-[#A9E3C0] text-[#0A1F44] text-[16px] px-10 py-3 hover:bg-blue-700 text-white font-bold py-2 px-4 m-1 rounded-lg"
-            onClick={togglePopup}
-          >
-            Purchase Complete Popup (Alpha)
-          </button>
-          {isOpen && (
-            <PurchaseCompletePopup
-              {...examplePurchaseInfo}
-              handleClose={togglePopup}
-            />
-          )}
         </div>
-        {/*IMPLEMENT ON EVENT PAGE (NOT EVENT TRANSACTION)*/}
-      </div>
     </div>
   );
 };
