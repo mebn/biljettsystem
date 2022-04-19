@@ -163,7 +163,7 @@ const PurchaseSummary = (props) => {
                                         <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
                                             <td className='w-[60%] md:w-[20%]'>{row.title}</td>
                                             <td className='w-[20%] md:w-[50%] text-right'>x{props.counters[index]}</td>
-                                            <td className='w-[20%] md:w-[30%] text-right'>{row.price * props.counters[index]} kr</td>
+                                            <td className='w-[20%] md:w-[30%] text-right'>{row.price} kr</td>
                                         </tr>
                                     )
                                 ))
@@ -209,6 +209,16 @@ const Popup = (props) => {
     const [ticketTypeList, setTicketTypeList] = useState(ExampleTickets);
     const [loaded, SetLoaded] = useState(false);
 
+    let initialCounters = []
+    for (var i = 0; i < ExampleTickets.length; i++) {
+        initialCounters.push(0)
+    }
+
+    const [total, setTotal] = useState(0);
+    const [counters, setCounters] = useState(initialCounters);
+
+
+    //Fetch tickets
     useEffect(() => {
         fetch(`/event/${eventIdParam}/tickets`)
             .then((res) => res.json())
@@ -223,14 +233,37 @@ const Popup = (props) => {
             });
     }, [eventIdParam]);
 
+    //Buy tickets
+    const sendPost = (eventId, tickets) => {
+        fetch('/tickets/buyTickets', {
+            method: 'POST',
+            body: JSON.stringify({
+                eventId: eventId,
+                tickets: tickets
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(res => {
+                if (res.status === 201) props.handleStep();
 
-    let initialCounters = []
-    for (var i = 0; i < ExampleTickets.length; i++) {
-        initialCounters.push(0)
+                return res.json();
+            })
+            .then(data => {
+                if (data.error === "Tickets must be for the same event")
+                    console.log("Tickets must be for the same event");
+            });
     }
 
-    const [total, setTotal] = useState(0)
-    const [counters, setCounters] = useState(initialCounters)
+    const buyTicket = () => {
+        //Object array with id and count for each ticket
+        const boughtTicketsList = ticketTypeList.map(({id}, index) => ({ticketTypeId: id, number: counters[index]}));
+        //Send tickets where count is not 0
+        sendPost(parseInt(props.params.eventId), boughtTicketsList.filter(row => {return row.number !== 0}));
+    }
+
+
 
     return (
         <div className='popup-box'>
@@ -249,7 +282,7 @@ const Popup = (props) => {
                         {props.purchaseCompletePopup ||
                             <button
                                 className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
-                                onClick={total === 0 || (() => props.handleStep())}
+                                onClick={total === 0 || (() => buyTicket())}
                             >
                                 Köp
                             </button>
