@@ -11,6 +11,7 @@ import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
 import LoginPopup from "../../components/LoginPopup/LoginPopup";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedOut } from "../../redux/loggedIn";
+import Popup from "../../components/Popup/Popup";
 
 const exampleEventInfo = {
   longTitle: "Loading...",
@@ -29,29 +30,59 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
+const examplePurchaseInfo = {
+  email: "example@kth.se",
+  orderNo: 12873613,
+  purchaseSummary: [
+    {
+      type: "Vuxen",
+      number: "x3",
+      total: "1797 kr",
+    },
+    {
+      type: "Ungdom",
+      number: "x1",
+      total: "399 kr",
+    },
+    {
+      type: "VIP",
+      number: "x1",
+      total: "1099 kr",
+    },
+  ],
+};
+
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Event = () => {
   let params = useParams();
   let eventIdParam = params.eventId;
 
+  const [purchaseCompletePopup, setPurchaseCompletePopup] = useState(false)
+
   const [eventInfo, setEventInfo] = useState(exampleEventInfo);
 
   const [isOpen, setIsOpen] = useState(false);
   const togglePopup = () => {
     setIsOpen(!isOpen);
+    if(purchaseCompletePopup){
+      setPurchaseCompletePopup(!purchaseCompletePopup)
+    }
   };
 
   const {loggedIn} = useSelector((state)=>state.loggedIn)
-  const dispatch = useDispatch();
+  const showPopup = () => {
+      if(isOpen){
+        if(!loggedIn)
+          return <LoginPopup handleClose = {togglePopup}/>
+        return <Popup handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
+        eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo}/>
 
-  const Popup = () =>{
-    if (loggedIn) {
-      return <LoginPopup handleClose = {togglePopup}/>;
-    }
-    else{
-      return 
-    }
+     }
+  }
+
+  const togglePurchaseStep = () => {
+    setPurchaseCompletePopup(!purchaseCompletePopup)
   }
 
   useEffect(() => {
@@ -142,7 +173,7 @@ const Event = () => {
           </div>
         </div>
       </div>
-      {isOpen && (loggedIn ? <PurchasePopup {...eventInfo} handleClose={togglePopup}/> : <LoginPopup handleClose = {togglePopup}/>)}
+      {showPopup()}
     </div>
   );
 };

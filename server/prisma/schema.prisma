@@ -31,7 +31,7 @@ model EventLocation {
 }
 
 model Order {
-  id           Int      @id @default(autoincrement())
+  id           String      @id @default(uuid())
   userId       Int
   eventId      Int
   purchaseTime DateTime @db.Timestamp(6)
@@ -54,7 +54,7 @@ model TicketType {
 
 model Ticket {
   id           Int        @id @default(autoincrement())
-  orderId      Int
+  orderId      String
   ticketTypeId Int
   ticketType   TicketType @relation(fields: [ticketTypeId], references: [id], onDelete: Cascade)
   order        Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -63,6 +63,6 @@ model Ticket {
 model User {
   id     Int     @id @default(autoincrement())
   name   String? @db.VarChar(255)
-  email  String  @db.VarChar(255) @unique
+  email  String  @unique @db.VarChar(255)
   orders Order[]
 }
