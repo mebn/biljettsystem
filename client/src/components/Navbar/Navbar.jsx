@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TicketIcon, LoginIcon, UserCircleIcon } from '@heroicons/react/outline'
+import {useDispatch, useSelector} from 'react-redux'
+import {setLoggedIn, setLoggedOut} from '../../redux/loggedIn'
 
 
 // Had problem creating dynamic JSX Tags. Code below didn't work!
@@ -18,11 +20,11 @@ import { TicketIcon, LoginIcon, UserCircleIcon } from '@heroicons/react/outline'
 
 const Navbar = () => {
 
-    const [loggedIn, setLoggedIn] = useState(false)
-
+    const { loggedIn } = useSelector((state) => state.loggedIn);
+    const dispatch = useDispatch();
     const onLogin = (e) => {
         e.preventDefault();
-        setLoggedIn(true);
+        //Fixa så att loginpopup öppnas
     }
 
   return (

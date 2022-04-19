@@ -8,6 +8,9 @@ import ReactMarkdown from "react-markdown";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
+import LoginPopup from "../../components/LoginPopup/LoginPopup";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoggedIn, setLoggedOut } from "../../redux/loggedIn";
 
 const exampleEventInfo = {
   longTitle: "Loading...",
@@ -38,6 +41,18 @@ const Event = () => {
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+
+  const {loggedIn} = useSelector((state)=>state.loggedIn)
+  const dispatch = useDispatch();
+
+  const Popup = () =>{
+    if (loggedIn) {
+      return <LoginPopup handleClose = {togglePopup}/>;
+    }
+    else{
+      return 
+    }
+  }
 
   useEffect(() => {
     fetch(`/event/${eventIdParam}`)
@@ -127,7 +142,7 @@ const Event = () => {
           </div>
         </div>
       </div>
-      {isOpen && <PurchasePopup {...eventInfo} handleClose={togglePopup} />}
+      {isOpen && (loggedIn ? <PurchasePopup {...eventInfo} handleClose={togglePopup}/> : <LoginPopup handleClose = {togglePopup}/>)}
     </div>
   );
 };
