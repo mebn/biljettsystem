@@ -72,7 +72,7 @@ const Event = () => {
   }
 
   useEffect(() => {
-    fetch(`/event/${eventIdParam}`)
+    fetch(`/api/event/${eventIdParam}`)
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.startTime);

@@ -49,7 +49,7 @@ const toSelect = {
 
 /**
  * @swagger
- * /tickets/buyTickets:
+ * /api/tickets/buyTickets:
  *   post:
  *     tags: [ticket]
  *     description: Operation to buy one or several ticket(s)
@@ -106,7 +106,7 @@ const toSelect = {
  *                           name:
  *                             type: string
 */
-router.post("/tickets/buyTickets", async (req, res) => {
+router.post("/buyTickets", async (req, res) => {
   const { eventId, tickets } = req.body;
 
   // TODO: Replace with session user

@@ -32,7 +32,7 @@ const EventTransaction = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/event/${params.eventId}`)
+    fetch(`/api/event/${params.eventId}`)
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.startTime);
@@ -58,7 +58,7 @@ const EventTransaction = () => {
   }
 
   const createUser = async email => {
-    return await fetch("/user/addUser", {
+    return await fetch("/api/user/addUser", {
       method: "POST",
       body: JSON.stringify({
         name: "",
@@ -75,7 +75,7 @@ const EventTransaction = () => {
   }
 
   const sendPost = (userId, eventId, tickets) => {
-    fetch('/tickets/buyTicket',{
+    fetch('/api/tickets/buyTicket',{
       method: 'POST',
       body: JSON.stringify({
           userId: userId,
