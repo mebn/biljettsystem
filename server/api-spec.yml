@@ -14,7 +14,7 @@ components:
       description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
       flows:
         authorizationCode: 
-          authorizationUrl: /auth/google
+          authorizationUrl: /api/auth/google
           scopes:
             logged_in: When logged in
   schemas:

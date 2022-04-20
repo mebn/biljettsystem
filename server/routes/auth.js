@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const session = require('express-session');
 const passport = require('passport');
 require('../passportStrategy');
+const mySession = require("../session");
 
 router.use(express.json());
 
@@ -11,7 +11,7 @@ function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
 }
 
-router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+router.use(mySession);
 router.use(passport.initialize());
 router.use(passport.session());
 
@@ -27,7 +27,7 @@ router.use(passport.session());
  *         description: Successful Response
  */
 router.get('/login', (req, res) => {
-    res.status(200).send('<a href="/auth/google">Authenticate with Google</a>');
+    res.status(200).send('<a href="/api/auth/google">Authenticate with Google</a>');
 });
 
 
@@ -45,13 +45,13 @@ router.get('/google', passport.authenticate('google', { scope: ['email', 'profil
  * @swagger
  * /api/auth/google/callback:
  *   get:
- *     description: Redirects user to /protected on successful login and /auth/google/failure on unsuccessful login.
+ *     description: Redirects user to /api/auth/testLoggedIn on successful login and /api/auth/google/failure on unsuccessful login.
  *     tags: [auth]
  */
 router.get('/google/callback',
     passport.authenticate('google', {
-        successRedirect: '/protected',
-        failureRedirect: '/auth/google/failure'
+        successRedirect: '/api/auth/testLoggedIn',
+        failureRedirect: '/api/auth/google/failure'
     })
 );
 
