@@ -1,10 +1,17 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
+const session = require('express-session');
+const passport = require('passport');
+const { isLoggedIn } = require("./auth");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
+router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+router.use(passport.initialize());
+router.use(passport.session());
+
 
 /**
  * @swagger
@@ -52,6 +59,9 @@ const toSelect = {
  * /api/tickets/buyTickets:
  *   post:
  *     tags: [ticket]
+ *     security:
+ *       - oAuth:
+ *         - logged_in
  *     description: Operation to buy one or several ticket(s)
  *     requestBody:
  *       required: true
@@ -106,11 +116,22 @@ const toSelect = {
  *                           name:
  *                             type: string
 */
-router.post("/buyTickets", async (req, res) => {
+router.post("/buyTickets", isLoggedIn, async (req, res) => {
   const { eventId, tickets } = req.body;
+  const email = req.user.email;
+  let userId;
 
-  // TODO: Replace with session user
-  const userId = 1;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    userId = user.id;
+  } catch (e) {
+    return res.status(503).json({
+      ok: false,
+      message: "Database connection failed.",
+    });
+  }
 
   let purchaseTime = new Date();
   let order;
@@ -169,14 +190,14 @@ router.post("/buyTickets", async (req, res) => {
     }, {});
 
     // Return purchased tickets as an array
-    let ticketsAsArray = Object.keys(purchasedTickets).map(key => ({...purchasedTickets[key], name: key}))
+    let ticketsAsArray = Object.keys(purchasedTickets).map(key => ({ ...purchasedTickets[key], name: key }))
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Completed order",
       order: { ...completedOrder, tickets: ticketsAsArray },
     });
   } catch (err) {
-    res.status(503).json({ message: err.message });
+    return res.status(503).json({ message: err.message });
   }
 });
 

@@ -5,6 +5,8 @@ tags:
     description: Api for interacting with tickets
   - name: auth
     description: Api for handling login and logout
+  - name: email
+    description: Api for sending email to client
 components:
   securitySchemes:
     oAuth:
