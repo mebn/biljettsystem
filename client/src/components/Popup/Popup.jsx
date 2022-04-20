@@ -19,6 +19,25 @@ var ExampleTickets = [
     }
 ];
 
+var ExampleReturnMessage = {
+    message: "Completed order",
+    order: {
+        id: "-",
+        event: {
+            id: 0,
+            longTitle: "-",
+            startTime: "1970-01-01T00:00:00.000Z"
+        },
+        tickets: [
+            {
+                price: 0,
+                purchased: 0,
+                name: "-"
+            }
+        ]
+    }
+}
+
 
 
 const TicketButton = (props) => {
@@ -144,7 +163,12 @@ const PurchaseStep = (props) => {
 
 const PurchaseSummary = (props) => {
 
-
+    const totalPurchase = () => {
+        let sum = 0;
+        props.returnMessage.order.tickets.forEach(e => sum = sum + e.price * e.purchased);
+        return sum;
+    }
+    
     return (
         <div className="">
             <div className="md:pt-10 font-bold text-[18px] border-b">Sammanfattning av order</div>
@@ -152,29 +176,55 @@ const PurchaseSummary = (props) => {
                 <div className='text-base mt-4 text-zinc-500'>Du har inte valt dina biljetter än!</div>
                 :
                 <div>
-                    {props.purchaseCompletePopup &&
-                        <div className="font-bold text-[16px] my-2">Ordernr: <span className="font-normal">#{props.orderNo}</span></div>
+                    {props.purchaseCompletePopup ?
+                        //Completed Purchase
+                        <div>
+                            <div className="font-bold text-[16px] my-2">OrderNr: <span className="font-normal">#{props.returnMessage.order.id}</span></div>
+                            <div className="font-bold text-[16px] my-2">Köpta biljetter:</div>
+                            <table className="table-fixed w-[100%] text-[14px]">
+                                <tbody>
+                                    {
+                                        props.returnMessage.order.tickets.map((row, index) => (
+                                            <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
+                                                <td className='w-[60%] md:w-[20%]'>{row.name}</td>
+                                                <td className='w-[20%] md:w-[50%] text-right'>x{row.purchased}</td>
+                                                <td className='w-[20%] md:w-[30%] text-right'>{row.price} kr</td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                            <div className='text-left mt-4 text-[16px]'>Totalpris:
+                                <span className='text-text1 text-xl ml-1.5 font-bold'>
+                                    {totalPurchase()} kr
+                                </span>
+                            </div>
+                        </div>
+                        :
+                        //Purchase page
+                        <div>
+                            <table className="table-fixed w-[100%] text-[14px]">
+                                <tbody>
+                                    {
+                                        props.ticketTypeList.map((row, index) => (
+                                            props.counters[index] === 0 || (
+                                                <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
+                                                    <td className='w-[60%] md:w-[20%]'>{row.title}</td>
+                                                    <td className='w-[20%] md:w-[50%] text-right'>x{props.counters[index]}</td>
+                                                    <td className='w-[20%] md:w-[30%] text-right'>{row.price} kr</td>
+                                                </tr>
+                                            )
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                            <div className='text-left mt-4 text-[16px]'>Totalpris:
+                                <span className='text-text1 text-xl ml-1.5 font-bold'>
+                                    {props.total} kr
+                                </span>
+                            </div>
+                        </div>
                     }
-                    <table className="table-fixed w-[100%] text-[14px]">
-                        <tbody>
-                            {
-                                props.ticketTypeList.map((row, index) => (
-                                    props.counters[index] === 0 || (
-                                        <tr className={`${index === 0 || 'border-t'} h-8 px-2 py-1`} key={index}>
-                                            <td className='w-[60%] md:w-[20%]'>{row.title}</td>
-                                            <td className='w-[20%] md:w-[50%] text-right'>x{props.counters[index]}</td>
-                                            <td className='w-[20%] md:w-[30%] text-right'>{row.price} kr</td>
-                                        </tr>
-                                    )
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                    <div className='text-left mt-4 text-[16px]'>Totalpris:
-                        <span className='text-text1 text-xl ml-1.5 font-bold'>
-                            {props.total} kr
-                        </span>
-                    </div>
                 </div>
             }
         </div>
@@ -208,6 +258,7 @@ const Popup = (props) => {
     let eventIdParam = props.params.eventId;
     const [ticketTypeList, setTicketTypeList] = useState(ExampleTickets);
     const [loaded, SetLoaded] = useState(false);
+    const [returnMessage, setReturnMessage] = useState(ExampleReturnMessage);
 
     let initialCounters = []
     for (var i = 0; i < ExampleTickets.length; i++) {
@@ -251,16 +302,23 @@ const Popup = (props) => {
                 return res.json();
             })
             .then(data => {
+                //Better solution?
                 if (data.error === "Tickets must be for the same event")
                     console.log("Tickets must be for the same event");
+                else if (data.error === "Not enough tickets")
+                    console.log("Not enough tickets");
+                else if (data.message === "Completed order") {
+                    setReturnMessage(data);
+                    console.log("success");
+                }
             });
     }
 
     const buyTicket = () => {
-        //Object array with id and count for each ticket
-        const boughtTicketsList = ticketTypeList.map(({id}, index) => ({ticketTypeId: id, number: counters[index]}));
-        //Send tickets where count is not 0
-        sendPost(parseInt(props.params.eventId), boughtTicketsList.filter(row => {return row.number !== 0}));
+        //Only id and count for each ticket
+        const boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
+        //Only send tickets where count is not 0
+        sendPost(parseInt(props.params.eventId), boughtTicketsList.filter(row => { return row.number !== 0 }));
     }
 
 
@@ -278,7 +336,7 @@ const Popup = (props) => {
 
                     {/*Right side*/}
                     <div className="flex flex-col bg-[#edeeef] p-7 pb-12 h-full md:p-10 md:pt-20 md:pb-7 md:overflow-y-auto md:w-[38%] md:h-[100%]">
-                        <PurchaseSummary ticketTypeList={ticketTypeList} purchaseCompletePopup={props.purchaseCompletePopup} orderNo={props.examplePurchaseInfo.orderNo} counters={counters} total={total} />
+                        <PurchaseSummary ticketTypeList={ticketTypeList} returnMessage={returnMessage} purchaseCompletePopup={props.purchaseCompletePopup} counters={counters} total={total} />
                         {props.purchaseCompletePopup ||
                             <button
                                 className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
