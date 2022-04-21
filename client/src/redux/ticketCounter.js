@@ -13,7 +13,6 @@ export const ticketCounterSlice = createSlice({
             state.maxTickets = action.payload;
         },
         increment(state) {
-            console.log(state.maxTickets)
             if (state.maxTickets > state.ticketCount) {
                 state.ticketCount += 1;
             }

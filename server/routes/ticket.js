@@ -1,10 +1,13 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
+const { isLoggedIn, initSession } = require("./auth");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
+initSession(router);
+
 
 /**
  * @swagger
@@ -35,11 +38,26 @@ router.use(express.json());
  *             format: date-time
  */
 
+const toSelect = {
+  id: true,
+  event: { select: { id: true, longTitle: true, startTime: true } },
+  tickets: {
+    select: {
+      ticketType: {
+        select: { title: true, price: true },
+      },
+    },
+  },
+};
+
 /**
  * @swagger
- * /tickets/buyTickets:
+ * /api/ticket/buyTickets:
  *   post:
  *     tags: [ticket]
+ *     security:
+ *       - oAuth:
+ *         - logged_in
  *     description: Operation to buy one or several ticket(s)
  *     requestBody:
  *       required: true
@@ -59,20 +77,64 @@ router.use(express.json());
  *                     number:
  *                       type: integer
  *     responses:
- *       '201':
+ *       "201":
  *         description: Ticket has been successfully purchased!
- */
-router.post("/tickets/buyTickets", async (req, res) => {
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 order:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     event:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                         longTitle:
+ *                           type: string
+ *                         startTime:
+ *                           type: string
+ *                     tickets:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           price:
+ *                             type: number
+ *                           purchased:
+ *                             type: number
+ *                           name:
+ *                             type: string
+*/
+router.post("/buyTickets", isLoggedIn, async (req, res) => {
   const { eventId, tickets } = req.body;
+  const email = req.user.email;
+  let userId;
 
-  // TODO: Replace with session user
-  const userId = 1;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    userId = user.id;
+  } catch (e) {
+    return res.status(503).json({
+      ok: false,
+      message: "Database connection failed.",
+    });
+  }
 
   let purchaseTime = new Date();
+  let order;
 
   try {
     await prisma.$transaction(async (prisma) => {
-      let order = await prisma.order.create({
+      order = await prisma.order.create({
         data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
       });
 
@@ -103,9 +165,35 @@ router.post("/tickets/buyTickets", async (req, res) => {
       }
     });
 
-    res.status(200).json({ message: "Database updated." });
+
+    // Find the order that was completed
+    let completedOrder = await prisma.order.findFirst({
+      where: { id: order.id },
+      select: toSelect,
+    });
+
+    // Format and return tickets in a nice format
+    let purchasedTickets = completedOrder.tickets.reduce((acc, ticket) => {
+      let purchased = 1;
+      if (acc[ticket.ticketType.title]) {
+        purchased = acc[ticket.ticketType.title].purchased + 1;
+      }
+      acc[ticket.ticketType.title] = {
+        price: ticket.ticketType.price,
+        purchased: purchased,
+      };
+      return acc;
+    }, {});
+
+    // Return purchased tickets as an array
+    let ticketsAsArray = Object.keys(purchasedTickets).map(key => ({ ...purchasedTickets[key], name: key }))
+
+    return res.status(201).json({
+      message: "Completed order",
+      order: { ...completedOrder, tickets: ticketsAsArray },
+    });
   } catch (err) {
-    res.status(503).json({ message: err.message });
+    return res.status(503).json({ message: err.message });
   }
 });
 

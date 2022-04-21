@@ -5,6 +5,10 @@ tags:
     description: Api for interacting with tickets
   - name: auth
     description: Api for handling login and logout
+  - name: email
+    description: Api for sending email to client
+  - name: order
+    description: Api for viewing current user orders
 components:
   securitySchemes:
     oAuth:
@@ -12,7 +16,7 @@ components:
       description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
       flows:
         authorizationCode: 
-          authorizationUrl: /auth/google
+          authorizationUrl: /api/auth/google
           scopes:
             logged_in: When logged in
   schemas:

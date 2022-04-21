@@ -4,7 +4,10 @@ const { PrismaClient } = require("@prisma/client");
 const router = express.Router();
 const prisma = new PrismaClient();
 
+const { isLoggedIn, initSession } = require("./auth");
+
 router.use(express.json());
+initSession(router);
 
 const selectData = {
   event: {
@@ -29,9 +32,12 @@ const selectData = {
 
 /**
  * @swagger
- * /orders:
+ * /api/order/orders:
  *   get:
  *     tags: [order]
+ *     security:
+ *       - oAuth:
+ *         - logged_in
  *     description: Get all orders for the logged in user
  *     responses:
  *       "200":
@@ -70,11 +76,7 @@ const selectData = {
  *       "503":
  *         description: Server error
  */
-router.get("/orders", async (req, res) => {
-  if (!req.user) {
-    return res.status(403).json({ error: "Not signed in." });
-  }
-
+router.get("/orders", isLoggedIn, async (req, res) => {
   try {
     let orders = await prisma.order.findMany({
       where: { user: { email: req.user.email } },
@@ -103,9 +105,15 @@ router.get("/orders", async (req, res) => {
     });
 
     // Return purchased tickets as an array
-    res.status(200).json(formatted);
+    return res.status(200).json({
+      ok: true,
+      results: formatted,
+    });
   } catch (err) {
-    res.status(503).json({ ok: false, error: "Database connection failed." });
+    return res.status(503).json({
+      ok: false,
+      error: "Database connection failed.",
+    });
   }
 });
 
