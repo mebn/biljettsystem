@@ -7,6 +7,8 @@ tags:
     description: Api for handling login and logout
   - name: email
     description: Api for sending email to client
+  - name: order
+    description: Api for viewing current user orders
 components:
   securitySchemes:
     oAuth:
