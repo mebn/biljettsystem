@@ -12,6 +12,7 @@ const selectData = {
   longTitle: true,
   description: true,
   startTime: true,
+  eventPictureLink: true,
   location: {
     select: {
       id: false,
