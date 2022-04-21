@@ -25,7 +25,7 @@ const selectData = {
 
 /**
  * @swagger
- * /event/GetAll:
+ * /api/event/GetAll:
  *   get:
  *     description: Get all event
  *     tags: [event]
@@ -43,30 +43,40 @@ const selectData = {
  *       503:
  *         description: Error
  */
-router.get("/event/GetAll", async (req, res) => {
-  let events = await prisma.event.findMany({
-    select: selectData,
-  });
-
-  let formatted = [];
-
-  for (const event of events) {
-    const standardTicket = await prisma.ticketType.findFirst({
-      where: { eventId: event.id, standard: true },
+router.get("/GetAll", async (req, res) => {
+  try {
+    let events = await prisma.event.findMany({
+      select: selectData,
     });
-    formatted.push({
-      ...event,
-      locationUrl: `https://www.google.com/maps/search/?api=1&query=${event.location.lat}%2C${event.location.lng}`,
-      price: standardTicket.price,
+
+    let formatted = [];
+
+    for (const event of events) {
+      const standardTicket = await prisma.ticketType.findFirst({
+        where: { eventId: event.id, standard: true },
+      });
+      formatted.push({
+        ...event,
+        locationUrl: `https://www.google.com/maps/search/?api=1&query=${event.location.lat}%2C${event.location.lng}`,
+        price: standardTicket.price,
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      results: formatted,
+    });
+  } catch (err) {
+    return res.status(503).json({
+      ok: false,
+      message: "Database connection failed.",
     });
   }
-
-  res.status(200).json(formatted);
 });
 
 /**
  * @swagger
- * /event/{eventId}:
+ * /api/event/{eventId}:
  *   get:
  *     description: Fetch single event by ID
  *     tags: [event]
@@ -92,7 +102,7 @@ router.get("/event/GetAll", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.get("/event/:eventId", async (req, res) => {
+router.get("/:eventId", async (req, res) => {
   const { eventId } = req.params;
 
   if (!eventId) res.status(400).json({ error: "Parameter is missing." });
@@ -125,7 +135,7 @@ router.get("/event/:eventId", async (req, res) => {
 
 /**
  * @swagger
- * /event/{eventId}/tickets:
+ * /api/event/{eventId}/tickets:
  *   get:
  *     description: Fetch all ticket types for an event
  *     tags: [event]
@@ -153,7 +163,7 @@ router.get("/event/:eventId", async (req, res) => {
  *       503:
  *         description: Error
  */
-router.get("/event/:eventId/tickets", async (req, res) => {
+router.get("/:eventId/tickets", async (req, res) => {
   const { eventId } = req.params;
 
   if (!eventId) res.status(400).json({ error: "Parameter is missing." });
@@ -174,7 +184,7 @@ router.get("/event/:eventId/tickets", async (req, res) => {
     let data = []
 
     for (const ticket of ticketTypes) {
-      const numBought = await prisma.ticket.count({where: {ticketTypeId: ticket.id}})
+      const numBought = await prisma.ticket.count({ where: { ticketTypeId: ticket.id } })
       data.push({
         id: ticket.id,
         title: ticket.title,

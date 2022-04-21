@@ -16,7 +16,7 @@ const PurchaseComplete = () => {
 
     useEffect(() => {
         const getEvent = async () => {
-            const res = await fetch(`/event/${eventIdParam}`);
+            const res = await fetch(`/api/event/${eventIdParam}`);
             const eventData = await res.json();
             return eventData;
         }

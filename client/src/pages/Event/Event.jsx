@@ -85,9 +85,6 @@ const Event = () => {
         handleClose={togglePopup}
         examplePurchaseInfo={examplePurchaseInfo}
       />
-      
-      
-      // return <Popup handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup} eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo} />
     }
   }
 
@@ -96,7 +93,7 @@ const Event = () => {
   }
 
   useEffect(() => {
-    fetch(`/event/${eventIdParam}`)
+    fetch(`/api/event/${eventIdParam}`)
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.startTime);
@@ -183,9 +180,6 @@ const Event = () => {
         </div>
       </div>
       {showPopup()}
-      {/* {isOpen && <Popup params={params} handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
-                        eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo}/>
-      } */}
     </div >
   );
 };

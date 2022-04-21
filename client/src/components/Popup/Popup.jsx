@@ -142,16 +142,16 @@ const PurchaseStep = (props) => {
                         </tbody>
                     </table>
                     :
-                    <div class="animate-pulse flex space-x-4 items-center">
-                        <div class="rounded-full bg-zinc-300 h-10 w-10"></div>
-                        <div class="flex-1 space-y-6 py-1">
-                            <div class="h-2 bg-zinc-300 rounded"></div>
-                            <div class="space-y-3">
-                                <div class="grid grid-cols-3 gap-4">
-                                    <div class="h-2 bg-zinc-300 col-span-2 rounded"></div>
-                                    <div class="h-2 bg-zinc-300 col-span-1 rounded"></div>
+                    <div className="animate-pulse flex space-x-4 items-center">
+                        <div className="rounded-full bg-zinc-300 h-10 w-10"></div>
+                        <div className="flex-1 space-y-6 py-1">
+                            <div className="h-2 bg-zinc-300 rounded"></div>
+                            <div className="space-y-3">
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="h-2 bg-zinc-300 col-span-2 rounded"></div>
+                                    <div className="h-2 bg-zinc-300 col-span-1 rounded"></div>
                                 </div>
-                                <div class="h-2 bg-zinc-300 rounded"></div>
+                                <div className="h-2 bg-zinc-300 rounded"></div>
                             </div>
                         </div>
                     </div>
@@ -271,7 +271,7 @@ const Popup = (props) => {
 
     //Fetch tickets
     useEffect(() => {
-        fetch(`/event/${eventIdParam}/tickets`)
+        fetch(`/api/event/${eventIdParam}/tickets`)
             .then((res) => res.json())
             .then((data) => {
                 setTicketTypeList(data);
@@ -286,7 +286,7 @@ const Popup = (props) => {
 
     //Buy tickets
     const sendPost = (eventId, tickets) => {
-        fetch('/tickets/buyTickets', {
+        fetch('/api/ticket/buyTickets', {
             method: 'POST',
             body: JSON.stringify({
                 eventId: eventId,

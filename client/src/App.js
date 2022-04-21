@@ -9,8 +9,8 @@ import Event from './pages/Event/Event'
 import EventTransaction from './pages/EventTransaction/EventTransaction';
 import EventTransactionAlpha from './pages/EventTransaction/EventTransactionAlpha';
 import Navbar from './components/Navbar/Navbar';
-import { useSelector, useDispatch } from "react-redux";
-import { setLoggedIn, setLoggedOut } from "./redux/loggedIn";
+import { useDispatch } from "react-redux";
+import { setLoggedIn } from "./redux/loggedIn";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -18,7 +18,7 @@ const App = () => {
   
   useEffect(() => {
     const getUser = () => {
-      fetch("/auth/login/success")
+      fetch("/api/auth/login/success")
         .then(res => res.json())
         .then(data => {
           if (data.ok) {

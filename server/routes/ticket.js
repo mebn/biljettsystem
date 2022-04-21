@@ -1,16 +1,12 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
-const session = require('express-session');
-const passport = require('passport');
-const { isLoggedIn } = require("./auth");
+const { isLoggedIn, initSession } = require("./auth");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
-router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-router.use(passport.initialize());
-router.use(passport.session());
+initSession(router);
 
 
 /**
@@ -56,7 +52,7 @@ const toSelect = {
 
 /**
  * @swagger
- * /tickets/buyTickets:
+ * /api/ticket/buyTickets:
  *   post:
  *     tags: [ticket]
  *     security:
@@ -116,7 +112,7 @@ const toSelect = {
  *                           name:
  *                             type: string
 */
-router.post("/tickets/buyTickets", isLoggedIn, async (req, res) => {
+router.post("/buyTickets", isLoggedIn, async (req, res) => {
   const { eventId, tickets } = req.body;
   const email = req.user.email;
   let userId;

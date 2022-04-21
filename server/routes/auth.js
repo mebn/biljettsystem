@@ -1,26 +1,33 @@
 const express = require("express");
 const router = express.Router();
-const session = require('express-session');
 const passport = require('passport');
-const CLIENT_URL = "http://localhost:3000/"
 
 require('../passportStrategy');
+const session = require('express-session');
+
+const mySession = session({
+    secret: 'cats',
+    resave: false,
+    saveUninitialized: true
+})
+
+const initSession = router => {
+    router.use(mySession);
+    router.use(passport.initialize());
+    router.use(passport.session());
+}
 
 router.use(express.json());
+initSession(router);
 
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
 }
 
-router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-router.use(passport.initialize());
-router.use(passport.session());
-
-
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   get:
  *     description: Provides a link to sign in with google.
  *     tags: [auth]
@@ -28,20 +35,19 @@ router.use(passport.session());
  *       '200':
  *         description: Successful Response
  */
-router.get('/auth/login', (req, res) => {
-    res.status(200).send('<a href="/auth/google">Authenticate with Google</a>');
+router.get('/login', (req, res) => {
+    res.status(200).send('<a href="/api/auth/google">Authenticate with Google</a>');
 });
 
 
 /**
  * @swagger
- * /auth/google:
+ * /api/auth/google:
  *   get:
  *     description: Send user to google login page.
  *     tags: [auth]
  */
-//  router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
-router.get('/auth/google/', (req, res, next) => {
+router.get('/google/', (req, res, next) => {
     if (req.query.return) req.session.oauth2return = req.query.return;
     next();
 }, passport.authenticate('google', { scope: ['email', 'profile'] }));
@@ -49,14 +55,14 @@ router.get('/auth/google/', (req, res, next) => {
 
 /**
  * @swagger
- * /auth/google/callback:
+ * /api/auth/google/callback:
  *   get:
- *     description: Redirects user to /protected on successful login and /auth/google/failure on unsuccessful login.
+ *     description: Redirects user to /api/auth/testLoggedIn on successful login and /api/auth/google/failure on unsuccessful login.
  *     tags: [auth]
  */
- router.get('/auth/google/callback',
+ router.get('/google/callback',
  passport.authenticate('google'), (req, res) => {
-     const redirect = req.session.oauth2return || '/'
+     const redirect = req.session.oauth2return || "/api-docs"
      delete req.session.oauth2return;
      res.redirect(redirect);
  }
@@ -65,12 +71,27 @@ router.get('/auth/google/', (req, res, next) => {
 
 /**
  * @swagger
- * /auth/login/success:
+ * /api/auth/google/failure:
  *   get:
- *     description: Checks whether or not user is logged in
+ *     description: Failed to login
  *     tags: [auth]
+ *     responses:
+ *       '401':
+ *         description: Login failed.
  */
-router.get('/auth/login/success', (req, res) => {
+ router.get('/google/failure', (req, res) => {
+    res.status(401).send('Failed to authenticate...');
+});
+
+
+/**
+* @swagger
+* /api/auth/login/success:
+*   get:
+*     description: Checks whether or not user is logged in
+*     tags: [auth]
+*/
+router.get('/login/success', (req, res) => {
     if (req.user) return res.json({
         ok: true,
         user: req.user,
@@ -84,7 +105,7 @@ router.get('/auth/login/success', (req, res) => {
 
 /**
  * @swagger
- * /protected:
+ * /api/auth/testLoggedIn:
  *   get:
  *     description: A protected route only for logged in users.
  *     tags: [auth]
@@ -95,14 +116,14 @@ router.get('/auth/login/success', (req, res) => {
  *       '200':
  *         description: Successful Response
  */
-router.get('/protected', isLoggedIn, (req, res) => {
+router.get('/testLoggedIn', isLoggedIn, (req, res) => {
     res.status(200).send(`Hello ${req.user.displayName}`);
 });
 
 
 /**
  * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   get:
  *     description: Lets a user logout
  *     tags: [auth]
@@ -110,26 +131,13 @@ router.get('/protected', isLoggedIn, (req, res) => {
  *       '200':
  *         description: Successful Response
  */
-router.get('/auth/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.logout();
     req.session.destroy();
     res.status(200).send("logged out");
 });
 
-/**
- * @swagger
- * /auth/google/failure:
- *   get:
- *     description: Failed to login
- *     tags: [auth]
- *     responses:
- *       '200':
- *         description: Successful Response
- */
-router.get('/auth/google/failure', (req, res) => {
-    res.status(200).send('Failed to authenticate..');
-});
-
 
 exports.authRouter = router;
 exports.isLoggedIn = isLoggedIn;
+exports.initSession = initSession;
