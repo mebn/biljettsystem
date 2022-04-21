@@ -159,7 +159,7 @@ const Event = () => {
           </div>
         </div>
       </div>
-      {isOpen && <Popup handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
+      {isOpen && <Popup params={params} handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
                         eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo}/>
       }
     </div>
