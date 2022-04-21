@@ -7,7 +7,7 @@ router.use(express.json());
 
 /**
  * @swagger
- * /user/addUser:
+ * /api/user/addUser:
  *   post:
  *     tags: [user]
  *     description: Add a user
@@ -26,7 +26,7 @@ router.use(express.json());
  *       '200':
  *         description: A user was added!
  */
-router.post("/user/addUser", async (req, res) => {
+router.post("/addUser", async (req, res) => {
     const body = req.body;
 
     if (!body) res.status(400).json({ ok: false, error: "Body is missing." });

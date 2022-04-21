@@ -1,17 +1,11 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const session = require('express-session');
-const passport = require('passport');
-const { isLoggedIn } = require("./auth");
+const { isLoggedIn, initSession } = require("./auth");
 const nodemailer = require('nodemailer');
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
-router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-router.use(passport.initialize());
-router.use(passport.session());
+initSession(router);
 
 // send email
 var transporter = nodemailer.createTransport({
@@ -30,11 +24,11 @@ const sendEmail = (to, subject, text) => {
         text
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
+            console.log("Error sending email: " + error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log("Email sent: " + info.response);
         }
     });
 }
@@ -42,7 +36,7 @@ const sendEmail = (to, subject, text) => {
 
 /**
  * @swagger
- * /email/sendEmail:
+ * /api/email/sendEmail:
  *   post:
  *     tags: [email]
  *     security:
@@ -73,22 +67,10 @@ const sendEmail = (to, subject, text) => {
  *                 text:
  *                   type: string
 */
-router.post("/email/sendEmail", isLoggedIn, async (req, res) => {
+router.post("/sendEmail", isLoggedIn, async (req, res) => {
     const { subject, text } = req.body;
     const email = req.user.email;
 
-    try {
-        const user = await prisma.user.findUnique({
-            where: { email },
-        });
-    } catch (e) {
-        return res.status(503).json({
-            ok: false,
-            message: "Database connection failed.",
-        });
-    }
-
-    // send email
     sendEmail(email, subject, text);
 
     return res.status(200).json({

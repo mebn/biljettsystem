@@ -5,6 +5,9 @@ import EventInfo from "../../components/EventInfo/EventInfo";
 import Map from "../../components/Map/Map";
 import ReactMarkdown from "react-markdown";
 import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
+import LoginPopup from "../../components/LoginPopup/LoginPopup";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoggedIn, setLoggedOut } from "../../redux/loggedIn";
 import Popup from "../../components/Popup/Popup";
 
 const examplePurchaseInfo = {
@@ -183,12 +186,30 @@ const Event = () => {
     }
   };
 
+  const { loggedIn } = useSelector((state) => state.loggedIn)
+
+  const showPopup = () => {
+    if (isOpen) {
+      if (!loggedIn)
+        return <LoginPopup handleClose={togglePopup} />
+      
+      return <Popup
+        params={params}
+        handleStep={togglePurchaseStep}
+        purchaseCompletePopup={purchaseCompletePopup}
+        eventInfo={eventInfo}
+        handleClose={togglePopup}
+        examplePurchaseInfo={examplePurchaseInfo}
+      />
+    }
+  }
+
   const togglePurchaseStep = () => {
     setPurchaseCompletePopup(!purchaseCompletePopup);
   };
 
   useEffect(() => {
-    fetch(`/event/${eventIdParam}`)
+    fetch(`/api/event/${eventIdParam}`)
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.startTime);
@@ -204,9 +225,8 @@ const Event = () => {
   return (
     <div>
       <div
-        className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${
-          isOpen ? "fixed right-0 left-0" : ""
-        }`}
+        className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${isOpen ? "fixed right-0 left-0" : ""
+          }`}
       >
         {loaded ? <EventBody eventInfo={eventInfo} /> : <LoadingEventBody />}
         {loaded ? (
@@ -219,16 +239,8 @@ const Event = () => {
           </LoadingDesktopEventInfo>
         )}
       </div>
-      {isOpen && (
-        <Popup
-          handleStep={togglePurchaseStep}
-          purchaseCompletePopup={purchaseCompletePopup}
-          eventInfo={eventInfo}
-          handleClose={togglePopup}
-          examplePurchaseInfo={examplePurchaseInfo}
-        />
-      )}
-    </div>
+      {showPopup()}
+    </div >
   );
 };
 

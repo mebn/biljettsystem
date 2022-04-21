@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Popup from "../../components/Popup/Popup";
 
-const Card = (props) => (
+const Card = props => (
   <Link to={`event/${props.event.id}`}>
-    <div className="relative flex flex-col rounded-xl h-64 w-full mx-0 overflow-hidden shadow-lg bg-white hover:bg-gray-50">
+    <div className="relative flex flex-col rounded-xl h-64 w-full mx-0 overflow-hidden shadow-lg bg-white hover:bg-gray-50 duration-150">
       <img
         src={props.event.eventPictureLink}
         className="object-cover relative"
@@ -33,7 +32,7 @@ const Card = (props) => (
   </Link>
 );
 
-const LoadingCard = (props) => (
+const LoadingCard = () => (
   <div className="relative flex flex-col rounded-xl h-64 w-full mx-0 overflow-hidden bg-gray-100 animate-pulse">
     <div className="absolute bottom-0 left-0 right-0 w-full flex flex-row justify-between px-4 py-4">
       <div className="flex flex-col gap-3">
@@ -51,15 +50,20 @@ const Home = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    fetch(`/event/getAll`)
-      .then((res) => res.json())
-      .then((data) => {
-        let formatted = data.map((e) => {
-          const d = new Date(e.startTime);
-          return { ...e, startTime: d };
-        });
-        setLoaded(true)
-;        setEvents(formatted);
+    fetch("/api/event/getall")
+      .then(res => res.json())
+      .then(data => {
+        let formatted = [];
+
+        if (data.ok) {
+          formatted = data.results.map(e => {
+            const startTime = new Date(e.startTime);
+            return { ...e, startTime };
+          });
+        }
+
+        setLoaded(true);
+        setEvents(formatted);
       });
   }, []);
 

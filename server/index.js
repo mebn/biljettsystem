@@ -18,11 +18,11 @@ const PORT = 7050;
 
 
 // routes
-app.use(eventRouter);
-app.use(ticketRouter);
-app.use(userRouter);
-app.use(authRouter);
-app.use(emailRouter);
+app.use("/api/event", eventRouter);
+app.use("/api/ticket", ticketRouter);
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/email", emailRouter);
 
 app.use("/api-docs", swaggerRouter);
 app.use('/public', express.static('public'));
