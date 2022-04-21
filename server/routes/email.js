@@ -1,15 +1,11 @@
 const express = require("express");
-const passport = require('passport');
-const { isLoggedIn } = require("./auth");
+const { isLoggedIn, initSession } = require("./auth");
 const nodemailer = require('nodemailer');
-const mySession = require("../session");
 
 const router = express.Router();
 
 router.use(express.json());
-router.use(mySession);
-router.use(passport.initialize());
-router.use(passport.session());
+initSession(router);
 
 // send email
 var transporter = nodemailer.createTransport({
@@ -28,12 +24,11 @@ const sendEmail = (to, subject, text) => {
         text
     };
 
-    // transporter.sendMail(mailOptions, (error, info) => error ? false : true);
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
+            console.log("Error sending email: " + error);
         } else {
-            console.log(info);
+            console.log("Email sent: " + info.response);
         }
     });
 }

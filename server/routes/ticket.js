@@ -1,16 +1,12 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
-const passport = require('passport');
-const { isLoggedIn } = require("./auth");
-const mySession = require("../session");
+const { isLoggedIn, initSession } = require("./auth");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
-router.use(mySession);
-router.use(passport.initialize());
-router.use(passport.session());
+initSession(router);
 
 
 /**

@@ -67,7 +67,6 @@ const EventTransaction = () => {
       setTicketErrorString("");
 
     const userid = await createUser(email);
-    console.log(userid);
     
     if (userid != null)
       sendPost(userid, params.eventId, ticketCount);
@@ -91,7 +90,7 @@ const EventTransaction = () => {
   }
 
   const sendPost = (userId, eventId, tickets) => {
-    fetch('/api/tickets/buyTicket',{
+    fetch('/api/ticket/buyTicket',{
       method: 'POST',
       body: JSON.stringify({
           userId: userId,

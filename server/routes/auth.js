@@ -1,20 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const passport = require('passport');
+
 require('../passportStrategy');
-const mySession = require("../session");
+const session = require('express-session');
+
+const mySession = session({
+    secret: 'cats',
+    resave: false,
+    saveUninitialized: true
+})
+
+const initSession = router => {
+    router.use(mySession);
+    router.use(passport.initialize());
+    router.use(passport.session());
+}
 
 router.use(express.json());
+initSession(router);
 
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
 }
-
-router.use(mySession);
-router.use(passport.initialize());
-router.use(passport.session());
-
 
 /**
  * @swagger
@@ -38,7 +47,10 @@ router.get('/login', (req, res) => {
  *     description: Send user to google login page.
  *     tags: [auth]
  */
-router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+router.get('/google/', (req, res, next) => {
+    if (req.query.return) req.session.oauth2return = req.query.return;
+    next();
+}, passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 
 /**
@@ -48,11 +60,12 @@ router.get('/google', passport.authenticate('google', { scope: ['email', 'profil
  *     description: Redirects user to /api/auth/testLoggedIn on successful login and /api/auth/google/failure on unsuccessful login.
  *     tags: [auth]
  */
-router.get('/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/api/auth/testLoggedIn',
-        failureRedirect: '/api/auth/google/failure'
-    })
+ router.get('/google/callback',
+ passport.authenticate('google'), (req, res) => {
+     const redirect = req.session.oauth2return || "/api-docs"
+     delete req.session.oauth2return;
+     res.redirect(redirect);
+ }
 );
 
 
@@ -68,6 +81,25 @@ router.get('/google/callback',
  */
  router.get('/google/failure', (req, res) => {
     res.status(401).send('Failed to authenticate...');
+});
+
+
+/**
+* @swagger
+* /api/auth/login/success:
+*   get:
+*     description: Checks whether or not user is logged in
+*     tags: [auth]
+*/
+router.get('/login/success', (req, res) => {
+    if (req.user) return res.json({
+        ok: true,
+        user: req.user,
+    });
+    
+    return res.status(401).json({
+        ok: false,
+    });
 });
 
 
@@ -108,3 +140,4 @@ router.get('/logout', (req, res) => {
 
 exports.authRouter = router;
 exports.isLoggedIn = isLoggedIn;
+exports.initSession = initSession;
