@@ -67,7 +67,6 @@ const EventTransaction = () => {
       setTicketErrorString("");
 
     const userid = await createUser(email);
-    console.log(userid);
     
     if (userid != null)
       sendPost(userid, params.eventId, ticketCount);

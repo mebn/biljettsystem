@@ -8,6 +8,9 @@ import ReactMarkdown from "react-markdown";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
+import LoginPopup from "../../components/LoginPopup/LoginPopup";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoggedIn, setLoggedOut } from "../../redux/loggedIn";
 import Popup from "../../components/Popup/Popup";
 
 const exampleEventInfo = {
@@ -62,10 +65,31 @@ const Event = () => {
   const [isOpen, setIsOpen] = useState(false);
   const togglePopup = () => {
     setIsOpen(!isOpen);
-    if(purchaseCompletePopup){
+    if (purchaseCompletePopup) {
       setPurchaseCompletePopup(!purchaseCompletePopup)
     }
   };
+
+  const { loggedIn } = useSelector((state) => state.loggedIn)
+
+  const showPopup = () => {
+    if (isOpen) {
+      if (!loggedIn)
+        return <LoginPopup handleClose={togglePopup} />
+      
+      return <Popup
+        params={params}
+        handleStep={togglePurchaseStep}
+        purchaseCompletePopup={purchaseCompletePopup}
+        eventInfo={eventInfo}
+        handleClose={togglePopup}
+        examplePurchaseInfo={examplePurchaseInfo}
+      />
+      
+      
+      // return <Popup handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup} eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo} />
+    }
+  }
 
   const togglePurchaseStep = () => {
     setPurchaseCompletePopup(!purchaseCompletePopup)
@@ -87,9 +111,8 @@ const Event = () => {
   return (
     <div>
       <div
-        className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${
-          isOpen ? "fixed right-0 left-0" : ""
-        }`}
+        className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${isOpen ? "fixed right-0 left-0" : ""
+          }`}
       >
         <div className="md:border-r-2 px-0 md:px-6">
           <img
@@ -159,10 +182,11 @@ const Event = () => {
           </div>
         </div>
       </div>
-      {isOpen && <Popup params={params} handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
+      {showPopup()}
+      {/* {isOpen && <Popup params={params} handleStep={togglePurchaseStep} purchaseCompletePopup={purchaseCompletePopup}
                         eventInfo={eventInfo} handleClose={togglePopup} examplePurchaseInfo={examplePurchaseInfo}/>
-      }
-    </div>
+      } */}
+    </div >
   );
 };
 

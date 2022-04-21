@@ -32,9 +32,9 @@ const sendEmail = (to, subject, text) => {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log(error);
+            console.log("Error sending email: " + error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log("Email sent: " + info.response);
         }
     });
 }

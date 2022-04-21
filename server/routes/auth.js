@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const session = require('express-session');
 const passport = require('passport');
+const CLIENT_URL = "http://localhost:3000/"
+
 require('../passportStrategy');
 
 router.use(express.json());
@@ -38,7 +40,11 @@ router.get('/auth/login', (req, res) => {
  *     description: Send user to google login page.
  *     tags: [auth]
  */
-router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+//  router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+router.get('/auth/google/', (req, res, next) => {
+    if (req.query.return) req.session.oauth2return = req.query.return;
+    next();
+}, passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 
 /**
@@ -48,12 +54,32 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
  *     description: Redirects user to /protected on successful login and /auth/google/failure on unsuccessful login.
  *     tags: [auth]
  */
-router.get('/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect: '/protected',
-        failureRedirect: '/auth/google/failure'
-    })
+ router.get('/auth/google/callback',
+ passport.authenticate('google'), (req, res) => {
+     const redirect = req.session.oauth2return || '/'
+     delete req.session.oauth2return;
+     res.redirect(redirect);
+ }
 );
+
+
+/**
+ * @swagger
+ * /auth/login/success:
+ *   get:
+ *     description: Checks whether or not user is logged in
+ *     tags: [auth]
+ */
+router.get('/auth/login/success', (req, res) => {
+    if (req.user) return res.json({
+        ok: true,
+        user: req.user,
+    });
+    
+    return res.status(401).json({
+        ok: false,
+    });
+});
 
 
 /**
