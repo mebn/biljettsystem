@@ -12,6 +12,7 @@ const selectData = {
   longTitle: true,
   description: true,
   startTime: true,
+  eventPictureLink: true,
   location: {
     select: {
       id: false,
@@ -61,7 +62,7 @@ router.get("/event/GetAll", async (req, res) => {
     });
   }
 
-  res.status(200).json(formatted);
+  return res.status(200).json(formatted);
 });
 
 /**

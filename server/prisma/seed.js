@@ -8,7 +8,7 @@ const events = [
     description:
       "Watch Queens last tour live, it will be great! This is the last chance to see your favourite rock band live!!",
     startTime: new Date("2022-06-11 22:00:00"),
-    eventPictureLink: "link",
+    eventPictureLink: "/public/images/eventBanner.jpeg",
     location: {
       lat: 59.3240585,
       lng: 18.097304,
@@ -45,7 +45,7 @@ Se hennes nya album live, en perfekt junikväll i Sveriges huvudstad.
 Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och nått otroliga kommersiella framgångar med sina sex kritikerrosade album, samtliga platina. Hon har slagit rekord på Spotify med över 1 miljard streams och är därmed den första artisten någonsin vars låtkatalog på svenska når den magiska milstolpen.`,
     price: 429,
     startTime: new Date("2022-06-21 22:00:00"),
-    eventPictureLink: "link",
+    eventPictureLink: "/public/images/eventBanner.jpeg",
     location: {
       lat: 59.3240585,
       lng: 18.097304,
@@ -74,7 +74,7 @@ Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och
     description:
       "Se den klassiska pjäsen av August Strindberg framförd live i amfiteatern i Vitabergsparken",
     startTime: new Date("2022-06-27 21:00:00"),
-    eventPictureLink: "link",
+    eventPictureLink: "/public/images/eventBanner.jpeg",
     location: {
       lat: 59.310747,
       lng: 18.091541,
@@ -109,7 +109,7 @@ Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och
     description:
       "Very VIP, very secret. We are hosting a private event at Café Opera. dsvdv",
     startTime: new Date("2022-07-01 22:00:00"),
-    eventPictureLink: "link",
+    eventPictureLink: "/public/images/eventBanner.jpeg",
     location: {
       lat: 59.3301464,
       lng: 18.0688807,
@@ -138,7 +138,7 @@ Veronica har sedan debuten 2006 höjts till skyarna av journalister och fans och
     description:
       "Very exclusive film festival, only the best movies win prizes here! See them in one of the most beautiful cities in France",
     startTime: new Date("2022-06-15 13:00:00"),
-    eventPictureLink: "link",
+    eventPictureLink: "/public/images/eventBanner.jpeg",
     location: {
       lat: 43.5507813,
       lng: 7.0157735,
