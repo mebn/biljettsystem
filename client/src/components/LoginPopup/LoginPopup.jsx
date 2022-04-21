@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 
 const googleLogin = () =>{
     let url = window.location.href.split(':')[1]
-    console.log(url);
 
     window.open(`http:${url}:7050/auth/google?return=${window.location.href}`, "_self")
   }
