@@ -307,33 +307,8 @@ const Popup = (props) => {
                 else if (data.message === "Completed order") {
                     setReturnMessage(data);
                     console.log("success");
-                    // send email
-                    sendEmail(data);
                 }
             });
-    }
-
-    // send email
-    const sendEmail = (data) => {
-        console.log(data)
-
-        const summary = `<p>Order number: ${data.order.id}</p>
-        <div>tickets: ${data.order.tickets.map(ticket => `<p>${ticket.name} x${ticket.purchased} pris per biljett: ${ticket.price}kr totalt: ${ticket.price * ticket.purchased}kr</p>`)}</div>`;
-        
-        fetch("/api/email/sendemail", {
-            method: "POST",
-            body: JSON.stringify({
-                "subject": "Orderbekräftelse från Biljetta!",
-                "html": "<p>Tack för ditt köp hos Biljetta!</p><p>Här är en orderbekräftelse på ditt köp.</p><br />" + summary,
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data.ok ? "Email sent" : "Something went wrong sending email");
-        })
     }
 
     const buyTicket = () => {

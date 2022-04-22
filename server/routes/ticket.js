@@ -1,6 +1,7 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const { isLoggedIn, initSession } = require("./auth");
+const { sendMail } = require("../email/email")
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -123,6 +124,7 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
     });
     userId = user.id;
   } catch (e) {
+    console.log(e)
     return res.status(503).json({
       ok: false,
       message: "Database connection failed.",
@@ -188,9 +190,13 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
     // Return purchased tickets as an array
     let ticketsAsArray = Object.keys(purchasedTickets).map(key => ({ ...purchasedTickets[key], name: key }))
 
+    let orderData = { ...completedOrder, tickets: ticketsAsArray };
+
+    await sendMail(req.user.email, "Orderbekräftelse från Biljetta!", orderData);
+
     return res.status(201).json({
       message: "Completed order",
-      order: { ...completedOrder, tickets: ticketsAsArray },
+      order: orderData,
     });
   } catch (err) {
     return res.status(503).json({ message: err.message });
