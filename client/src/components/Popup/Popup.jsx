@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/solid"
 
 const smText = "Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicitudin fermentum in sed ante. Morbi at sagittis augue, id pellentesque ipsum. Phasellus in tortor neque. Curabitur condimentum justo ut elit gravida facilisis. Quisque viverra varius ex vitae rutrum. Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu.";
-const lgText = "Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit";
 
 var ExampleTickets = [
     {
@@ -168,7 +167,7 @@ const PurchaseSummary = (props) => {
         props.returnMessage.order.tickets.forEach(e => sum = sum + e.price * e.purchased);
         return sum;
     }
-    
+
     return (
         <div className="">
             <div className="md:pt-10 font-bold text-[18px] border-b">Sammanfattning av order</div>
@@ -232,14 +231,13 @@ const PurchaseSummary = (props) => {
 }
 
 const PurchaseCompleteStep = (props) => {
-
     return (
         <div className="bg-[#f5f5f5] mt-20 md:mt-0 p-8 md:p-20 md:w-[62%] md:overflow-y-auto">
             <div className="">
                 <div className='text-left font-bold text-4xl py-1 pb-3 my-2 pt-6'>Tack för ditt köp!</div>
 
                 <div className='text-[16px] mt-1'>
-                    <div>Biljetterna har skickats till <span className="text-[#268763]">{props.examplePurchaseInfo.email}</span>.</div>
+                    <div>Biljetterna har skickats till <span className="text-[#268763]">{props.email}</span>.</div>
                 </div>
                 <div className="">
                     <div className='text-left font-bold  text-[16px] pt-4 my-2 border-t'>Meddelande från arrangören:</div>
@@ -254,7 +252,6 @@ const PurchaseCompleteStep = (props) => {
 }
 
 const Popup = (props) => {
-
     let eventIdParam = props.params.eventId;
     const [ticketTypeList, setTicketTypeList] = useState(ExampleTickets);
     const [loaded, SetLoaded] = useState(false);
@@ -285,8 +282,8 @@ const Popup = (props) => {
     }, [eventIdParam]);
 
     //Buy tickets
-    const sendPost = (eventId, tickets) => {
-        fetch('/api/ticket/buyTickets', {
+    const sendPost = async (eventId, tickets) => {
+        await fetch('/api/ticket/buyTickets', {
             method: 'POST',
             body: JSON.stringify({
                 eventId: eventId,
@@ -310,15 +307,41 @@ const Popup = (props) => {
                 else if (data.message === "Completed order") {
                     setReturnMessage(data);
                     console.log("success");
+                    // send email
+                    sendEmail(data);
                 }
             });
     }
 
+    // send email
+    const sendEmail = (data) => {
+        console.log(data)
+
+        const summary = `<p>Order number: ${data.order.id}</p>
+        <div>tickets: ${data.order.tickets.map(ticket => `<p>${ticket.name} x${ticket.purchased} pris per biljett: ${ticket.price}kr totalt: ${ticket.price * ticket.purchased}kr</p>`)}</div>`;
+        
+        fetch("/api/email/sendemail", {
+            method: "POST",
+            body: JSON.stringify({
+                "subject": "Orderbekräftelse från Biljetta!",
+                "html": "<p>Tack för ditt köp hos Biljetta!</p><p>Här är en orderbekräftelse på ditt köp.</p><br />" + summary,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.ok ? "Email sent" : "Something went wrong sending email");
+        })
+    }
+
     const buyTicket = () => {
         //Only id and count for each ticket
-        const boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
+        let boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
+        boughtTicketsList = boughtTicketsList.filter(row => { return row.number !== 0 });
         //Only send tickets where count is not 0
-        sendPost(parseInt(props.params.eventId), boughtTicketsList.filter(row => { return row.number !== 0 }));
+        sendPost(parseInt(props.params.eventId), boughtTicketsList);
     }
 
 
@@ -329,7 +352,7 @@ const Popup = (props) => {
                 <div className="flex md:flex-row flex-col fixed inset-0 md:inset-y-[15%] md:inset-x-[15%] overflow-y-auto md:overflow-y-hidden z-50 bg-[#f5f5f5] text-2xl md:rounded-lg">
                     {/*Left side*/}
                     {props.purchaseCompletePopup ?
-                        <PurchaseCompleteStep examplePurchaseInfo={props.examplePurchaseInfo} />
+                        <PurchaseCompleteStep email={props.email} />
                         :
                         <PurchaseStep ticketTypeList={ticketTypeList} eventInfo={props.eventInfo} counters={counters} setCounters={setCounters} total={total} setTotal={setTotal} loaded={loaded} />
                     }

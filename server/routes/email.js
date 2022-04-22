@@ -16,12 +16,12 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-const sendEmail = (to, subject, text) => {
+const sendEmail = (to, subject, html) => {
     var mailOptions = {
         from: 'biljettsystemet@gmail.com',
         to,
         subject,
-        text
+        html
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -52,7 +52,7 @@ const sendEmail = (to, subject, text) => {
  *             properties:
  *               subject:
  *                 type: string
- *               text:
+ *               html:
  *                 type: string
  *     responses:
  *       200:
@@ -64,14 +64,14 @@ const sendEmail = (to, subject, text) => {
  *               properties:
  *                 subject:
  *                   type: string
- *                 text:
+ *                 html:
  *                   type: string
 */
 router.post("/sendEmail", isLoggedIn, async (req, res) => {
-    const { subject, text } = req.body;
+    const { subject, html } = req.body;
     const email = req.user.email;
 
-    sendEmail(email, subject, text);
+    sendEmail(email, subject, html);
 
     return res.status(200).json({
         ok: true,

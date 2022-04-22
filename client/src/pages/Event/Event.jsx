@@ -4,33 +4,9 @@ import { useParams } from "react-router-dom";
 import EventInfo from "../../components/EventInfo/EventInfo";
 import Map from "../../components/Map/Map";
 import ReactMarkdown from "react-markdown";
-import PurchasePopup from "../../components/PurchasePopup/PurchasePopup";
 import LoginPopup from "../../components/LoginPopup/LoginPopup";
-import { useSelector, useDispatch } from "react-redux";
-import { setLoggedIn, setLoggedOut } from "../../redux/loggedIn";
+import { useSelector } from "react-redux";
 import Popup from "../../components/Popup/Popup";
-
-const examplePurchaseInfo = {
-  email: "example@kth.se",
-  orderNo: 12873613,
-  purchaseSummary: [
-    {
-      type: "Vuxen",
-      number: "x3",
-      total: "1797 kr",
-    },
-    {
-      type: "Ungdom",
-      number: "x1",
-      total: "399 kr",
-    },
-    {
-      type: "VIP",
-      number: "x1",
-      total: "1099 kr",
-    },
-  ],
-};
 
 const EventBody = (props) => (
   <div className="md:border-r-2 px-0 md:px-6">
@@ -123,13 +99,13 @@ const LoadingDesktopEventInfo = (props) => (
     <div className="animate-pulse hidden md:block">
       <h1 className="w-52 h-8 bg-gray-100 rounded-full mb-2 pb-4"></h1>
       <div className="border-b-2 border-t-2 py-4 mb-4">
-          <div className="flex flex-col text-xs gap-2.5 ">
-            <div className="w-48 h-3 rounded-full bg-gray-100" />
-            <div className="w-40 h-3 rounded-full bg-gray-100" />
-          </div>
+        <div className="flex flex-col text-xs gap-2.5 ">
+          <div className="w-48 h-3 rounded-full bg-gray-100" />
+          <div className="w-40 h-3 rounded-full bg-gray-100" />
         </div>
+      </div>
       <div className="h-60 bg-gray-100 rounded-md mb-2 pb-4">
-       
+
       </div>
     </div>
     {props.children}
@@ -186,20 +162,21 @@ const Event = () => {
     }
   };
 
-  const { loggedIn } = useSelector((state) => state.loggedIn)
+  const { loggedIn, user } = useSelector((state) => state.loggedIn);
 
   const showPopup = () => {
     if (isOpen) {
       if (!loggedIn)
         return <LoginPopup handleClose={togglePopup} />
-      
+
       return <Popup
         params={params}
         handleStep={togglePurchaseStep}
         purchaseCompletePopup={purchaseCompletePopup}
         eventInfo={eventInfo}
         handleClose={togglePopup}
-        examplePurchaseInfo={examplePurchaseInfo}
+        email={user.email}
+        // name={user.displayName}
       />
     }
   }
