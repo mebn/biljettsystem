@@ -10,11 +10,11 @@ datasource db {
 
 model Event {
   id               Int           @id @default(autoincrement())
-  shortTitle       String        @db.VarChar(255)
-  longTitle        String        @db.VarChar(255)
+  shortTitle       String
+  longTitle        String
   description      String?
   startTime        DateTime      @db.Timestamp(6)
-  eventPictureLink String?       @db.VarChar(255)
+  eventPictureLink String?
   locationId       Int           @unique
   location         EventLocation @relation(fields: [locationId], references: [id])
   orders           Order[]
@@ -25,8 +25,8 @@ model EventLocation {
   id      Int    @id @default(autoincrement())
   lat     Float
   lng     Float
-  title   String @db.VarChar(255)
-  address String @db.VarChar(255)
+  title   String
+  address String
   event   Event?
 }
 
@@ -62,7 +62,7 @@ model Ticket {
 
 model User {
   id     Int     @id @default(autoincrement())
-  name   String? @db.VarChar(255)
-  email  String  @unique @db.VarChar(255)
+  name   String?
+  email  String  @unique 
   orders Order[]
 }
