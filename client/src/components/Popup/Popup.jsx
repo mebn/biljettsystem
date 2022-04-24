@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import {
     XIcon,
+    RefreshIcon,
     LocationMarkerIcon,
     CalendarIcon,
     MinusIcon,
@@ -264,6 +265,7 @@ const Popup = (props) => {
 
     const [total, setTotal] = useState(0);
     const [counters, setCounters] = useState(initialCounters);
+    const [clickedBuy, setClickedBuy] = useState(false);
 
 
     //Fetch tickets
@@ -312,6 +314,7 @@ const Popup = (props) => {
     }
 
     const buyTicket = () => {
+        setClickedBuy(true);
         //Only id and count for each ticket
         let boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
         boughtTicketsList = boughtTicketsList.filter(row => { return row.number !== 0 });
@@ -336,12 +339,21 @@ const Popup = (props) => {
                     <div className="flex flex-col bg-[#edeeef] p-7 pb-12 h-full md:p-10 md:pt-20 md:pb-7 md:overflow-y-auto md:w-[38%] md:h-[100%]">
                         <PurchaseSummary ticketTypeList={ticketTypeList} returnMessage={returnMessage} purchaseCompletePopup={props.purchaseCompletePopup} counters={counters} total={total} />
                         {props.purchaseCompletePopup ||
-                            <button
-                                className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
-                                onClick={total === 0 || (() => buyTicket())}
-                            >
-                                Köp
-                            </button>
+                            <div>
+                                {clickedBuy ?
+                                    <button className={`mt-6 md:mt-auto bg-zinc-300 text-zinc-500 cursor-not-allowed rounded-btn text-[16px] font-medium py-2 w-full transition ease-in-out duration-200 flex justify-center items-center`}>
+                                        <RefreshIcon className="h-5 w-5 animate-reverse-spin" />
+                                        Genomför köp...
+                                    </button>
+                                    :
+                                    <button
+                                        className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
+                                        onClick={total === 0 || (() => buyTicket())}
+                                    >
+                                        Köp
+                                    </button>
+                                }
+                            </div>
                         }
                     </div>
 
