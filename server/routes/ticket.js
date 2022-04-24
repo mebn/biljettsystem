@@ -39,9 +39,11 @@ initSession(router);
  *             format: date-time
  */
 
+
+/** Antar att jag ska lägga till något här med attributet.Lade till releasetime -------------1*/
 const toSelect = {
   id: true,
-  event: { select: { id: true, longTitle: true, startTime: true } },
+  event: { select: { id: true, longTitle: true, startTime: true , releaseTime: true} },
   tickets: {
     select: {
       ticketType: {
@@ -136,8 +138,8 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
 
   try {
     await prisma.$transaction(async (prisma) => {
-      order = await prisma.order.create({
-        data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
+      order = await prisma.order.create({ /**  La till releasetime------  */
+        data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime, releaseTime: releaseTime },
       });
 
       for (const ticket of tickets) {
@@ -154,6 +156,13 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
         });
 
         const available = ticketType.numTickets - bought;
+
+        /** Lägga till något här en if som tar dagens datum och jämför med release date throwar en error. Kan inspireras av purchaseTime. 
+         * vet inte varför jag inte kan nå event här. ----------*/
+
+        if (purchaseTime < event.releaseTime) {
+          throw new Error(`Tickets not released yet`);
+        }
 
         if (ticket.number > available) {
           throw new Error(`Not enough tickets`);

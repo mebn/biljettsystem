@@ -14,6 +14,7 @@ model Event {
   longTitle        String
   description      String?
   startTime        DateTime      @db.Timestamp(6)
+  releaseTime      DateTime      @db.Timestamp(6)
   eventPictureLink String?
   locationId       Int           @unique
   location         EventLocation @relation(fields: [locationId], references: [id])

@@ -6,6 +6,8 @@ const prisma = new PrismaClient();
 
 router.use(express.json());
 
+/** Vet ej ifall man bör ändra någonting här.------------*/
+
 const selectData = {
   id: true,
   shortTitle: true,
