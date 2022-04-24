@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import {
     XIcon,
+    RefreshIcon,
     LocationMarkerIcon,
     CalendarIcon,
     MinusIcon,
@@ -8,7 +9,6 @@ import {
 } from "@heroicons/react/solid"
 
 const smText = "Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicitudin fermentum in sed ante. Morbi at sagittis augue, id pellentesque ipsum. Phasellus in tortor neque. Curabitur condimentum justo ut elit gravida facilisis. Quisque viverra varius ex vitae rutrum. Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu.";
-const lgText = "Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicit";
 
 var ExampleTickets = [
     {
@@ -168,7 +168,7 @@ const PurchaseSummary = (props) => {
         props.returnMessage.order.tickets.forEach(e => sum = sum + e.price * e.purchased);
         return sum;
     }
-    
+
     return (
         <div className="">
             <div className="md:pt-10 font-bold text-[18px] border-b">Sammanfattning av order</div>
@@ -232,14 +232,13 @@ const PurchaseSummary = (props) => {
 }
 
 const PurchaseCompleteStep = (props) => {
-
     return (
         <div className="bg-[#f5f5f5] mt-20 md:mt-0 p-8 md:p-20 md:w-[62%] md:overflow-y-auto">
             <div className="">
                 <div className='text-left font-bold text-4xl py-1 pb-3 my-2 pt-6'>Tack för ditt köp!</div>
 
                 <div className='text-[16px] mt-1'>
-                    <div>Biljetterna har skickats till <span className="text-[#268763]">{props.examplePurchaseInfo.email}</span>.</div>
+                    <div>Biljetterna har skickats till <span className="text-[#268763]">{props.email}</span>.</div>
                 </div>
                 <div className="">
                     <div className='text-left font-bold  text-[16px] pt-4 my-2 border-t'>Meddelande från arrangören:</div>
@@ -254,7 +253,6 @@ const PurchaseCompleteStep = (props) => {
 }
 
 const Popup = (props) => {
-
     let eventIdParam = props.params.eventId;
     const [ticketTypeList, setTicketTypeList] = useState(ExampleTickets);
     const [loaded, SetLoaded] = useState(false);
@@ -267,6 +265,7 @@ const Popup = (props) => {
 
     const [total, setTotal] = useState(0);
     const [counters, setCounters] = useState(initialCounters);
+    const [clickedBuy, setClickedBuy] = useState(false);
 
 
     //Fetch tickets
@@ -285,8 +284,8 @@ const Popup = (props) => {
     }, [eventIdParam]);
 
     //Buy tickets
-    const sendPost = (eventId, tickets) => {
-        fetch('/api/ticket/buyTickets', {
+    const sendPost = async (eventId, tickets) => {
+        await fetch('/api/ticket/buyTickets', {
             method: 'POST',
             body: JSON.stringify({
                 eventId: eventId,
@@ -315,10 +314,12 @@ const Popup = (props) => {
     }
 
     const buyTicket = () => {
+        setClickedBuy(true);
         //Only id and count for each ticket
-        const boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
+        let boughtTicketsList = ticketTypeList.map(({ id }, index) => ({ ticketTypeId: id, number: counters[index] }));
+        boughtTicketsList = boughtTicketsList.filter(row => { return row.number !== 0 });
         //Only send tickets where count is not 0
-        sendPost(parseInt(props.params.eventId), boughtTicketsList.filter(row => { return row.number !== 0 }));
+        sendPost(parseInt(props.params.eventId), boughtTicketsList);
     }
 
 
@@ -329,7 +330,7 @@ const Popup = (props) => {
                 <div className="flex md:flex-row flex-col fixed inset-0 md:inset-y-[15%] md:inset-x-[15%] overflow-y-auto md:overflow-y-hidden z-50 bg-[#f5f5f5] text-2xl md:rounded-lg">
                     {/*Left side*/}
                     {props.purchaseCompletePopup ?
-                        <PurchaseCompleteStep examplePurchaseInfo={props.examplePurchaseInfo} />
+                        <PurchaseCompleteStep email={props.email} />
                         :
                         <PurchaseStep ticketTypeList={ticketTypeList} eventInfo={props.eventInfo} counters={counters} setCounters={setCounters} total={total} setTotal={setTotal} loaded={loaded} />
                     }
@@ -338,12 +339,21 @@ const Popup = (props) => {
                     <div className="flex flex-col bg-[#edeeef] p-7 pb-12 h-full md:p-10 md:pt-20 md:pb-7 md:overflow-y-auto md:w-[38%] md:h-[100%]">
                         <PurchaseSummary ticketTypeList={ticketTypeList} returnMessage={returnMessage} purchaseCompletePopup={props.purchaseCompletePopup} counters={counters} total={total} />
                         {props.purchaseCompletePopup ||
-                            <button
-                                className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
-                                onClick={total === 0 || (() => buyTicket())}
-                            >
-                                Köp
-                            </button>
+                            <div>
+                                {clickedBuy ?
+                                    <button className={`mt-6 md:mt-auto bg-zinc-300 text-zinc-500 cursor-not-allowed rounded-btn text-[16px] font-medium py-2 w-full transition ease-in-out duration-200 flex justify-center items-center`}>
+                                        <RefreshIcon className="h-5 w-5 animate-reverse-spin" />
+                                        Genomför köp...
+                                    </button>
+                                    :
+                                    <button
+                                        className={`mt-6 md:mt-auto ${total <= 0 ? "bg-zinc-300 text-zinc-500 cursor-not-allowed" : "bg-btnBG hover:bg-btnBGHover"} rounded-btn text-[16px] text-black font-medium py-2 w-full transition ease-in-out duration-200`}
+                                        onClick={total === 0 || (() => buyTicket())}
+                                    >
+                                        Köp
+                                    </button>
+                                }
+                            </div>
                         }
                     </div>
 

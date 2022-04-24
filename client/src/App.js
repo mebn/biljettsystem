@@ -15,7 +15,7 @@ import { setLoggedIn } from "./redux/loggedIn";
 const App = () => {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const getUser = () => {
       fetch("/api/auth/login/success")
@@ -23,11 +23,11 @@ const App = () => {
         .then(data => {
           if (data.ok) {
             setUser(data.user);
-            dispatch(setLoggedIn());
+            dispatch(setLoggedIn(data.user));
           }
         });
-      }
-      getUser();
+    }
+    getUser();
   }, [user]);
 
   return (

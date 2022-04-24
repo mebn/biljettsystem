@@ -6,7 +6,6 @@ process.env.PWD = process.cwd();
 const eventRouter = require("./routes/event");
 const ticketRouter = require("./routes/ticket");
 const userRouter = require("./routes/user");
-const emailRouter = require("./routes/email");
 const swaggerRouter = require("./routes/swagger");
 const orderRouter = require("./routes/order")
 const { authRouter, isLoggedIn } = require("./routes/auth");
@@ -22,7 +21,6 @@ app.use("/api/ticket", ticketRouter);
 app.use("/api/user", userRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/email", emailRouter);
 
 app.use("/api-docs", swaggerRouter);
 app.use("/public", express.static("public"));

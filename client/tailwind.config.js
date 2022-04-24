@@ -27,6 +27,16 @@ module.exports = {
       boxShadow: {
         main: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
       },
+      animation: {
+        'reverse-spin': 'reverse-spin 1s linear infinite'
+      },
+      keyframes: {
+        'reverse-spin': {
+          from: {
+            transform: 'rotate(360deg)'
+          },
+        }
+      }
     },
   },
   plugins: [
