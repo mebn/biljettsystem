@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { TicketIcon, LoginIcon, UserCircleIcon } from '@heroicons/react/outline'
-import { useSelector } from 'react-redux'
+import { TicketIcon, LoginIcon, UserCircleIcon, LogoutIcon } from '@heroicons/react/outline'
+import { useDispatch, useSelector } from 'react-redux'
 import LoginPopup from '../LoginPopup/LoginPopup'
+import { setLoggedOut } from "../../redux/loggedIn";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const togglePopup = () => setIsOpen(!isOpen);
     const { loggedIn } = useSelector((state) => state.loggedIn);
+    const dispatch = useDispatch();
     
     const onLogin = e => {
         e.preventDefault();
@@ -17,6 +19,12 @@ const Navbar = () => {
     const showPopup = () => {
         if (isOpen && !loggedIn)
             return <LoginPopup handleClose={togglePopup} />
+    }
+
+    const logout = e => {
+        e.preventDefault();
+        fetch(`/api/auth/logout`);
+        dispatch(setLoggedOut());
     }
 
     return (
@@ -39,9 +47,10 @@ const Navbar = () => {
                             </li>
                             <li>
                                 {loggedIn ? (
-                                    <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'>
-                                        <UserCircleIcon className='h-6 w-6 md:h-5 md:w-5' />
-                                        <span className='ml-1 hidden md:block'>Profil</span>
+                                    <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
+                                    onClick={e => logout(e)}>
+                                        <LogoutIcon className='h-6 w-6 md:h-5 md:w-5' />
+                                        <span className='ml-1 hidden md:block'>Logga ut</span>
                                     </button>
                                 ) : (
                                     <button
