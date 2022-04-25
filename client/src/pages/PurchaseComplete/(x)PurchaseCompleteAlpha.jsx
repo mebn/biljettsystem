@@ -151,7 +151,7 @@ const PurchaseComplete = () => {
             setCoordinates(data.coordinates);
 
             const d = new Date(data.starttime);
-            setDate(d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3));
+            setDate(d.toLocaleString('sv-SE').slice(0,-3));
         });
     }, [eventIdParam])
 
