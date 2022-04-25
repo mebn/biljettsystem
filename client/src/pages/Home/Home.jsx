@@ -22,7 +22,7 @@ const Card = props => (
         <div className="self-center bg-gray-200 rounded-full flex flex-col items-center justify-center w-16 h-16">
           <span> {props.event.startTime.getDate()}</span>
           <span>
-            {props.event.startTime.toLocaleString("default", {
+            {props.event.startTime.toLocaleString("sv-SE", {
               month: "short",
             })}{" "}
           </span>
