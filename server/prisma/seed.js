@@ -11,6 +11,7 @@ Project Pride ska tillsammans med QN ha filmvisning med HBTQ-tema den 26e april 
 Men vad blir det för film? Det kan du vara med och bestämma genom att rösta i det här [formuläret](https://forms.gle/bksEpotnq7R5eVso7)
 Hoppas att vi ses där!!`,
     startTime: new Date("2022-06-21 22:00:00"),
+    releaseTime: new Date("2022-06-19 22:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/278183874_173113771718408_6514322365979236682_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=l3X8D-y5OpYAX_2a2sB&tn=XbYCkZrbvDjvZuGX&_nc_ht=scontent.fbma1-1.fna&oh=00_AT8OqXqB3ogIzsSU4gw8aUB26hUDtK6-2PULmKUT9Vf14Q&oe=6268AFBA",
     location: {
@@ -50,6 +51,7 @@ Med musikalisk inspiration från Tolkien, Lovecraft och annat ur fantastikens v�
 Nyfiken på vad annat som händer under [Kulturnatten](https://kulturnattstockholm.se/)? Hemsidan listar flera hundra programpunkter, alla gratis och öppna hela kvälen. 
 Bara i Gamla stan finns så skilda aktiviteter som föreställningar kring yttrandefrihet på Nobelmuseet, kriminalhistorisk vandring med Deckarbokhandeln, en helkväll med dans på Mäster Olofsgården och både cosplay och rustningsfinissage på Livrustkammaren.`,
     startTime: new Date("2022-05-23 18:00:00"),
+    releaseTime: new Date("2022-05-21 18:00:00"),
     eventPictureLink:
       "https://cdn-az.allevents.in/events7/banners/d70f14fffc44af99e1a7ae9c033a8b5b06a4a9acfecbd33533ba55883ba292f7-rimg-w960-h501-gmir?v=1650521488",
     location: {
@@ -96,6 +98,7 @@ Söndag den 22:a maj klockan 13:00-16:00\\
 Söndag den 22:a maj klockan 18:00-21:30 (Slasqueföreställning)\\
 Sluttiderna är ungefärliga!`,
     startTime: new Date("2022-05-21 18:00:00"),
+    releaseTime: new Date("2022-05-19 18:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/277308574_5657100947637793_6759363477057422742_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=vuisxgSerqkAX-9am1I&_nc_ht=scontent.fbma1-1.fna&oh=00_AT8IdSMlKYcU7Mz-3d2U8T_Uv3u0x1dF8yyNF7jkTBa5rg&oe=62681224",
     location: {
@@ -155,6 +158,7 @@ Tickets will be released in this event at 18.00 on Friday the 29th of April!
     
 Photographs will be taken during this event, contact us on Facebook if you don't want to be photographed or if you want us to delete a photo! `,
     startTime: new Date("2022-05-13 19:00:00"),
+    releaseTime: new Date("2022-05-11 19:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/278567261_160192739753216_7775382785250558953_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=340051&_nc_ohc=w4UgkJz5msMAX9SWIok&tn=XbYCkZrbvDjvZuGX&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9E8fN9F9ntMkpYwwW45r-1xii6Dnr7d7gx1j7jXPWLxA&oe=62696CDD",
     location: {
@@ -204,6 +208,7 @@ Ticket realese: 13/4 19:00!!
 🍸Afterparty: ÖPPET FÖR ALLA\\
 🥵Hotel: Trivago`,
     startTime: new Date("2022-04-22 19:00:00"),
+    releaseTime: new Date("2022-04-20 19:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/277349628_704094004271610_6724214645579859097_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=17D9gQXfRJEAX8vLUlT&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9pIoMGB7gVtH88BmutgVpW2x1782v37N1U9cCpXYVwcg&oe=6269ED15",
     location: {
@@ -245,6 +250,7 @@ async function main() {
           longTitle: event.longTitle,
           description: event.description,
           startTime: event.startTime,
+          releaseTime: event.releaseTime,
           eventPictureLink: event.eventPictureLink,
           location: {
             create: event.location,

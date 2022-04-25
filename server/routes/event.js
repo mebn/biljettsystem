@@ -14,6 +14,7 @@ const selectData = {
   longTitle: true,
   description: true,
   startTime: true,
+  releaseTime: true,
   eventPictureLink: true,
   location: {
     select: {
