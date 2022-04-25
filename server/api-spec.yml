@@ -51,6 +51,9 @@ components:
         startTime:
           type: string
           format: date-time
+        releaseTime:
+          type: string
+          format: date-time
         locationUrl:
           type: string
           example: https://www.google.com/maps/search/?api=1&query=59.324059%2C18.097304

@@ -160,7 +160,7 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
         /** Lägga till något här en if som tar dagens datum och jämför med release date throwar en error. Kan inspireras av purchaseTime. 
          * vet inte varför jag inte kan nå event här. ----------*/
 
-        if (purchaseTime < event.releaseTime) {
+        if (purchaseTime < Event.releaseTime) {
           throw new Error(`Tickets not released yet`);
         }
 
