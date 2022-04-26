@@ -8,7 +8,7 @@ import {
     PlusIcon
 } from "@heroicons/react/solid"
 
-const smText = "Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu elit. Donec tincidunt erat sed tempus porta. Mauris laoreet vestibulum dolor sit amet tempor. Maecenas nec arcu fringilla, congue nunc ac, elementum lacus. Vestibulum eu erat in purus sollicitudin fermentum in sed ante. Morbi at sagittis augue, id pellentesque ipsum. Phasellus in tortor neque. Curabitur condimentum justo ut elit gravida facilisis. Quisque viverra varius ex vitae rutrum. Nam non porttitor nisi, ac egestas nunc. Donec vitae arcu.";
+const smText = "Tack för att du anmält dig! Vi ses på evetet. Om du har några frågor, tveka inte på att kontakta oss!";
 
 var ExampleTickets = [
     {

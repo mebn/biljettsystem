@@ -10,7 +10,7 @@ import EventTransaction from './pages/EventTransaction/EventTransaction';
 import EventTransactionAlpha from './pages/EventTransaction/EventTransactionAlpha';
 import Navbar from './components/Navbar/Navbar';
 import { useDispatch } from "react-redux";
-import { setLoggedIn } from "./redux/loggedIn";
+import { setLoggedIn, setLoggedOut } from "./redux/loggedIn";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -24,6 +24,9 @@ const App = () => {
           if (data.ok) {
             setUser(data.user);
             dispatch(setLoggedIn(data.user));
+          }
+          else{
+            dispatch(setLoggedOut());
           }
         });
     }

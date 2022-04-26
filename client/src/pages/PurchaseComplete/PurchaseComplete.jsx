@@ -22,7 +22,7 @@ const PurchaseComplete = () => {
         }
         getEvent().then(data => {
             const d = new Date(data.startTime);
-            const formatted = {...data, date: d.toLocaleString('sv-SE', {timeZone: 'UTC'}).slice(0,-3)}
+            const formatted = {...data, date: d.toLocaleString('sv-SE').slice(0,-3)}
             setEventInfo(formatted);
         });
     }, [eventIdParam]) 
