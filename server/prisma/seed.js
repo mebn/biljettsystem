@@ -155,6 +155,7 @@ Tickets will be released in this event at 18.00 on Friday the 29th of April!
     
 Photographs will be taken during this event, contact us on Facebook if you don't want to be photographed or if you want us to delete a photo! `,
     startTime: new Date("2022-05-13 19:00:00"),
+    releaseTime: new Date("2022-04-29 18:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/278567261_160192739753216_7775382785250558953_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=340051&_nc_ohc=w4UgkJz5msMAX9SWIok&tn=XbYCkZrbvDjvZuGX&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9E8fN9F9ntMkpYwwW45r-1xii6Dnr7d7gx1j7jXPWLxA&oe=62696CDD",
     location: {
@@ -204,6 +205,7 @@ Ticket realese: 13/4 19:00!!
 🍸Afterparty: ÖPPET FÖR ALLA\\
 🥵Hotel: Trivago`,
     startTime: new Date("2022-04-22 19:00:00"),
+    releaseTime: new Date("2022-04-13 19:00:00"),
     eventPictureLink:
       "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/277349628_704094004271610_6724214645579859097_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=17D9gQXfRJEAX8vLUlT&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9pIoMGB7gVtH88BmutgVpW2x1782v37N1U9cCpXYVwcg&oe=6269ED15",
     location: {
@@ -245,6 +247,7 @@ async function main() {
           longTitle: event.longTitle,
           description: event.description,
           startTime: event.startTime,
+          releaseTime: event.releaseTime,
           eventPictureLink: event.eventPictureLink,
           location: {
             create: event.location,

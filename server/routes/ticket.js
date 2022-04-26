@@ -1,14 +1,13 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const { isLoggedIn, initSession } = require("./auth");
-const { sendMail } = require("../email/email")
+const { sendMail } = require("../email/email");
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
 router.use(express.json());
 initSession(router);
-
 
 /**
  * @swagger
@@ -41,7 +40,9 @@ initSession(router);
 
 const toSelect = {
   id: true,
-  event: { select: { id: true, longTitle: true, startTime: true } },
+  event: {
+    select: { id: true, longTitle: true, startTime: true },
+  },
   tickets: {
     select: {
       ticketType: {
@@ -112,7 +113,7 @@ const toSelect = {
  *                             type: number
  *                           name:
  *                             type: string
-*/
+ */
 router.post("/buyTickets", isLoggedIn, async (req, res) => {
   const { eventId, tickets } = req.body;
   const email = req.user.email;
@@ -124,7 +125,7 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
     });
     userId = user.id;
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(503).json({
       ok: false,
       message: "Database connection failed.",
@@ -137,8 +138,22 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
   try {
     await prisma.$transaction(async (prisma) => {
       order = await prisma.order.create({
-        data: { userId: userId, eventId: eventId, purchaseTime: purchaseTime },
+        data: {
+          userId: userId,
+          eventId: eventId,
+          purchaseTime: purchaseTime,
+        },
       });
+
+      let event = await prisma.event.findFirst({
+        where: { id: eventId },
+        select: { releaseTime: true },
+      });
+
+
+      if (event.releaseTime && event.releaseTime > purchaseTime) {
+        throw new Error("Tickets have not been released yet");
+      }
 
       for (const ticket of tickets) {
         const ticketType = await prisma.ticketType.findFirst({
@@ -167,7 +182,6 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
       }
     });
 
-
     // Find the order that was completed
     let completedOrder = await prisma.order.findFirst({
       where: { id: order.id },
@@ -188,11 +202,18 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
     }, {});
 
     // Return purchased tickets as an array
-    let ticketsAsArray = Object.keys(purchasedTickets).map(key => ({ ...purchasedTickets[key], name: key }))
+    let ticketsAsArray = Object.keys(purchasedTickets).map((key) => ({
+      ...purchasedTickets[key],
+      name: key,
+    }));
 
     let orderData = { ...completedOrder, tickets: ticketsAsArray };
 
-    await sendMail(req.user.email, "Orderbekräftelse från Biljetta!", orderData);
+    await sendMail(
+      req.user.email,
+      "Orderbekräftelse från Biljetta!",
+      orderData
+    );
 
     return res.status(201).json({
       message: "Completed order",
