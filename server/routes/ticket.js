@@ -150,6 +150,7 @@ router.post("/buyTickets", isLoggedIn, async (req, res) => {
         select: { releaseTime: true },
       });
 
+
       if (event.releaseTime && event.releaseTime > purchaseTime) {
         throw new Error("Tickets have not been released yet");
       }

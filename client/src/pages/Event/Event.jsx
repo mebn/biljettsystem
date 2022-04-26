@@ -7,8 +7,11 @@ import ReactMarkdown from "react-markdown";
 import LoginPopup from "../../components/LoginPopup/LoginPopup";
 import { useSelector } from "react-redux";
 import Popup from "../../components/Popup/Popup";
+import Countdown from "../../components/Countdown/Countdown";
 
-const EventBody = (props) => (
+const EventBody = (props) => {
+  return(
+
   <div className="md:border-r-2 px-0 md:px-6">
     <img
       className="md:rounded-xl md:mt-8"
@@ -23,8 +26,13 @@ const EventBody = (props) => (
           <EventInfo
             coordinateslink={props.eventInfo.locationUrl}
             address={props.eventInfo.location.address}
-            date={props.eventInfo.date}
+            startDate={props.eventInfo.startDateFormatted}
           />
+        </div>
+        <div>
+          {props.loaded &&
+            (props.eventInfo.releaseTime && (<Countdown released={props.released} setReleased={props.setReleased} releaseDate={props.eventInfo.releaseDateFormatted} />))
+          }
         </div>
       </div>
       <ReactMarkdown
@@ -38,7 +46,9 @@ const EventBody = (props) => (
       </div>
     </div>
   </div>
-);
+
+)
+        }
 
 const LoadingEventBody = () => (
   <div className="animate-pulse md:border-r-2 px-0 md:px-6 md:w-full ">
@@ -65,30 +75,39 @@ const LoadingEventBody = () => (
   </div>
 );
 
-const DesktopEventInfo = (props) => (
-  <div
-    className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[1000]
-          md:sticky md:h-full md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
-          md:justify-start md:py-8 md:border-t-0 md:top-[64px]"
-  >
-    <div className="hidden md:block">
-      <h1 className="text-2xl font-medium pb-4">{props.eventInfo.longTitle}</h1>
-      <div className="border-b-2 border-t-2 py-4 mb-4">
-        <EventInfo
-          coordinateslink={props.eventInfo.locationUrl}
-          address={props.eventInfo.location.address}
-          date={props.eventInfo.date}
-        />
+const DesktopEventInfo = (props) => {
+
+  console.log(props);
+  return(
+      <div
+      className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[1000]
+            md:sticky md:h-full md:w-80 lg:w-96  md:left-auto md:shrink-0  md:bg-white
+            md:justify-start md:py-8 md:border-t-0 md:top-[64px]"
+    >
+      <div className="hidden md:block">
+        <h1 className="text-2xl font-medium pb-4">{props.eventInfo.longTitle}</h1>
+        <div className="border-b-2 border-t-2 py-4">
+          <EventInfo
+            coordinateslink={props.eventInfo.locationUrl}
+            address={props.eventInfo.location.address}
+            startDate={props.eventInfo.startDateFormatted}
+          />
+        </div>
+        <div className="mb-5">
+          {props.loaded &&
+            (props.eventInfo.releaseTime && (<Countdown released={props.released} setReleased={props.setReleased} releaseDate={props.eventInfo.releaseDateFormatted} />))
+          }
+        </div>
+        <div className="h-60 pb-4">
+          {props.eventInfo.location.lat ? (
+            <Map location={props.eventInfo.location} />
+          ) : null}
+        </div>
       </div>
-      <div className="h-60 pb-4">
-        {props.eventInfo.location.lat ? (
-          <Map location={props.eventInfo.location} />
-        ) : null}
-      </div>
+      {props.children}
     </div>
-    {props.children}
-  </div>
-);
+  )
+};
 
 const LoadingDesktopEventInfo = (props) => (
   <div
@@ -122,8 +141,8 @@ const PurchaseBar = (props) => (
     </div>
     <div className="flex justify-center flex-col">
       <button
-        className="shrink bg-btnBG hover:bg-teal-700 rounded-btn text-black font-medium py-3 px-8 transition ease-in-out duration-200"
-        onClick={props.popup}
+        className={`shrink ${props.released ? "bg-btnBG hover:bg-teal-700 transition ease-in-out duration-200" : "cursor-not-allowed bg-zinc-300"} rounded-btn text-black font-medium py-3 px-8`}
+        onClick={props.released && props.popup}
       >
         Biljetter
       </button>
@@ -151,6 +170,8 @@ const Event = () => {
 
   const [purchaseCompletePopup, setPurchaseCompletePopup] = useState(false);
 
+  const [released, setReleased] = useState(false);
+
   const [eventInfo, setEventInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
 
@@ -161,6 +182,7 @@ const Event = () => {
       setPurchaseCompletePopup(!purchaseCompletePopup);
     }
   };
+
 
   const { loggedIn, user } = useSelector((state) => state.loggedIn);
 
@@ -190,12 +212,17 @@ const Event = () => {
       .then((res) => res.json())
       .then((data) => {
         const d = new Date(data.startTime);
+        const r = new Date(data.releaseTime)
         const formatted = {
           ...data,
-          date: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
+          startDateFormatted: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
+          releaseDateFormatted: r.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
         };
         setEventInfo(formatted);
         setLoaded(true);
+        if(formatted.releaseTime === null){
+          setReleased(true)
+        }
       });
   }, [eventIdParam]);
 
@@ -205,10 +232,10 @@ const Event = () => {
         className={`md:flex flex-row md:max-w-6xl justify-center mr-auto ml-auto ${isOpen ? "fixed right-0 left-0" : ""
           }`}
       >
-        {loaded ? <EventBody eventInfo={eventInfo} /> : <LoadingEventBody />}
+        {loaded ? <EventBody released={released} setReleased={setReleased} loaded={loaded} eventInfo={eventInfo} /> : <LoadingEventBody />}
         {loaded ? (
-          <DesktopEventInfo eventInfo={eventInfo} popup={togglePopup}>
-            <PurchaseBar eventInfo={eventInfo} popup={togglePopup} />
+          <DesktopEventInfo released={released} setReleased={setReleased} loaded={loaded} eventInfo={eventInfo} popup={togglePopup}>
+            <PurchaseBar released={released} setReleased={setReleased} eventInfo={eventInfo} popup={togglePopup} />
           </DesktopEventInfo>
         ) : (
           <LoadingDesktopEventInfo >
@@ -217,7 +244,7 @@ const Event = () => {
         )}
       </div>
       {showPopup()}
-    </div >
+    </div>
   );
 };
 

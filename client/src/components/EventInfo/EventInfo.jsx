@@ -9,7 +9,7 @@ const EventInfo = props => {
             </div>
             <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4" />
-                <div className="">{props.date}</div>
+                <div className="">{props.startDate}</div>
             </div>
         </div>
     )
