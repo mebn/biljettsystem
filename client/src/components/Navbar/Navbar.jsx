@@ -18,7 +18,7 @@ const Navbar = () => {
 
     const showPopup = () => {
         if (isOpen && !loggedIn)
-            return <LoginPopup handleClose={togglePopup} />
+            return <LoginPopup handleClose={togglePopup} ticketPopupOnCallback={false}/>
     }
 
     const logout = e => {

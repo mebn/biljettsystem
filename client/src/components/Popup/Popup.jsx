@@ -100,12 +100,12 @@ const PurchaseStep = (props) => {
                         href={props.eventInfo.locationUrl}
                         className="underline text-[#268763]"
                     >
-                        {props.eventInfo.location.address}
+                        {props.eventInfo.location != null ? props.eventInfo.location.address : ""}
                     </a>
                 </div>
                 <div className="my-3 flex items-center pb-4">
                     <CalendarIcon className="h-4 mr-2" />
-                    <div className="text-sm">{props.eventInfo.date}</div>
+                    <div className="text-sm">{props.eventInfo.startDateFormatted}</div>
                 </div>
                 <div className="text-left font-bold pt-4 pb-2 mb-2 border-t">
                     Välj biljetter
