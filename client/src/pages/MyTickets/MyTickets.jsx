@@ -21,7 +21,8 @@ const Card = (props) => (
       <div className="flex flex-col px-4 py-4">
         <div>
           {" "}
-          <span className="font-bold">Köpt:</span> {props.order.purchaseTime.toLocaleString("sv-SE")}
+          <span className="font-bold">Köpt:</span>{" "}
+          {props.order.purchaseTime.toLocaleString("sv-SE")}
         </div>
         <div>
           <span className="font-bold">Ordernummer:</span> {props.order.id}
@@ -114,7 +115,8 @@ const MyTickets = () => {
   return (
     <div className="px-6 pt-6 md:max-w-6xl mx-auto">
       <div className="font-bold text-2xl mb-1">Köpta biljetter</div>
-      <div className="text-gray-500">Klicka för mer information</div>
+      <div className="text-gray-500">{orders.length > 0 ? "Klicka för mer information" : "Du har tyvärr inte köpt några biljetter än 😢"}</div>
+
       <div className="flex flex-col gap-8 pt-6 md:grid md:grid-cols-2 lg:grid-cols-3">
         {loaded
           ? orders.map((order, index) => (
