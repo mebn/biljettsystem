@@ -14,6 +14,13 @@ const selectData = {
     select: {
       id: true,
       shortTitle: true,
+      startTime: true,
+      eventPictureLink: true,
+      location: {
+        select: {
+          title: true
+        }
+      }
     },
   },
   id: true,
@@ -37,7 +44,7 @@ const selectData = {
  *     tags: [order]
  *     security:
  *       - oAuth:
- *         - logged_in
+ *           - logged_in
  *     description: Get all orders for the logged in user
  *     responses:
  *       "200":
@@ -60,6 +67,15 @@ const selectData = {
  *                         type: integer
  *                       shortTitle:
  *                         type: string
+ *                       startTime:
+ *                         type: string
+ *                       eventPictureLink:
+ *                         type: string
+ *                       location:
+ *                         type: object
+ *                         properties:
+ *                           title:
+ *                             type: string
  *                   tickets:
  *                     type: array
  *                     items:

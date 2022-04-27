@@ -215,8 +215,8 @@ const Event = () => {
         const r = new Date(data.releaseTime)
         const formatted = {
           ...data,
-          startDateFormatted: d.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
-          releaseDateFormatted: r.toLocaleString("sv-SE", { timeZone: "UTC" }).slice(0, -3),
+          startDateFormatted: d.toLocaleString("sv-SE").slice(0, -3),
+          releaseDateFormatted: r.toLocaleString("sv-SE").slice(0, -3),
         };
         setEventInfo(formatted);
         setLoaded(true);
@@ -224,7 +224,7 @@ const Event = () => {
           setReleased(true)
         }
       });
-  }, [eventIdParam]);
+  }, []);
 
   return (
     <div>
