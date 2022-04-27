@@ -5,13 +5,13 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const GOOGLE_CLIENT_ID = "989957502183-ln715pltqb2jud684vurmgpu12nmdb1g.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "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";
+const GOOGLE_CLIENT_ID = "1017397100859-lmfctes7fvs8ac3op5lraepjdl8580dp.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET = "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";
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:7050/api/auth/google/callback",
+    callbackURL: "/api/auth/google/callback",
     passReqToCallback: true,
 },
     async function (request, accessToken, refreshToken, profile, done) {
