@@ -11,7 +11,7 @@ const GOOGLE_CLIENT_SECRET = "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";
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "/api/auth/google/callback",
+    callbackURL: "https://biljettsystem.salamon.xyz/api/auth/google/callback",
     passReqToCallback: true,
 },
     async function (request, accessToken, refreshToken, profile, done) {
