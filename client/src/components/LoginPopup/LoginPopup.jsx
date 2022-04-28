@@ -3,7 +3,7 @@ import { XIcon } from "@heroicons/react/solid";
 
 const googleLogin = () => {
     let url = window.location.href.split(':')[1]
-    window.open(`http:${url}:7050/api/auth/google?return=${window.location.href}`, "_self")
+    window.open(`http:${url}/api/auth/google?return=${window.location.href}`, "_self")
 }
 
 const LoginPopup = (props) => {
