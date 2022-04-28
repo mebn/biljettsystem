@@ -12,7 +12,7 @@ Men vad blir det för film? Det kan du vara med och bestämma genom att rösta i
 Hoppas att vi ses där!!`,
     startTime: new Date("2022-06-21 22:00:00"),
     eventPictureLink:
-      "https://biljettsystem.salamon.xyz/static/images/film.jpg",
+      "https://biljettsystem.salamon.xyz/serve-static/images/film.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,
@@ -51,7 +51,7 @@ Nyfiken på vad annat som händer under [Kulturnatten](https://kulturnattstockho
 Bara i Gamla stan finns så skilda aktiviteter som föreställningar kring yttrandefrihet på Nobelmuseet, kriminalhistorisk vandring med Deckarbokhandeln, en helkväll med dans på Mäster Olofsgården och både cosplay och rustningsfinissage på Livrustkammaren.`,
     startTime: new Date("2022-05-23 18:00:00"),
     eventPictureLink:
-      "https://biljettsystem.salamon.xyz/static/images/kultur.jpg",
+      "https://biljettsystem.salamon.xyz/serve-static/images/kultur.jpg",
     location: {
       lat: 59.32404995364403,
       lng: 18.070529078709843,
@@ -97,7 +97,7 @@ Söndag den 22:a maj klockan 18:00-21:30 (Slasqueföreställning)\\
 Sluttiderna är ungefärliga!`,
     startTime: new Date("2022-05-21 18:00:00"),
     eventPictureLink:
-      "https://biljettsystem.salamon.xyz/static/images/spex.jpg",
+      "https://biljettsystem.salamon.xyz/serve-static/images/spex.jpg",
     location: {
       lat: 59.3359961,
       lng: 18.0592714,
@@ -157,7 +157,7 @@ Photographs will be taken during this event, contact us on Facebook if you don't
     startTime: new Date("2022-05-13 19:00:00"),
     releaseTime: new Date("2022-04-29 18:00:00"),
     eventPictureLink:
-      "https://biljettsystem.salamon.xyz/static/images/tiktok.jpg",
+      "https://biljettsystem.salamon.xyz/serve-static/images/tiktok.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,
@@ -207,7 +207,7 @@ Ticket realese: 13/4 19:00!!
     startTime: new Date("2022-04-22 19:00:00"),
     releaseTime: new Date("2022-04-13 19:00:00"),
     eventPictureLink:
-      "https://biljettsystem.salamon.xyz/static/images/geek.jpg",
+      "https://biljettsystem.salamon.xyz/serve-static/images/geek.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,
