@@ -16,7 +16,7 @@ const LoginPopup = (props) => {
                     <div className="flex flex-col justify-center items-center">
 
                         <button
-                            className="bg-[#e9e9e9] hover:bg-[#bbbbbb] shadow-sm w-72 h-16 rounded-lg 
+                            className="bg-[#e9e9e9] hover:bg-[#bbbbbb] shadow-sm w-72 h-16 rounded-xl 
                             flex justify-center items-center transition duration-200 ease-in-out mt-32 md:mt-16"
                             onClick={googleLogin}
                         >
