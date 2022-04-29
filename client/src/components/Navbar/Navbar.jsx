@@ -57,7 +57,7 @@ const Navbar = () => {
                                         className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 md:py-2.5 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
                                         onClick={e => onLogin(e)}>
                                         <LoginIcon className='h-6 w-6 md:h-5 md:w-5' />
-                                        <span className='ml-1 hidden md:block'>Logga in</span>
+                                        <span className='ml-1'>Logga in</span>
                                     </button>
                                 )}
 

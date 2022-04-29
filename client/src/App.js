@@ -22,7 +22,6 @@ const App = () => {
         .then(res => res.json())
         .then(data => {
           if (data.ok) {
-            setUser(data.user);
             dispatch(setLoggedIn(data.user));
           }
           else{
@@ -31,7 +30,7 @@ const App = () => {
         });
     }
     getUser();
-  }, [user]);
+  });
 
   return (
     <React.StrictMode>
