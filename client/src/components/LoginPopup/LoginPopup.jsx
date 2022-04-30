@@ -2,11 +2,13 @@ import { XIcon } from "@heroicons/react/solid";
 
 const googleLogin = (ticketPopupOnCallback) => {
     let url = window.location.href.split(':')[1]
+    let fullUrl = window.location.href
+    fullUrl = fullUrl.replace("/popup", "")
     let urlExtension = ""
-    if (ticketPopupOnCallback && !window.location.href.includes("/popup")) {
+    if (ticketPopupOnCallback) {
         urlExtension = "/popup"
     }
-    window.open(`http:${url}:7050/api/auth/google?return=${window.location.href + urlExtension}`, "_self")
+    window.open(`http:${url}:7050/api/auth/google?return=${fullUrl + urlExtension}`, "_self")
 }
 
 const LoginPopup = ({ticketPopupOnCallback, handleClose}) => {
