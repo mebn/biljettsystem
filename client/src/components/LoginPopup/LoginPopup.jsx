@@ -10,13 +10,13 @@ const LoginPopup = (props) => {
     return (
         <div className="popup-box">
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity z-[1050]" />
-            <div className="fixed inset-0 z-[1100] md:max-w-sm md:mr-auto md:ml-auto md:inset-56 md:shadow-lg">
+            <div className="fixed inset-0 z-[1100] md:max-w-sm md:mr-auto md:ml-auto md:min-h-[400px] md:max-h-[400px] md:inset-14 md:shadow-lg">
                 <div className="h-full z-50 overflow-auto md:rounded-lg bg-[#f5f5f5]">
                     <div className="font-bold pt-8 pb-8 border-b text-2xl text-center">Logga in</div>
                     <div className="flex flex-col justify-center items-center">
 
                         <button
-                            className="bg-[#e9e9e9] hover:bg-[#bbbbbb] shadow-sm w-72 h-16 rounded-xl 
+                            className="hover:bg-zinc-400 bg-zinc-200 shadow-sm w-72 h-16 rounded-xl 
                             flex justify-center items-center transition duration-200 ease-in-out mt-32 md:mt-16"
                             onClick={googleLogin}
                         >
