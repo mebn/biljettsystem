@@ -1,4 +1,4 @@
-import { XIcon } from "@heroicons/react/solid";
+import { ExclamationIcon, XIcon } from "@heroicons/react/solid";
 import { setLoggedOut } from "../../redux/loggedIn";
 import { useDispatch } from 'react-redux'
 
@@ -8,9 +8,11 @@ const LogoutPopup = (props) => {
 
     const logout = e => {
         e.preventDefault();
-        fetch(`/api/auth/logout`);
-        dispatch(setLoggedOut());
-        props.setIsOpen(false);
+        setTimeout(() => {
+            fetch(`/api/auth/logout`);
+            dispatch(setLoggedOut());
+            props.setIsOpen(false);
+        }, 200); 
     }
 
     return (
@@ -20,16 +22,20 @@ const LogoutPopup = (props) => {
                 <div className="h-full z-50 overflow-auto md:rounded-lg bg-[#f5f5f5]">
                     <div className="font-bold pt-8 pb-8 border-b text-2xl text-center">Logga ut</div>
                     <div className="flex flex-col justify-center items-center">
-                        <div className="flex md:space-x-2 md:mt-0 md:text-md font-medium py-10">Vill du logga ut?</div>
+                        <div className="flex justify-center items-center md:space-x-2 md:mt-0 md:text-md font-medium py-10">
+                            <ExclamationIcon className="h-7 w-7"/>
+                            Vill du logga ut?</div>
                         <ul className="flex md:space-x-2 md:mt-0 md:text-sm md:font-medium py-10">
                             <li>
-                                <button className='flex justify-content bg-zinc-300 text-zinc-500 px-6 py-3 ml-2 md:ml-1.5 rounded-xl text-[18px]'
+                                <button className='flex justify-content bg-zinc-300 text-zinc-500 px-6 py-3 ml-2 md:ml-1.5 rounded-xl text-[18px] 
+                                    transition duration-200 ease-in-out hover:bg-zinc-400'
                                     onClick={props.handleClose}>
                                     <span className='ml-1'>Avbryt</span>
                                 </button>
                             </li>
                             <li>
-                                <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-6 py-3 ml-2 md:ml-1.5 rounded-xl text-[18px]'
+                                <button className='flex justify-content bg-btnBG text-[#0A1F44] px-6 py-3 ml-2 md:ml-1.5 rounded-xl text-[18px]
+                                    transition duration-200 ease-in-out hover:bg-btnBGHover'
                                     onClick={e => logout(e)}>
                                     <span className='ml-1'>Logga ut</span>
                                 </button>

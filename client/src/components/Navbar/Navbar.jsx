@@ -42,7 +42,8 @@ const Navbar = () => {
                         <ul className="flex md:space-x-2 md:mt-0 md:text-sm md:font-medium">
                             <li>
                                 {loggedIn ? (
-                                <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'>
+                                <button className='flex justify-content bg-[#A9E3C0] hover:bg-btnBGHover transition duration-200 ease-in-out 
+                                    text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'>
                                     <TicketIcon className='h-6 w-6 md:h-5 md:w-5' />
                                     <span className='ml-1 hidden md:block'>Biljetter</span>
                                 </button>
@@ -52,14 +53,16 @@ const Navbar = () => {
                             </li>
                             <li>
                                 {loggedIn ? (
-                                    <button className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
+                                    <button className='flex justify-content bg-[#A9E3C0] hover:bg-btnBGHover transition duration-200 ease-in-out
+                                     text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
                                     onClick={e => logout(e)}>
                                         <LogoutIcon className='h-6 w-6 md:h-5 md:w-5' />
                                         <span className='ml-1'>Logga ut</span>
                                     </button>
                                 ) : (
                                     <button
-                                        className='flex justify-content bg-[#A9E3C0] text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
+                                        className='flex justify-content bg-[#A9E3C0] hover:bg-btnBGHover transition duration-200 ease-in-out
+                                         text-[#0A1F44] px-3 md:px-4 py-2 md:py-2 ml-2 md:ml-1.5 rounded-full md:rounded-xl text-[14px] md:text-[16px]'
                                         onClick={e => onLogin(e)}>
                                         <LoginIcon className='h-6 w-6 md:h-5 md:w-5' />
                                         <span className='ml-1'>Logga in</span>
