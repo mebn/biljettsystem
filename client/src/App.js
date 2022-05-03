@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedOut } from "./redux/loggedIn";
 
 const App = () => {
-  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,6 +38,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/event/:eventId" element={<Event />} />
+          <Route path="/event/:eventId/popup" element={<Event />} />
           <Route path="/event/:eventId/book" element={<EventTransaction />} />
           <Route path="/event/:eventId/purchase" element={<EventTransactionAlpha />} />
           <Route path="/purchase-complete/:eventId" element={<PurchaseComplete />} />
