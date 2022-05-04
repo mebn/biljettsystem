@@ -8,6 +8,7 @@ import LoginPopup from "../../components/LoginPopup/LoginPopup";
 import { useSelector } from "react-redux";
 import Popup from "../../components/Popup/Popup";
 import Countdown from "../../components/Countdown/Countdown";
+import { useLocation } from "react-router-dom";
 
 const EventBody = (props) => {
   return(
@@ -76,8 +77,6 @@ const LoadingEventBody = () => (
 );
 
 const DesktopEventInfo = (props) => {
-
-  console.log(props);
   return(
       <div
       className="flex flex-col justify-center fixed bottom-0 right-0 left-0 h-20 px-6 bg-gray-100 border-t-2 z-[1000]
@@ -167,7 +166,9 @@ const LoadingPurchaseBar = (props) => (
 const Event = () => {
   let params = useParams();
   let eventIdParam = params.eventId;
-
+  const location = useLocation();
+  
+  
   const [purchaseCompletePopup, setPurchaseCompletePopup] = useState(false);
 
   const [released, setReleased] = useState(false);
@@ -175,7 +176,8 @@ const Event = () => {
   const [eventInfo, setEventInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(window.location.href.includes("/popup"));
+  
   const togglePopup = () => {
     setIsOpen(!isOpen);
     if (purchaseCompletePopup) {
@@ -189,7 +191,7 @@ const Event = () => {
   const showPopup = () => {
     if (isOpen) {
       if (!loggedIn)
-        return <LoginPopup handleClose={togglePopup} />
+        return <LoginPopup handleClose={togglePopup} ticketPopupOnCallback={true}/>
 
       return <Popup
         params={params}
