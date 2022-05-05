@@ -1,7 +1,7 @@
 import { XIcon } from "@heroicons/react/solid";
 
 const googleLogin = (ticketPopupOnCallback) => {
-  let url = window.location.href.split(":")[1];
+  let url = window.location.origin.split("://")[1];
   let fullUrl = window.location.href;
   fullUrl = fullUrl.replace("/popup", "");
   let urlExtension = "";
@@ -10,7 +10,7 @@ const googleLogin = (ticketPopupOnCallback) => {
   }
 
   if (process.env.NODE_ENV !== "production") {
-    url = url + ":7050";
+    url = "localhost:7050";
   }
 
   window.open(
