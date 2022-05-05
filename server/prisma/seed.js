@@ -12,7 +12,7 @@ Men vad blir det för film? Det kan du vara med och bestämma genom att rösta i
 Hoppas att vi ses där!!`,
     startTime: new Date("2022-06-21 22:00:00"),
     eventPictureLink:
-      "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/278183874_173113771718408_6514322365979236682_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=l3X8D-y5OpYAX_2a2sB&tn=XbYCkZrbvDjvZuGX&_nc_ht=scontent.fbma1-1.fna&oh=00_AT8OqXqB3ogIzsSU4gw8aUB26hUDtK6-2PULmKUT9Vf14Q&oe=6268AFBA",
+      "https://biljettsystem.salamon.xyz/serve-static/images/film.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,
@@ -51,7 +51,7 @@ Nyfiken på vad annat som händer under [Kulturnatten](https://kulturnattstockho
 Bara i Gamla stan finns så skilda aktiviteter som föreställningar kring yttrandefrihet på Nobelmuseet, kriminalhistorisk vandring med Deckarbokhandeln, en helkväll med dans på Mäster Olofsgården och både cosplay och rustningsfinissage på Livrustkammaren.`,
     startTime: new Date("2022-05-23 18:00:00"),
     eventPictureLink:
-      "https://cdn-az.allevents.in/events7/banners/d70f14fffc44af99e1a7ae9c033a8b5b06a4a9acfecbd33533ba55883ba292f7-rimg-w960-h501-gmir?v=1650521488",
+      "https://biljettsystem.salamon.xyz/serve-static/images/kultur.jpg",
     location: {
       lat: 59.32404995364403,
       lng: 18.070529078709843,
@@ -97,7 +97,7 @@ Söndag den 22:a maj klockan 18:00-21:30 (Slasqueföreställning)\\
 Sluttiderna är ungefärliga!`,
     startTime: new Date("2022-05-21 18:00:00"),
     eventPictureLink:
-      "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/277308574_5657100947637793_6759363477057422742_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=vuisxgSerqkAX-9am1I&_nc_ht=scontent.fbma1-1.fna&oh=00_AT8IdSMlKYcU7Mz-3d2U8T_Uv3u0x1dF8yyNF7jkTBa5rg&oe=62681224",
+      "https://biljettsystem.salamon.xyz/serve-static/images/spex.jpg",
     location: {
       lat: 59.3359961,
       lng: 18.0592714,
@@ -157,7 +157,7 @@ Photographs will be taken during this event, contact us on Facebook if you don't
     startTime: new Date("2022-05-13 19:00:00"),
     releaseTime: new Date("2022-04-29 18:00:00"),
     eventPictureLink:
-      "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/278567261_160192739753216_7775382785250558953_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=340051&_nc_ohc=w4UgkJz5msMAX9SWIok&tn=XbYCkZrbvDjvZuGX&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9E8fN9F9ntMkpYwwW45r-1xii6Dnr7d7gx1j7jXPWLxA&oe=62696CDD",
+      "https://biljettsystem.salamon.xyz/serve-static/images/tiktok.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,
@@ -207,7 +207,7 @@ Ticket realese: 13/4 19:00!!
     startTime: new Date("2022-04-22 19:00:00"),
     releaseTime: new Date("2022-04-13 19:00:00"),
     eventPictureLink:
-      "https://scontent.fbma1-1.fna.fbcdn.net/v/t39.30808-6/277349628_704094004271610_6724214645579859097_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=340051&_nc_ohc=17D9gQXfRJEAX8vLUlT&_nc_ht=scontent.fbma1-1.fna&oh=00_AT9pIoMGB7gVtH88BmutgVpW2x1782v37N1U9cCpXYVwcg&oe=6269ED15",
+      "https://biljettsystem.salamon.xyz/serve-static/images/geek.jpg",
     location: {
       lat: 59.3480103,
       lng: 18.0714542,

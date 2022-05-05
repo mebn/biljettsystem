@@ -15,7 +15,10 @@ const options = {
             {
                 url: 'http://localhost:7050/',
                 description: 'Development server'
-            }
+            },{
+		url: 'https://biljettsystem.salamon.xyz/',
+		description: 'Testing server'
+	    }
         ]
     },
     apis: ['./routes/*.js', './api-spec.yml'], // files containing annotations as above
