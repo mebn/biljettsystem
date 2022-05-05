@@ -17,7 +17,7 @@ jobs:
         with:
           host: biljettsystem.salamon.xyz
           username: adrian
-          key: ${{secrets.CD_SK}}
+          key: ${{ secrets.CD_SK }}
           port: 2760
           script: |
             cd biljettsystem
