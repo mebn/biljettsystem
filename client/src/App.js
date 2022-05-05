@@ -8,6 +8,7 @@ import PurchaseComplete from './pages/PurchaseComplete/PurchaseComplete';
 import Event from './pages/Event/Event'
 import EventTransaction from './pages/EventTransaction/EventTransaction';
 import EventTransactionAlpha from './pages/EventTransaction/EventTransactionAlpha';
+import MyTickets from './pages/MyTickets/MyTickets';
 import Navbar from './components/Navbar/Navbar';
 import { useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedOut } from "./redux/loggedIn";
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/event/:eventId/book" element={<EventTransaction />} />
           <Route path="/event/:eventId/purchase" element={<EventTransactionAlpha />} />
           <Route path="/purchase-complete/:eventId" element={<PurchaseComplete />} />
+          <Route path="/my-tickets" element={<MyTickets />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
