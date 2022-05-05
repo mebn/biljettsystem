@@ -12,7 +12,7 @@ const GOOGLE_CLIENT_SECRET = "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";
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: `https://${process.env.NODE_ENV === "production" ? "biljettsystem.salamon.xyz" : "localhost:7050"}/api/auth/google/callback`,
+    callbackURL: `${process.env.NODE_ENV === "production" ? "https://biljettsystem.salamon.xyz" : "http://localhost:7050"}/api/auth/google/callback`,
     passReqToCallback: true,
 },
     async function (request, accessToken, refreshToken, profile, done) {

@@ -14,7 +14,7 @@ const googleLogin = (ticketPopupOnCallback) => {
   }
 
   window.open(
-    `http:${url}/api/auth/google?return=${fullUrl + urlExtension}`,
+    `http://${url}/api/auth/google?return=${fullUrl + urlExtension}`,
     "_self"
   );
 };
