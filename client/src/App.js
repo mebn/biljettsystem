@@ -4,10 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // screens and routes
 import Home from './pages/Home/Home';
 import NotFound from './pages/NotFound/NotFound';
-import PurchaseComplete from './pages/PurchaseComplete/PurchaseComplete';
 import Event from './pages/Event/Event'
-import EventTransaction from './pages/EventTransaction/EventTransaction';
-import EventTransactionAlpha from './pages/EventTransaction/EventTransactionAlpha';
 import MyTickets from './pages/MyTickets/MyTickets';
 import Navbar from './components/Navbar/Navbar';
 import { useDispatch } from "react-redux";
@@ -40,9 +37,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/event/:eventId/popup" element={<Event />} />
-          <Route path="/event/:eventId/book" element={<EventTransaction />} />
-          <Route path="/event/:eventId/purchase" element={<EventTransactionAlpha />} />
-          <Route path="/purchase-complete/:eventId" element={<PurchaseComplete />} />
           <Route path="/my-tickets" element={<MyTickets />} />
 
           <Route path="*" element={<NotFound />} />

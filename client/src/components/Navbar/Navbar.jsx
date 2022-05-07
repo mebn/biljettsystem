@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import {
   TicketIcon,
   LoginIcon,
-  UserCircleIcon,
   LogoutIcon,
 } from "@heroicons/react/outline";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import LoginPopup from "../LoginPopup/LoginPopup";
 import LogoutPopup from "../LogoutPopup/LogoutPopup";
 
