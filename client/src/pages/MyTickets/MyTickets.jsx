@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 const Card = (props) => (
   //<Link to={`event/${props.order.event.id}`}>
@@ -101,13 +100,12 @@ const MyTickets = () => {
 
   const toggleExpandOrder = (index) => {
     let updated = orders.map((order, i) => {
-      if (i == index) {
+      if (i === index) {
         return { ...order, expanded: !order.expanded };
       } else {
         return order;
       }
     });
-    console.log(updated);
 
     setOrders(updated);
   };
@@ -117,7 +115,7 @@ const MyTickets = () => {
       <div className="font-bold text-2xl mb-1">Köpta biljetter</div>
       <div className="text-gray-500">{orders.length > 0 ? "Klicka för mer information" : "Du har tyvärr inte köpt några biljetter än 😢"}</div>
 
-      <div className="flex flex-col gap-8 pt-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-col gap-8 pt-6 mb-6 md:grid md:grid-cols-2 lg:grid-cols-3">
         {loaded
           ? orders.map((order, index) => (
               <a onClick={() => toggleExpandOrder(index)}>

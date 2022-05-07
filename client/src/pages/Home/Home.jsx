@@ -68,7 +68,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col px-6 gap-8 pt-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:max-w-6xl mx-auto">
+    <div className="flex flex-col px-6 gap-8 pt-8 mb-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:max-w-6xl mx-auto">
       {loaded ? (
         events.map((event, index) => <Card key={index} event={event} />)
       ) : (
