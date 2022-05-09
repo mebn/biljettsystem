@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 // screens and routes
 import Home from './pages/Home/Home';
@@ -9,6 +9,18 @@ import MyTickets from './pages/MyTickets/MyTickets';
 import Navbar from './components/Navbar/Navbar';
 import { useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedOut } from "./redux/loggedIn";
+
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,6 +44,7 @@ const App = () => {
   return (
     <React.StrictMode>
       <BrowserRouter>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

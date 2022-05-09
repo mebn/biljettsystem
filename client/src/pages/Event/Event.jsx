@@ -8,7 +8,6 @@ import LoginPopup from "../../components/LoginPopup/LoginPopup";
 import { useSelector } from "react-redux";
 import Popup from "../../components/Popup/Popup";
 import Countdown from "../../components/Countdown/Countdown";
-import { useLocation } from "react-router-dom";
 
 const EventBody = (props) => {
   return (
