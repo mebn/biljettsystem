@@ -1,6 +1,9 @@
 # biljettsystem
 PVK Project 2022
 
+## Photos
+To see how the finished project turned out on both mobile and desktop, click [here](./photos/).
+
 ## How to run
 For the whole application to work properly, you need to run the client, server and database at the same time.
 
